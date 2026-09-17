@@ -3,65 +3,12 @@
 function initCSS(){
 moreStyle.textContent = "";
 
-let aliasFlag = false;
-
-if(useScripts.shortRomaji){
-	shortRomaji.forEach(createAlias);
-	aliasFlag = true
-}
-
 const titleAliases = JSON.parse(localStorage.getItem("titleAliases"));
 if(titleAliases){
-	aliasFlag = true;
 	titleAliases.forEach(createAlias)
 }
 
-if(useScripts.mediaTranslation && (languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesAnime || languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesManga)){
-	aliasFlag = true;
-	(Object.keys(languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesAnime || {}) || []).forEach(key => {
-		createAlias(["/anime/" + key + "/",languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesAnime[key]])
-	});
-	(Object.keys(languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesManga || {}) || []).forEach(key => {
-		createAlias(["/manga/" + key + "/",languageFiles[useScripts.partialLocalisationLanguage].mediaTitlesManga[key]])
-	})
-}
 
-
-if(aliasFlag){
-	moreStyle.textContent += `
-a.title::before
-,.quick-search-results .el-select-dropdown__item a > span::before{
-	visibility: visible;
-	line-height: 1.15;
-	margin-right: 2px;
-}
-.medialist.table .title > a::before{
-	visibility: visible;
-	font-size: 1.5rem;
-	margin-right: 2px;
-}
-.medialist.compact .title > a::before
-,.medialist.cards .title > a::before
-,.home .status > a.title::before
-,.media-embed .title::before{
-	visibility: visible;
-	font-size: 1.3rem;
-	margin-right: 2px;
-}
-.role-card a.content > .name::before{
-	visibility: visible;
-	font-size: 1.2rem;
-}
-.overlay > a.title::before
-,.media-preview-card a.title::before{
-	visibility: visible;
-	font-size: 1.4rem;
-	line-height: 1.15;
-}
-.role-card a.content > .name{
-	line-height: 1.3!important;
-}`
-}
 m4_include(css/CSSfavs.js)
 if(useScripts.CSScompactBrowse){
 	moreStyle.textContent += `

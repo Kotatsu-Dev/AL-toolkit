@@ -1012,4 +1012,77 @@ function watchElem(selector, parent) {
 		}).observe(parent || document.body, { subtree: true, childList: true })
 	})
 }
+/**
+ * Find the element holding a link's visible title, if it has one
+ * @param {Element} link
+ * @returns {Element|false}
+ */
+function aliasTarget(link){
+	if(link.classList.contains("title") || (link.parentElement && link.parentElement.classList.contains("title"))){
+		return link
+	}
+	if(link.closest(".quick-search-results")){
+		return link.querySelector("span") || false
+	}
+	return link.querySelector(".title") || link.querySelector(".name") || false
+}
+
+/**
+ * Replace media titles with their aliases
+ * @param {Element} [root]
+ */
+function applyAliases(root){
+	if(!aliases.size){
+		return
+	}
+	(root || document).querySelectorAll('a[href^="/anime/"],a[href^="/manga/"]').forEach(link => {
+		let idMatch = link.getAttribute("href").match(/^\/(?:anime|manga)\/(\d+)\//);
+		if(!idMatch){
+			return
+		}
+		let alias = aliases.get(parseInt(idMatch[1]));
+		if(!alias){
+			return
+		}
+		let target = aliasTarget(link);
+		if(!target || target.getAttribute("altoolkit-alias") === alias){
+			return
+		}
+		target.setAttribute("altoolkit-alias",alias);
+		let firstText = Array.from(target.childNodes).find(node => node.nodeType === 3);
+		if(firstText){
+			firstText.textContent = alias
+		}
+		else{
+			target.textContent = alias
+		}
+	})
+}
+
+let aliasWatcher = false;
+/**
+ * Keep aliasing titles as Anilist adds them
+ */
+function watchAliases(){
+	if(aliasWatcher || !aliases.size){
+		return
+	}
+	let app = document.getElementById("app");
+	if(!app){
+		setTimeout(watchAliases,200);
+		return
+	}
+	let pending = false;
+	aliasWatcher = new MutationObserver(function(){
+		if(pending){
+			return
+		}
+		pending = true;
+		setTimeout(function(){
+			pending = false;
+			applyAliases()
+		},100)
+	});
+	aliasWatcher.observe(app,{childList: true, subtree: true})
+}
 //end "utilities.js"

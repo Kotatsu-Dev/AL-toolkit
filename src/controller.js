@@ -4,6 +4,8 @@ const modules = [];
 let current = "";
 
 function handleScripts(url,oldUrl){
+	applyAliases();
+	watchAliases();
 	modules.forEach(module => {
 		if(useScripts[module.id] && module.urlMatch && module.code && module.urlMatch(url,oldUrl)){
 			module.code()
