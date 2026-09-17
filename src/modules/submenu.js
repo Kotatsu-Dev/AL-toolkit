@@ -6,8 +6,8 @@ if(useScripts.CSSverticalNav && whoAmI && !useScripts.mobileFriendly){
 			let hackContainer = create("div","subMenuContainer",false,false,"position:relative;width:100%;min-height:50px;z-index:134;display:inline-flex;");
 			navThingy.parentNode.insertBefore(hackContainer,navThingy);
 			hackContainer.appendChild(navThingy);
-			let subMenu = create("div","hohSubMenu",false,hackContainer);
-			let linkStats = create("a","hohSubMenuLink",translate("$submenu_stats"),subMenu);
+			let subMenu = create("div","altoolkitSubMenu",false,hackContainer);
+			let linkStats = create("a","altoolkitSubMenuLink",translate("$submenu_stats"),subMenu);
 			if(useScripts.mangaBrowse){
 				linkStats.href = "/user/" + whoAmI + "/stats/manga/overview";
 				cheapReload(linkStats,{path: "/user/" + whoAmI + "/stats/manga/overview"});
@@ -38,7 +38,7 @@ if(useScripts.CSSverticalNav && whoAmI && !useScripts.mobileFriendly){
 					vue: {path: "/user/" + whoAmI + "/submissions"}
 				}
 			].forEach(link => {
-				let element = create("a","hohSubMenuLink",translate(link.text),subMenu);
+				let element = create("a","altoolkitSubMenuLink",translate(link.text),subMenu);
 				element.href = link.href;
 				if(link.vue){
 					cheapReload(element,link.vue)

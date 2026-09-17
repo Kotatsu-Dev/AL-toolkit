@@ -1,10 +1,10 @@
 Eslint is a tool to detect style and code mistakes.
-This is optional, and neither required for building nor contributing to Automail. (It can however save you some time)
+This is optional, and neither required for building nor contributing to AL-toolkit. (It can however save you some time)
 
 How to use:
 
     Install Node.js (https://nodejs.org/en/) LTS for your platform
-    Open terminal and enter the Automail directory
+    Open terminal and enter the AL-toolkit directory
     Run "npm install"
     Run "npm run lint" to lint all JS project files
         Or "npm run lint-build" to lint just the compiled userscript

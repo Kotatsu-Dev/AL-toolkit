@@ -1,19 +1,17 @@
-# Automail
+# AL-toolkit
 Extra parts for anilist.co
 
 When installed, a list of options in https://anilist.co/settings/apps can be used to configure the behaviour of the website
 
-Automail primarily deals with:
+AL-toolkit primarily deals with:
 - Notifications
-- Statistics
 - Styling
 - Navigation
 - UI translation (Japanese, Spanish, Portuguese, German, Turkish, Norwegian, Southern Sami, Italian, French)
 
-## Available releases
+## Install
 
-As a userscript: https://greasyfork.org/en/scripts/370473-automail ([How to use userscripts](https://greasyfork.org/en/help/installing-user-scripts))  
-As a Firefox addon: https://github.com/hohMiyazawa/Automail/releases
+As a userscript: https://github.com/Kotatsu-Dev/AL-toolkit/releases/latest/download/al-toolkit.user.js ([How to use userscripts](https://greasyfork.org/en/help/installing-user-scripts))
 
 ## Build from source
 
@@ -21,9 +19,6 @@ As a Firefox addon: https://github.com/hohMiyazawa/Automail/releases
 Requires make, m4 and basic shell utilities
 
 Will build the userscript and a Firefox addon in src/build/
-
-If you have an archived version of this repo, updated code can be found at
-https://github.com/hohMiyazawa/Automail
 
 ## Copyright
 

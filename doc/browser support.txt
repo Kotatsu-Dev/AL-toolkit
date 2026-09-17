@@ -1,4 +1,4 @@
-SHOULD WORK: Browsers Automail should theoretically work for:
+SHOULD WORK: Browsers AL-toolkit should theoretically work for:
 	- Firefox 52+
 	- Chrome 55+
 	- Chromium
@@ -6,17 +6,17 @@ SHOULD WORK: Browsers Automail should theoretically work for:
 	- Opera 32+
 	- Safari 10.1+
 
-DOESN'T WORK: Browsers Automail should theoretically NOT work for:
+DOESN'T WORK: Browsers AL-toolkit should theoretically NOT work for:
 	- All versions of Internet Explorer [no support planned]
 	- Dillo [no support planned]
 
 ---
 
-Versions confirmed to work with Automail:
+Versions confirmed to work with AL-toolkit:
 	- Firefox 76.0.1, 96.0, 105.0, 108.0.2
 	- Chromium 81.0.4044.138
 
-Browsers confirmed to NOT work with Automail:
+Browsers confirmed to NOT work with AL-toolkit:
 	- Dillo [no support planned]
 
 Platforms with dedicated testers:
@@ -25,7 +25,7 @@ Platforms with dedicated testers:
 
 
 Both positive and negative confirmations can be posted as issues on github:
-	"Automail does not work in <browser> <version>"
+	"AL-toolkit does not work in <browser> <version>"
 		in body, include details about what doesn't work
-	"Automail works in <browser> <version>"
-		(optionally) in body, include the steps used to install Automail
+	"AL-toolkit works in <browser> <version>"
+		(optionally) in body, include the steps used to install AL-toolkit

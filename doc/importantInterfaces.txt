@@ -8,33 +8,33 @@ graphql.js contains some important functions for interacting with the Anilist AP
 
 ---
 
-The automailAPI
+The al-toolkitAPI
 
-Behind a setting (turned off by default), users can enable API to controll Automail.
+Behind a setting (turned off by default), users can enable API to controll AL-toolkit.
 
 This is in the form of an object that belongs to the document object.
 	
-	document.automailAPI
+	document.al-toolkitAPI
 
-This exposes some functions of Automail to any other script. The goal being to either simplify writing of third-party script, or make it easier for such scripts to adapt to the changes Automail does.
+This exposes some functions of AL-toolkit to any other script. The goal being to either simplify writing of third-party script, or make it easier for such scripts to adapt to the changes AL-toolkit does.
 
 This is not a security vulnerability, as these permissions are available in any case to scripts a user decides to run. It just makes it easier for those scripts.
 
 Current interfaces:
 
-	automailAPI.automailAPI
+	al-toolkitAPI.al-toolkitAPI
 		-- an object containing various info about the version of Automail running. Can be found in src/scriptInfo.js
-	automailAPI.api
-		-- the new Automail internal Graphql API
-	automailAPI.generalAPIcall
-	automailAPI.authAPIcall
-	automailAPI.queryPacker
+	al-toolkitAPI.api
+		-- the new AL-toolkit internal Graphql API
+	al-toolkitAPI.generalAPIcall
+	al-toolkitAPI.authAPIcall
+	al-toolkitAPI.queryPacker
 		-- implements an interface to the Anilist Graphql API.
 		-- their implementation can be found in src/graphql.js
-	automailAPI.settings
+	al-toolkitAPI.settings
 		-- an object containing the user's script settings
-	automailAPI.logOut
-		-- a function to make Automail forget its access token
+	al-toolkitAPI.logOut
+		-- a function to make AL-toolkit forget its access token
 		-- the access token is still valid, and must be retracted from the apps permission page if you want to disable it entirely
 
 ---

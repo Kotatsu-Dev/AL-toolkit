@@ -6,8 +6,36 @@ const stats = {
 	scoreCount: 0
 }
 
+const nativeNotes = row => (
+	row.querySelector(":scope > span.hover-icon")
+	|| Array.from(row.children).find(
+		el => el.nodeName === "SPAN" && !el.className && !el.textContent.trim()
+	)
+	|| null
+);
+
+const scoreElement = row => {
+	let scores = Array.from(row.children).filter(
+		el => el.nodeName === "SPAN"
+		&& !el.classList.contains("hover-icon")
+		&& !el.classList.contains("notes")
+		&& !el.classList.contains("repeat")
+		&& el.textContent.trim()
+	);
+	return scores[scores.length - 1] || row.querySelector(":scope > svg")
+};
+
+const hiddenNote = notes => (
+	!notes
+	|| notes.match(/^,malSync::[a-zA-Z0-9]+=?=?::$/) //no need to show malSync-only notes, nobody is interested in that
+	|| notes.match(/^\s+$/) //whitespace-only notes will not show up properly anyway
+	|| notes.match(/^\$({.*})\$$/) //list JSON feature
+);
+
+const tagsOnlyNote = notes => notes.trim().match(/^(#\S+\s+)*(#\S+)$/);
+
 const scoreColors = e => {
-	let el = e.querySelector("span") || e.querySelector("svg");
+	let el = scoreElement(e);
 	let light = document.body.classList.contains("site-theme-dark") ? 45 : 38;
 	if(!el){
 		return null
@@ -49,7 +77,13 @@ const handler = (data,target,idMap) => {
 		return
 	}
 	data.forEach(e => {
-		target[idMap[e.user.id]].style.gridTemplateColumns = "30px 1.3fr .7fr .6fr .2fr .2fr .5fr"; //css is my passion
+		const row = target[idMap[e.user.id]];
+		if(!row){
+			return
+		}
+		row.style.gridTemplateColumns = "30px minmax(0,1.3fr) minmax(44px,.7fr) minmax(76px,.6fr) 20px 20px minmax(46px,.5fr)"; //css is my passion
+		const statusEL = row.querySelector(":scope > .status");
+		const scoreEL = scoreElement(row);
 		const progress = create("div","progress",e.progress);
 		if(e.media.chapters || e.media.episodes){
 			progress.innerText = `${e.progress}/${e.media.chapters || e.media.episodes}`;
@@ -63,21 +97,32 @@ const handler = (data,target,idMap) => {
 				progress.style.color = "rgb(var(--color-green))"
 			}
 		}
-		target[idMap[e.user.id]].insertBefore(progress,target[idMap[e.user.id]].children[2])
-		let notesEL = create("span","notes") // notes
-		if(
-			e.notes //only if notes
-			&& !e.notes.match(/^,malSync::[a-zA-Z0-9]+=?=?::$/) //no need to show malSync-only notes, nobody is interested in that
-			&& !e.notes.match(/^\s+$/) //whitespace-only notes will not show up properly anyway
-			&& !e.notes.match(/^\$({.*})\$$/) //list JSON feature
-		){
-			if(e.notes.trim().match(/^(#\S+\s+)*(#\S+)$/)){//use a separate symbol for tags-only notes. Also helps popularizing tags
-				notesEL.appendChild(svgAssets2.notesTags.cloneNode(true))
+		row.insertBefore(progress,statusEL)
+		let notesEL = nativeNotes(row);
+		if(notesEL){
+			if(hiddenNote(e.notes)){
+				if(notesEL.classList.contains("hover-icon")){
+					notesEL.style.visibility = "hidden"
+				}
 			}
-			else{
-				notesEL.appendChild(svgAssets2.notes.cloneNode(true))
+			else if(tagsOnlyNote(e.notes)){//use a separate symbol for tags-only notes. Also helps popularizing tags
+				let icon = notesEL.querySelector("svg");
+				if(icon){
+					notesEL.replaceChild(svgAssets2.notesTags.cloneNode(true),icon)
+				}
 			}
-			notesEL.title = entityUnescape(e.notes);
+		}
+		else{
+			notesEL = create("span","notes"); // notes
+			if(!hiddenNote(e.notes)){
+				if(tagsOnlyNote(e.notes)){
+					notesEL.appendChild(svgAssets2.notesTags.cloneNode(true))
+				}
+				else{
+					notesEL.appendChild(svgAssets2.notes.cloneNode(true))
+				}
+				notesEL.title = entityUnescape(e.notes);
+			}
 		}
 		let dateString;
 		if(
@@ -120,24 +165,20 @@ const handler = (data,target,idMap) => {
 		){
 			dateString = translate("$mediaStatus_planning_time",new Date(e.createdAt*1000).toISOString().split("T")[0])
 		}
-		if(dateString !== " - "){
-			target[idMap[e.user.id]].children[3].title = dateString;
+		if(dateString !== " - " && statusEL){
+			statusEL.title = dateString;
 		}
-		if(useScripts.partialLocalisationLanguage !== "English"){
-			let text = target[idMap[e.user.id]].children[3].childNodes[0].textContent;
-			target[idMap[e.user.id]].children[3].childNodes[0].textContent = capitalize(translate("$mediaStatus_" + text.toLowerCase(),null,text))
+		if(useScripts.partialLocalisationLanguage !== "English" && statusEL){
+			let text = statusEL.childNodes[0].textContent;
+			statusEL.childNodes[0].textContent = capitalize(translate("$mediaStatus_" + text.toLowerCase(),null,text))
 		}
-		target[idMap[e.user.id]].insertBefore(
-			notesEL,target[idMap[e.user.id]].children[4]
-		)
 		let rewatchEL = create("span","repeat");
 		if(e.repeat){
 			rewatchEL.appendChild(svgAssets2.repeat.cloneNode(true));
 			rewatchEL.title = e.repeat;
 		}
-		target[idMap[e.user.id]].insertBefore(
-			rewatchEL,target[idMap[e.user.id]].children[4]
-		)
+		row.insertBefore(rewatchEL,scoreEL)
+		row.insertBefore(notesEL,scoreEL)
 	})
 }
 
@@ -179,14 +220,21 @@ function enhanceSocialTab(){
 	}
 	MakeStats();
 	let idmap = {};//TODO, rewrite as actual map?
+	let namemap = {};
 	listOfFollowers.forEach(function(e,i){
 		if(!e.dataset.changed){
 			const avatarURL = e.querySelector(".avatar").dataset.src;
+			const nameEL = e.querySelector(".name");
 			if(!avatarURL || avatarURL === "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png"){
-				return
+				if(!nameEL || !nameEL.innerText.trim()){
+					return
+				}
+				namemap[nameEL.innerText.trim()] = i
 			}
-			const id = avatarURL.split("/").pop().match(/\d+/g)[0];
-			idmap[id] = i;
+			else{
+				const id = avatarURL.split("/").pop().match(/\d+/g)[0];
+				idmap[id] = i
+			}
 			let change = scoreColors(e);
 			if(change){
 				stats.scoreCount += change.scoreCount;
@@ -196,8 +244,39 @@ function enhanceSocialTab(){
 			e.dataset.changed = true
 		}
 	})
+	const mediaID = window.location.pathname.split("/")[2];
+	if(Object.keys(namemap).length){
+		queryPacker(
+			Object.keys(namemap).map(name => {
+				return {
+					query: `query($name:String,$media:Int){
+						Page{
+							mediaList(userName: $name,mediaId: $media){
+								progress notes repeat user{id}
+								startedAt{year month day}
+								completedAt{year month day}
+								createdAt
+								status
+								media{chapters episodes}
+							}
+						}
+					}`,
+					variables: {name: name,media: parseInt(mediaID)},
+					callback: function(res){
+						if(!res || !res.data || !res.data.Page || !res.data.Page.mediaList){
+							return
+						}
+						let nameIdmap = {};
+						res.data.Page.mediaList.forEach(entry => {
+							nameIdmap[entry.user.id] = namemap[name]
+						})
+						handler(res.data.Page.mediaList,listOfFollowers,nameIdmap)
+					}
+				}
+			})
+		)
+	}
 	if(Object.keys(idmap).length){
-		const mediaID = window.location.pathname.split("/")[2];
 		generalAPIcall(
 			`query($users:[Int],$media:Int){
 				Page{
@@ -224,6 +303,8 @@ function enhanceSocialTab(){
 				)
 			}
 		)
+	}
+	if(Object.keys(idmap).length || Object.keys(namemap).length){
 		let statsElements = stats.element.querySelectorAll("span > span");
 		statsElements[0].innerText = stats.count;
 		const avgScore = Math.round(stats.scoreSum/stats.scoreCount || 0);
@@ -302,7 +383,7 @@ function enhanceSocialTab(){
 		let sortStatus = "";
 		semmanticStatusOrder.forEach(status => {
 			if(distribution[status]){
-				let statusSumDot = create("div","hohSummableStatus",distribution[status],statusList);
+				let statusSumDot = create("div","altoolkitSummableStatus",distribution[status],statusList);
 				statusSumDot.style.background = distributionColours[status];
 				statusSumDot.title = distribution[status] + " " + capitalize(translate("$mediaStatus_" + status.toLowerCase()));
 				if(distribution[status] > 99){

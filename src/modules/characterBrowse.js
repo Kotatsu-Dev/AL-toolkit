@@ -3,7 +3,7 @@ exportModule({
 	description: "Add favourite counts to character browse pages",
 	isDefault: true,
 	categories: ["Browse"],
-	visible: false,
+	visible: true,
 	urlMatch: function(url){
 		return /^https:\/\/anilist\.co\/search\/characters\/?(favorites)?$/.test(url)
 	},
@@ -26,7 +26,7 @@ query($page: Int!,$perPage: Int!){
 			const chars = data.Page.characters;
 			chars.forEach((character,index) => create(
 				"span",
-				"hohFavCountBrowse",
+				"altoolkitFavCountBrowse",
 				character.favourites,
 				results.children[(pageCount - 1)*chars.length + index]
 			).title = translate("$characterBrowseTooltip"));
@@ -56,7 +56,7 @@ query($page: Int!,$perPage: Int!){
 		getFavs();
 	},
 	css: `
-.hohFavCountBrowse{
+.altoolkitFavCountBrowse{
 	color: rgb(var(--color-text-lighter));
 	position: absolute;
 	right: 2px;

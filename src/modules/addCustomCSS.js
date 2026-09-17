@@ -1,9 +1,6 @@
 function addCustomCSS(){
-	if(useScripts.SFWmode || script_type === "Boneless"){
-		return
-	}
 	let URLstuff = location.pathname.match(/^\/user\/([^/]*)\/?/);
-	if(!customStyle.textContent || (decodeURIComponent(URLstuff[1]) !== currentUserCSS)){
+	if(URLstuff){
 		const query = `
 		query($userName: String) {
 			User(name: $userName){
@@ -13,12 +10,7 @@ function addCustomCSS(){
 		let variables = {
 			userName: decodeURIComponent(URLstuff[1])
 		}
-		let css_handler = function(data){
-			customStyle.textContent = "";
-			let external = document.getElementById("customExternalCSS");
-			if(external){
-				external.remove()
-			}
+		let profile_handler = function(data){
 			if(!data){
 				return
 			}
@@ -36,20 +28,6 @@ function addCustomCSS(){
 				}
 				catch(e){
 					jsonData = JSON.parse(LZString.decompressFromBase64(jsonMatch[1]))
-				}
-				if(jsonData.customCSS){
-					if(jsonData.customCSS.match(/^https.*\.css$/)){
-						let styleRef = document.createElement("link");
-						styleRef.id = "customExternalCSS";
-						styleRef.rel = "stylesheet";
-						styleRef.type = "text/css";
-						styleRef.href = jsonData.customCSS;
-						document.getElementsByTagName("head")[0].appendChild(styleRef)
-					}
-					else{
-						customStyle.textContent = jsonData.customCSS
-					}
-					currentUserCSS = decodeURIComponent(URLstuff[1])
 				}
 				if(jsonData.pinned){
 					try{
@@ -106,7 +84,7 @@ query{
 									}
 									let feed = document.querySelector(".activity-feed-wrap");
 									if(feed){
-										let entry = create("div",["activity-entry","hohPinned"]);
+										let entry = create("div",["activity-entry","altoolkitPinned"]);
 										feed.insertBefore(entry,feed.children[0]);
 										let act = data.data.Activity;
 										if(act.type === "TEXT"){
@@ -167,7 +145,7 @@ let wrap = create("div","wrap",false,entry);
 			actionReplies.href = "/activity/" + act.id + "/";
 			cheapReload(actionReplies,{name: "Activity", params: {id: act.id}});
 		actions.appendChild(document.createTextNode(" "));
-		let actionLikes = create("div",["action","likes","hohHandledLike","hohLoadedLikes"],false,actions);
+		let actionLikes = create("div",["action","likes","altoolkitHandledLike","altoolkitLoadedLikes"],false,actions);
 			actionLikes.title = act.likes.map(like => like.name).join("\n");
 			let likeWrap = create("div",["like-wrap","activity"],false,actionLikes);
 				let likeButton = create("div","button",false,likeWrap);
@@ -202,7 +180,7 @@ let wrap = create("div","wrap",false,entry);
 									}
 								}
 							);
-							deleteCacheItem("hohPinned" + jsonData.pinned)
+							deleteCacheItem("altoolkitPinned" + jsonData.pinned)
 						}
 					}
 									}
@@ -211,7 +189,7 @@ let wrap = create("div","wrap",false,entry);
 									}
 								};
 								adder()
-							},"hohPinned" + jsonData.pinned,60*1000
+							},"altoolkitPinned" + jsonData.pinned,60*1000
 						)
 					}
 					catch(e){
@@ -219,7 +197,7 @@ let wrap = create("div","wrap",false,entry);
 					}
 				}
 				else{
-					let carriedOver = document.querySelector(".hohPinned");
+					let carriedOver = document.querySelector(".altoolkitPinned");
 					if(carriedOver){
 						carriedOver.remove()
 					}
@@ -232,10 +210,10 @@ let wrap = create("div","wrap",false,entry);
 			}
 		};
 		if(variables.userName === whoAmI){
-			authAPIcall(query,variables,css_handler,"hohProfileBackground" + variables.userName,5*60*1000)
+			authAPIcall(query,variables,profile_handler,"altoolkitProfileBackground" + variables.userName,5*60*1000)
 		}
 		else{
-			generalAPIcall(query,variables,css_handler,"hohProfileBackground" + variables.userName,5*60*1000)
+			generalAPIcall(query,variables,profile_handler,"altoolkitProfileBackground" + variables.userName,5*60*1000)
 		}
 	}
 }

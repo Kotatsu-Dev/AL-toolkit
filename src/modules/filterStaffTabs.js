@@ -11,9 +11,9 @@ exportModule({
 		const mediaStaff = document.querySelector(".media-staff") || await watchElem(".media-staff");
 		const staffGrid = mediaStaff.querySelector(".grid-wrap") || await watchElem(".grid-wrap",mediaStaff);
 		if(staffGrid.children.length > 9){
-			let filterBoxContainer = create("div","#hohStaffTabFilter");
+			let filterBoxContainer = create("div","#altoolkitStaffTabFilter");
 			mediaStaff.prepend(filterBoxContainer);
-			let filterRemover = create("span","#hohFilterRemover",svgAssets.cross,filterBoxContainer)
+			let filterRemover = create("span","#altoolkitFilterRemover",svgAssets.cross,filterBoxContainer)
 			let filterBox = create("input",false,false,filterBoxContainer);
 			filterBox.placeholder = translate("$mediaStaff_filter");
 			filterBox.setAttribute("list","staffRoles");

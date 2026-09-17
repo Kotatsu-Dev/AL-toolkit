@@ -97,7 +97,7 @@ query($name: String!){
 			});
 			foundCount.innerText = "Found " + count + " manga:";
 		};
-		filters.querySelectorAll(".hohCheckbox input").forEach(checkBox => {
+		filters.querySelectorAll(".altoolkitCheckbox input").forEach(checkBox => {
 			checkBox.addEventListener("change",(e) => {
 				filterSettings[parseInt(e.target.id.split("-")[1])] = e.target.checked;
 				render()

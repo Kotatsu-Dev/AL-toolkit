@@ -1,6 +1,6 @@
 let newChaptersInsertion = function(extraFilters){
 //called from modules/drawListStuff.js
-let buttonFindChapters = create("button",["hohButton","button"],translate("$button_newChapters"),extraFilters,"display:block;");
+let buttonFindChapters = create("button",["altoolkitButton","button"],translate("$button_newChapters"),extraFilters,"display:block;");
 buttonFindChapters.title = "Check if there are new chapters available for things you are reading";
 buttonFindChapters.onclick = function(){
 	const URLstuff = location.pathname.match(/^\/user\/(.+)\/(animelist|mangalist)/);
@@ -40,8 +40,8 @@ buttonFindChapters.onclick = function(){
 		let returnedItems = 0;
 		let goodItems = [];
 		let banContainer = create("div",false,false,scrollableContent.parentNode,"position:absolute;bottom:10px;left:10px");
-		let banButton = create("button","hohButton","Ban items",banContainer);
-		let banManager = create("button","hohButton","Manage bans",banContainer);
+		let banButton = create("button","altoolkitButton","Ban items",banContainer);
+		let banManager = create("button","altoolkitButton","Manage bans",banContainer);
 		banButton.onclick = function(){
 			banMode = !banMode;
 			if(banMode){
@@ -61,10 +61,10 @@ buttonFindChapters.onclick = function(){
 				return
 			}
 			useScripts.bannedUpdates.forEach(function(item){
-				let listing = create("p","hohNewChapter",false,manager);
+				let listing = create("p","altoolkitNewChapter",false,manager);
 				create("a",["link","newTab"],item.title,listing)
 					.href = "/manga/" + item.id + "/" + safeURL(item.title) + "/";
-				let chapterClose = create("span","hohDisplayBoxClose",svgAssets.cross,listing);
+				let chapterClose = create("span","altoolkitDisplayBoxClose",svgAssets.cross,listing);
 				chapterClose.onclick = function(){
 					listing.remove();
 					bannedEntries.delete(item.id);
@@ -125,7 +125,7 @@ buttonFindChapters.onclick = function(){
 						if(bannedEntries.has(media.id)){
 							return
 						}
-						let listing = create("p","hohNewChapter",false,scrollableContent);
+						let listing = create("p","altoolkitNewChapter",false,scrollableContent);
 						let title = titlePicker(media);
 						let countPlace = create("span","count",false,listing,"width:110px;display:inline-block;");
 						let progress = create("span",false,item.data.data.MediaList.progress + " ",countPlace);
@@ -173,7 +173,7 @@ buttonFindChapters.onclick = function(){
 						}
 						create("a",["link","newTab"],title,listing)
 							.href = "/manga/" + media.id + "/" + safeURL(title) + "/";
-						let chapterClose = create("span","hohDisplayBoxClose",svgAssets.cross,listing);
+						let chapterClose = create("span","altoolkitDisplayBoxClose",svgAssets.cross,listing);
 						chapterClose.onclick = function(){
 							if(banMode){
 								return
@@ -203,7 +203,7 @@ buttonFindChapters.onclick = function(){
 							}
 						}
 					})
-					create("p","hohNewChapter",false,scrollableContent)//spacer
+					create("p","altoolkitNewChapter",false,scrollableContent)//spacer
 				}
 			}
 		};

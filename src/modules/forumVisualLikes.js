@@ -11,9 +11,9 @@ exportModule({
 		let likeLoop = setInterval(function(){
 			// forum comments
 			document.querySelectorAll(
-				".forum-thread .comment .actions .like-wrap.thread_comment:not(.hohHandledLike)"
+				".forum-thread .comment .actions .like-wrap.thread_comment:not(.altoolkitHandledLike)"
 			).forEach(thingy => {
-				thingy.classList.add("hohHandledLike");
+				thingy.classList.add("altoolkitHandledLike");
 				let updateLikes = function(){
 					let idLink = thingy.parentNode.querySelector('.hidden[href^="/forum/thread/"]');
 					if(!idLink){
@@ -77,10 +77,10 @@ query($id: Int){
 					if(likeCount <= 5){
 						return
 					}
-					if(thingy.classList.contains("hohLoadedLikes")){
+					if(thingy.classList.contains("altoolkitLoadedLikes")){
 						return
 					}
-					thingy.classList.add("hohLoadedLikes");
+					thingy.classList.add("altoolkitLoadedLikes");
 					updateLikes()
 				}
 				thingy.onclick = function(){
@@ -90,9 +90,9 @@ query($id: Int){
 			});
 
 			// forum threads
-			let thingy = document.querySelector(".forum-thread .body .actions .like-wrap.thread:not(.hohHandledLike)");
+			let thingy = document.querySelector(".forum-thread .body .actions .like-wrap.thread:not(.altoolkitHandledLike)");
 			if(thingy){
-				thingy.classList.add("hohHandledLike");
+				thingy.classList.add("altoolkitHandledLike");
 				let shortlist = null;
 				let updateLikes = function(){
 					if(shortlist && shortlist.data.Page.likes.length >= 25 && !shortlist.data.Page.likes.map(like => like.name).includes(whoAmI)){
@@ -154,10 +154,10 @@ query ($id: Int, $type: LikeableType) {
 					if(likeCount <= 5){
 						return
 					}
-					if(thingy.classList.contains("hohLoadedLikes")){
+					if(thingy.classList.contains("altoolkitLoadedLikes")){
 						return
 					}
-					thingy.classList.add("hohLoadedLikes");
+					thingy.classList.add("altoolkitLoadedLikes");
 					updateLikes()
 				}
 				thingy.onclick = function(){

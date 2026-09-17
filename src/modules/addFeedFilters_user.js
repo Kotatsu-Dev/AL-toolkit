@@ -7,15 +7,15 @@ function addFeedFilters_user(){
 		setTimeout(addFeedFilters_user,100);
 		return
 	}
-	if(activityFeed.classList.contains("hohTranslated")){
+	if(activityFeed.classList.contains("altoolkitTranslated")){
 		return
 	}
-	activityFeed.classList.add("hohTranslated");
+	activityFeed.classList.add("altoolkitTranslated");
 	let postTranslator = function(){
 		Array.from(activityFeed.children).forEach(activity => {
 			try{
 				let timeElement = activity.querySelector(".time time");
-				if(timeElement && !timeElement.classList.contains("hohTimeGeneric")){
+				if(timeElement && !timeElement.classList.contains("altoolkitTimeGeneric")){
 					let seconds = new Date(timeElement.dateTime).valueOf()/1000;
 					let replacement = nativeTimeElement(seconds);
 					timeElement.style.display = "none";

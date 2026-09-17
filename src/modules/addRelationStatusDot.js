@@ -4,10 +4,10 @@ function addRelationStatusDot(id){
 	}
 	let relations = document.querySelector(".relations");
 	if(relations){
-		if(relations.classList.contains("hohRelationStatusDots")){
+		if(relations.classList.contains("altoolkitRelationStatusDots")){
 			return
 		}
-		relations.classList.add("hohRelationStatusDots");
+		relations.classList.add("altoolkitRelationStatusDots");
 	}
 	authAPIcall(
 `query($id: Int){
@@ -47,12 +47,12 @@ function addRelationStatusDot(id){
 				if(rels){
 					relations = document.querySelector(".relations");
 					if(relations){
-						relations.classList.add("hohRelationStatusDots");
-						relations.querySelectorAll(".hohStatusDot").forEach(dot => dot.remove());
+						relations.classList.add("altoolkitRelationStatusDots");
+						relations.querySelectorAll(".altoolkitStatusDot").forEach(dot => dot.remove());
 						rels.forEach(media => {
 							let target = relations.querySelector("[href^=\"/" + media.type.toLowerCase() + "/" + media.id + "/\"]");
 							if(target){
-								let statusDot = create("div","hohStatusDot",false,target);
+								let statusDot = create("div","altoolkitStatusDot",false,target);
 								statusDot.style.background = distributionColours[media.mediaListEntry.status];
 								statusDot.title = media.mediaListEntry.status.toLowerCase();
 							}
@@ -83,8 +83,8 @@ function addRelationStatusDot(id){
 						let adder = function(recs){
 							recs.forEach(media => {
 								let target = findCard.querySelector("[href^=\"/" + media.type.toLowerCase() + "/" + media.id + "/\"]");
-								if(target && !target.querySelector(".hohStatusDot")){
-									let statusDot = create("div","hohStatusDot",false,target);
+								if(target && !target.querySelector(".altoolkitStatusDot")){
+									let statusDot = create("div","altoolkitStatusDot",false,target);
 									statusDot.style.background = distributionColours[media.mediaListEntry.status];
 									statusDot.title = media.mediaListEntry.status.toLowerCase();
 								}
@@ -138,7 +138,7 @@ function addRelationStatusDot(id){
 				}
 			};recsAdder();
 		},
-		"hohRelationStatusDot" + id,2*60*1000,
+		"altoolkitRelationStatusDot" + id,2*60*1000,
 		false,false,
 		function(data){
 			let adder = function(){
@@ -152,12 +152,12 @@ function addRelationStatusDot(id){
 				let rels = data.data.Media.relations.nodes.filter(media => media.mediaListEntry);
 				if(rels){
 					relations = document.querySelector(".relations");
-					if(relations && !relations.classList.contains("hohRelationStatusDots")){
-						relations.classList.add("hohRelationStatusDots");
+					if(relations && !relations.classList.contains("altoolkitRelationStatusDots")){
+						relations.classList.add("altoolkitRelationStatusDots");
 						rels.forEach(media => {
 							let target = relations.querySelector("[href^=\"/" + media.type.toLowerCase() + "/" + media.id + "/\"]");
 							if(target){
-								let statusDot = create("div","hohStatusDot",false,target);
+								let statusDot = create("div","altoolkitStatusDot",false,target);
 								statusDot.style.background = distributionColours[media.mediaListEntry.status];
 								statusDot.title = media.mediaListEntry.status.toLowerCase();
 							}

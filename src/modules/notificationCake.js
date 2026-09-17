@@ -28,7 +28,7 @@ function notificationCake(){
 					}
 				})
 				if(types.length){
-					let notificationCake = create("canvas","hohNotificationCake");
+					let notificationCake = create("canvas","altoolkitNotificationCake");
 					notificationCake.width = 120;
 					notificationCake.height = 120;
 					notificationCake.style.width = "30px";
@@ -64,7 +64,7 @@ function notificationCake(){
 					notificationCake.innerText = types.length;
 					notificationCake.title = names.join("\n");
 					let poller = function(){
-						if(!document.querySelector(".hohNotificationCake")){
+						if(!document.querySelector(".altoolkitNotificationCake")){
 							try{
 								notificationCake();
 							}catch(err){ /*do nothing*/ }
@@ -73,8 +73,8 @@ function notificationCake(){
 							setTimeout(poller,4000);
 						}
 					};poller();
-					if(!document.querySelector(".hohDismiss") && useScripts.dismissDot){
-						let dismisser = create("span","hohDismiss",".",notificationDot.parentNode);
+					if(!document.querySelector(".altoolkitDismiss") && useScripts.dismissDot){
+						let dismisser = create("span","altoolkitDismiss",".",notificationDot.parentNode);
 						dismisser.title = "Dismiss notifications";
 						dismisser.onclick = function(){
 							authAPIcall("query{Notification(resetNotificationCount:true){... on ActivityLikeNotification{id}}}",{},function(data){

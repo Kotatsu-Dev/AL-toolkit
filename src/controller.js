@@ -5,7 +5,7 @@ let current = "";
 
 function handleScripts(url,oldUrl){
 	modules.forEach(module => {
-		if(useScripts[module.id] && (script_type !== "Boneless" || !module.boneless_disable) && module.urlMatch && module.code && module.urlMatch(url,oldUrl)){
+		if(useScripts[module.id] && module.urlMatch && module.code && module.urlMatch(url,oldUrl)){
 			module.code()
 		}
 	})
@@ -101,7 +101,7 @@ function handleScripts(url,oldUrl){
 					//do not create banner download icon
 					return
 				}
-				let bannerLink = document.querySelector(".hohDownload") || create("a","hohDownload",null,banner);
+				let bannerLink = document.querySelector(".altoolkitDownload") || create("a","altoolkitDownload",null,banner);
 				removeChildren(bannerLink);
 				const linkPlace = banner.style.backgroundImage.replace("url(","").replace(")","").replace('"',"").replace('"',"");
 				bannerLink.href = linkPlace;
@@ -124,9 +124,6 @@ function handleScripts(url,oldUrl){
 		if(useScripts.customCSS){
 			addCustomCSS()
 		}
-	}
-	else{
-		customStyle.textContent = ""
 	}
 	if(
 		url.match(/^https:\/\/anilist\.co\/forum\/thread\/.*/)
@@ -177,10 +174,10 @@ function handleScripts(url,oldUrl){
 		addComparisionPage()//this one on the other hand *should* be spelled correctly
 	}
 	else{
-		let possibleHohCompareRemaining = document.querySelector(".hohCompare");
-		if(possibleHohCompareRemaining){
-			(document.querySelectorAll(".hohCompareUIfragment") || []).forEach(fragment => fragment.remove());
-			possibleHohCompareRemaining.remove()
+		let possibleAltoolkitCompareRemaining = document.querySelector(".altoolkitCompare");
+		if(possibleAltoolkitCompareRemaining){
+			(document.querySelectorAll(".altoolkitCompareUIfragment") || []).forEach(fragment => fragment.remove());
+			possibleAltoolkitCompareRemaining.remove()
 		}
 	}
 	if(url.match(/^https:\/\/anilist\.co\/search/) && useScripts.CSSverticalNav){
@@ -211,7 +208,7 @@ function handleScripts(url,oldUrl){
 			}
 			let banner = document.querySelector(".media .banner");
 			if(banner){
-				let bannerLink = document.querySelector(".hohDownload") || create("a","hohDownload",null,banner);
+				let bannerLink = document.querySelector(".altoolkitDownload") || create("a","altoolkitDownload",null,banner);
 				removeChildren(bannerLink);
 				bannerLink.title = translate("$download_banner_tooltip");
 				bannerLink.href = banner.style.backgroundImage.replace("url(","").replace(")","").replace('"',"").replace('"',"");
@@ -262,7 +259,7 @@ function handleScripts(url,oldUrl){
 				}
 				let mainTitle = document.querySelector("h1");//fragile, just like your heterosexuality
 				if(mainTitle){
-					mainTitle.id = "hohAliasHeading";
+					mainTitle.id = "altoolkitAliasHeading";
 					mainTitle.childNodes[0].textContent = alias
 				}
 				else{
@@ -388,9 +385,9 @@ let mainLoop = setInterval(() => {
 		}
 	}
 },200);
-console.log(script_type + " " + scriptInfo.version);
+console.log(scriptInfo.name + " " + scriptInfo.version);
 Object.keys(localStorage).forEach(key => {
-	if(key.includes("hohListActivityCall")){
+	if(key.includes("altoolkitListActivityCall")){
 		let cacheItem = JSON.parse(localStorage.getItem(key));
 		if(cacheItem){
 			if(NOW() > cacheItem.time + cacheItem.duration){
@@ -413,14 +410,13 @@ Not that this tag has any force behind it, but we can at least kindly ask them.
 	document.head.appendChild(dnt_tag)
 }
 
-if(useScripts[script_type.toLowerCase() + "API"]){
-	if(document[script_type.toLowerCase() + "API"]){
+if(useScripts.alToolkitAPI){
+	if(document.alToolkitAPI){
 		console.warn("Multiple copies of the script running? Shutting down this instance.");
 		clearInterval(mainLoop);
 		clearInterval(likeLoop);
-		clearInterval(tweetLoop);
 	}
-	document[script_type.toLowerCase() + "API"] = {
+	document.alToolkitAPI = {
 		scriptInfo: scriptInfo,
 		generalAPIcall: generalAPIcall,//query,variables,callback[,cacheKey[,timeFresh[,useLocalStorage]]]
 		authAPIcall: authAPIcall,
@@ -452,8 +448,8 @@ if(useScripts.additionalTranslation && useScripts.partialLocalisationLanguage !=
 			};
 			let observer = new MutationObserver(function(){
 				let editor = document.querySelector(".list-editor");
-				if(editor && !editor.classList.contains("hohTranslated")){
-					editor.classList.add("hohTranslated");
+				if(editor && !editor.classList.contains("altoolkitTranslated")){
+					editor.classList.add("altoolkitTranslated");
 					editor_translate(editor)//in additionalTranslation.js
 				}
 			});

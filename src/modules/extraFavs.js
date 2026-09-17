@@ -19,12 +19,12 @@ exportModule({
 				setTimeout(finder,1000);
 				return
 			}
-			if(favSection.classList.contains("hohExtraFavs")){
+			if(favSection.classList.contains("altoolkitExtraFavs")){
 				if(favSection.dataset.user === decodeURIComponent(URLstuff[1])){
 					return
 				}
 				else{
-					Array.from(favSection.querySelectorAll(".hohExtraFav")).forEach(fav => fav.remove())
+					Array.from(favSection.querySelectorAll(".altoolkitExtraFav")).forEach(fav => fav.remove())
 				}
 			}
 			favSection.dataset.user = decodeURIComponent(URLstuff[1]);
@@ -38,7 +38,7 @@ exportModule({
 			){
 				return
 			}
-			favSection.classList.add("hohExtraFavs");
+			favSection.classList.add("altoolkitExtraFavs");
 			generalAPIcall(//private users will not be able to use this on themselves, funnily enough.
 `
 query($user: String!){
@@ -114,7 +114,7 @@ query($user: String!){
 					).concat(
 						data.data.User.favourites.anime3.nodes
 					).forEach(fav => {
-						let element = create("a",["favourite","media","hohExtraFav"],false,favSection,'background-image: url("' + fav.coverImage.large + '")');
+						let element = create("a",["favourite","media","altoolkitExtraFav"],false,favSection,'background-image: url("' + fav.coverImage.large + '")');
 						element.href = "/anime/" + fav.id + "/" + safeURL(titlePicker(fav));
 						cheapReload(element,{path: element.pathname})
 						element.onmouseover = function(){
@@ -150,7 +150,7 @@ query($user: String!){
 						}
 					})
 				},
-				"hohExtraFavs" + URLstuff[1],
+				"altoolkitExtraFavs" + URLstuff[1],
 				60*60*1000//cache for an hour
 			)
 		};finder()
@@ -164,7 +164,7 @@ query($user: String!){
 				setTimeout(finder2,1000);
 				return
 			}
-			if(favSection.classList.contains("hohExtraFavs")){
+			if(favSection.classList.contains("altoolkitExtraFavs")){
 				return
 			}
 			if(favSection.children.length === 0){
@@ -177,7 +177,7 @@ query($user: String!){
 			){
 				return
 			}
-			favSection.classList.add("hohExtraFavs");
+			favSection.classList.add("altoolkitExtraFavs");
 			generalAPIcall(
 `
 query($user: String!){
@@ -256,7 +256,7 @@ query($user: String!){
 					).concat(
 						data.data.User.favourites.manga3.nodes
 					).forEach(fav => {
-						let element = create("a",["favourite","media","hohExtraFav"],false,favSection,'background-image: url("' + fav.coverImage.large + '")');
+						let element = create("a",["favourite","media","altoolkitExtraFav"],false,favSection,'background-image: url("' + fav.coverImage.large + '")');
 						element.href = "/manga/" + fav.id + "/" + safeURL(titlePicker(fav));
 						cheapReload(element,{path: element.pathname})
 						element.onmouseover = function(){
@@ -292,13 +292,13 @@ query($user: String!){
 						}
 					})
 				},
-				"hohExtraFavsManga" + URLstuff[1],
+				"altoolkitExtraFavsManga" + URLstuff[1],
 				60*60*1000//cache for an hour
 			)
 		};finder2()
 	},
 	css: `
-.hohExtraFav{
+.altoolkitExtraFav{
 	background-position: 50%;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -311,12 +311,12 @@ query($user: String!){
 	margin-bottom: 20px;
 	margin-right: 21px;
 }
-.hohExtraFavs:hover{
+.altoolkitExtraFavs:hover{
 	overflow-y: auto;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 }
-.hohExtraFavs:hover::-webkit-scrollbar{
+.altoolkitExtraFavs:hover::-webkit-scrollbar{
 	width: 0;
 	height: 0;
 }

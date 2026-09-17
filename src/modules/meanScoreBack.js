@@ -44,7 +44,7 @@ function meanScoreBack(){
 						let totalDays = possibleStatsWrap[0].children[1].children[0].innerText;
 						possibleStatsWrap[0].children[1].remove();
 						possibleStatsWrap[0].parentNode.querySelector(".milestone:nth-child(2)").innerText = translate("$milestones_daysWatched",totalDays);
-						possibleStatsWrap[0].parentNode.classList.add("hohMilestones")
+						possibleStatsWrap[0].parentNode.classList.add("altoolkitMilestones")
 					}
 					if(data.data.User.statistics.manga.meanScore){
 						let statManga = create("div","stat",false,possibleStatsWrap[1]);
@@ -53,7 +53,7 @@ function meanScoreBack(){
 						let totalChapters = possibleStatsWrap[1].children[1].children[0].innerText;
 						possibleStatsWrap[1].children[1].remove();
 						possibleStatsWrap[1].parentNode.querySelector(".milestone:nth-child(2)").innerText = translate("$milestones_chaptersRead",totalChapters);
-						possibleStatsWrap[1].parentNode.classList.add("hohMilestones")
+						possibleStatsWrap[1].parentNode.classList.add("altoolkitMilestones")
 					}
 				}
 				else if(possibleStatsWrap[0].innerText.includes("Total Manga")){
@@ -64,7 +64,7 @@ function meanScoreBack(){
 						let totalChapters = possibleStatsWrap[0].children[1].children[0].innerText;
 						possibleStatsWrap[0].children[1].remove();
 						possibleStatsWrap[0].parentNode.querySelector(".milestone:nth-child(2)").innerText = translate("$milestones_chaptersRead",totalChapters);
-						possibleStatsWrap[0].parentNode.classList.add("hohMilestones")
+						possibleStatsWrap[0].parentNode.classList.add("altoolkitMilestones")
 					}
 				}
 			}
@@ -72,5 +72,5 @@ function meanScoreBack(){
 				setTimeout(adder,200)
 			}
 		};adder();
-	},"hohMeanScoreBack" + variables.userName,60*1000)
+	},"altoolkitMeanScoreBack" + variables.userName,60*1000)
 }

@@ -1,22 +1,22 @@
-.hohNoAWC .thread-card.small{
+.altoolkitNoAWC .thread-card.small{
 	margin-bottom: 15px;
 	background: rgb(var(--color-foreground));
 	border-radius: 3px;
 	padding: 18px;
 	position: relative;
 }
-.hohNoAWC .title{
+.altoolkitNoAWC .title{
 	font-size: 1.4rem;
 	display: block;
 	margin-bottom: 12px;
 	margin-right: 110px;
 }
-.hohNoAWC .footer{
+.altoolkitNoAWC .footer{
 	align-items: center;
 	display: flex;
 	flex-direction: row;
 }
-.hohNoAWC .avatar{
+.altoolkitNoAWC .avatar{
 	background-position: 50%;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -26,20 +26,20 @@
 	vertical-align: text-top;
 	width: 25px;
 }
-.hohNoAWC .name{
+.altoolkitNoAWC .name{
 	display: inline-block;
 	font-size: 1.3rem;
 	padding-left: 10px;
 }
-.hohNoAWC .name span{
+.altoolkitNoAWC .name span{
 	color: rgb(var(--color-blue));
 }
-.hohNoAWC .categories{
+.altoolkitNoAWC .categories{
 	margin-left: auto;
 	white-space: nowrap;
 	max-width: 310px;
 }
-.hohNoAWC .category{
+.altoolkitNoAWC .category{
 	border-radius: 100px;
 	color: #fff;
 	display: inline-block;
@@ -47,19 +47,19 @@
 	margin-left: 10px;
 	padding: 4px 8px;
 }
-.hohNoAWC .category.default{
+.altoolkitNoAWC .category.default{
 	text-transform: lowercase;
 }
-.hohNoAWC .category:hover{
+.altoolkitNoAWC .category:hover{
 	color: rgba(26,27,28,.6);
 }
-.hohNoAWC .info{
+.altoolkitNoAWC .info{
 	color: rgb(var(--color-text-lighter));
 	font-size: 1.2rem;
 	position: absolute;
 	right: 12px;
 	top: 12px;
 }
-.hohNoAWC .info span{
+.altoolkitNoAWC .info span{
 	padding-left: 10px;
 }

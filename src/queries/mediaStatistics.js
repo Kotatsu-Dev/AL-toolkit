@@ -55,7 +55,7 @@ fragment stuff on User{
 				miscResults.innerText = "";
 				let drawUserList = function(){
 					removeChildren(miscResults)
-					let table = create("div",["table","hohTable","hohNoPointer","good"],false,miscResults);
+					let table = create("div",["table","altoolkitTable","altoolkitNoPointer","good"],false,miscResults);
 					let headerRow = create("div",["header","row"],false,table);
 					let nameHeading = create("div",false,"Name",headerRow,"cursor:pointer;");
 					let animeCountHeading = create("div",false,"Anime Count",headerRow,"cursor:pointer;");
@@ -119,5 +119,5 @@ fragment stuff on User{
 				};drawUserList();
 			}
 		)
-	},"hohIDlookup" + user.toLowerCase());
+	},"altoolkitIDlookup" + user.toLowerCase());
 }},

@@ -15,11 +15,11 @@
 .reply-markdown a[href^="/manga/"]{
 	color: rgba(var(--color-green));
 }
-.hohDataChange a[href^="/manga/"]{
+.altoolkitDataChange a[href^="/manga/"]{
 	color: rgba(var(--color-green));
 }
 .activity-manga_list > div > div > div > div > .title,
-.hohPinned .list .title[href^="/manga/"]{
+.altoolkitPinned .list .title[href^="/manga/"]{
 	color: rgba(var(--color-green))!important;
 }
 .media .relations .cover[href^="/manga/"] + div div{

@@ -5,5 +5,5 @@ exportModule({
 	importance: 0,
 	categories: ["Media","Newly Added"],
 	visible: true,
-	css: ".recommendation-card .cover:has(.hohStatusDot):not(:hover){opacity: 0.3 !important;}"
+	css: ".recommendation-card .cover:has(.altoolkitStatusDot):not(:hover){opacity: 0.3 !important;}"
 })

@@ -21,9 +21,9 @@ function addCompletedScores(){
 			|| (useScripts.droppedScore && (/^dropped/i.test(status.innerText) || status.classList.contains("activityDropped")))
 			|| /^\/activity/.test(location.pathname)
 		){
-			if(!hasOwn(status, "hohScoreMatched")){
-				status.hohScoreMatched = true;
-				let scoreInfo = create("span","hohFeedScore",false,status);
+			if(!hasOwn(status, "altoolkitScoreMatched")){
+				status.altoolkitScoreMatched = true;
+				let scoreInfo = create("span","altoolkitFeedScore",false,status);
 				const mediaId = /\/(\d+)\//.exec(status.children[0].href);
 				if(!mediaId || !mediaId.length){
 					return
@@ -73,12 +73,12 @@ function addCompletedScores(){
 							|| status.classList.contains("activityReread")
 						){
 							scoreInfo.appendChild(scoreSuffix);
-							create("span","hohNoteSuffix",noteSuffix,scoreInfo);
-							create("span","hohRewatchSuffix",rewatchSuffix,scoreInfo)
+							create("span","altoolkitNoteSuffix",noteSuffix,scoreInfo);
+							create("span","altoolkitRewatchSuffix",rewatchSuffix,scoreInfo)
 						}
 						else{
 							scoreInfo.appendChild(scoreSuffix);
-							create("span","hohNoteSuffix",noteSuffix,scoreInfo)
+							create("span","altoolkitNoteSuffix",noteSuffix,scoreInfo)
 						}
 						scoreInfo.style.display = "inline"
 					}
@@ -104,12 +104,12 @@ query($userName: String,$mediaId: Int){
 		}
 	}
 }`;
-				//generalAPIcall(query,variables,callback,"hohCompletedScores" + variables.mediaId + variables.userName,60*1000)
+				//generalAPIcall(query,variables,callback,"altoolkitCompletedScores" + variables.mediaId + variables.userName,60*1000)
 				bigQuery.push({
 					query: query,
 					variables: variables,
 					callback: callback,
-					cacheKey: "hohCompletedScores" + variables.mediaId + variables.userName,
+					cacheKey: "altoolkitCompletedScores" + variables.mediaId + variables.userName,
 					duration: 60*1000
 				})
 			}

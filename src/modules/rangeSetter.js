@@ -10,7 +10,7 @@ exportModule({
 .input-wrap .form.progress{
 	position: relative;
 }
-.hohRangeSetter{
+.altoolkitRangeSetter{
 	width: 15px;
 	height: 15px;
 	position: absolute;
@@ -27,10 +27,10 @@ if(useScripts.rangeSetter && useScripts.accessToken){
 	setInterval(function(){
 		let inputPlace = document.querySelector(".input-wrap .form.progress");
 		if(inputPlace){
-			if(inputPlace.querySelector(".hohRangeSetter")){
+			if(inputPlace.querySelector(".altoolkitRangeSetter")){
 				return
 			}
-			let rangeSetter = create("div","hohRangeSetter",false,inputPlace);
+			let rangeSetter = create("div","altoolkitRangeSetter",false,inputPlace);
 			rangeSetter.title = "Click to set lower part of activity range";
 			rangeSetter.style.display = "none";
 			let realInput = inputPlace.querySelector("input");

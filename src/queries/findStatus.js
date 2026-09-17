@@ -63,6 +63,6 @@
 				})
 			};
 			generalAPIcall(query,{userId: userId,page: 1},addNewUserData);
-		},"hohIDlookup" + user.toLowerCase())
+		},"altoolkitIDlookup" + user.toLowerCase())
 	}
 }},

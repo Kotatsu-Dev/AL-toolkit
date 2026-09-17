@@ -21,8 +21,8 @@ exportModule({
 				setTimeout(function(){adder(data)},200);
 				return
 			}
-			post.classList.add("hohLoadedLikes");
-			post.classList.add("hohHandledLike");
+			post.classList.add("altoolkitLoadedLikes");
+			post.classList.add("altoolkitHandledLike");
 			if(post.querySelector(".count") && !(parseInt(post.querySelector(".count").innerText) <= 5)){
 				post.title = data.data.Activity.likes.map(like => like.name).join("\n")
 			}

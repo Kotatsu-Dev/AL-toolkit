@@ -16,7 +16,7 @@ setup: function(){
 	let mangaOption = create("option",false,"Manga",select);
 	animeOption.value = "ANIME";
 	mangaOption.value = "MANGA";
-	let fullRun = create("button",["button","hohButton","danger"],"RUN",miscResults);
+	let fullRun = create("button",["button","altoolkitButton","danger"],"RUN",miscResults);
 	create("hr",false,false,miscResults);
 	let changeLog = create("div",false,false,miscResults);
 
@@ -83,7 +83,7 @@ query ($type: MediaType $userId: Int) {
 					}
 				)
 			})
-		},"hohIDlookup" + user.toLowerCase())
+		},"altoolkitIDlookup" + user.toLowerCase())
 	};
 	fullRun.onclick = function(){
 		runner()

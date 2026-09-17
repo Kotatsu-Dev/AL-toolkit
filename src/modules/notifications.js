@@ -17,7 +17,7 @@ If you for any reason need the default look, you can click the "Show default not
 })
 
 let prevLength = 0;
-let displayMode = "hoh";
+let displayMode = "altoolkit";
 
 let reasons = new Map();
 
@@ -30,13 +30,13 @@ function enhanceNotifications(forceFlag){
 		}
 		else{
 			prevLength = 0;
-			displayMode = "hoh"
+			displayMode = "altoolkit"
 		}
 	},300);
 	if(displayMode === "native"){
 		return
 	}
-	if(document.getElementById("hohNotifications") && !forceFlag){
+	if(document.getElementById("altoolkitNotifications") && !forceFlag){
 		return
 	}
 	let possibleButton = document.querySelector(".reset-btn");
@@ -48,9 +48,9 @@ function enhanceNotifications(forceFlag){
 			}
 			possibleButton.onclick = function(){
 				Array.from(
-					document.getElementById("hohNotifications").children
+					document.getElementById("altoolkitNotifications").children
 				).forEach(child => {
-					child.classList.remove("hohUnread")
+					child.classList.remove("altoolkitUnread")
 				})
 			};
 			let regularNotifications = create("span",false,svgAssets.envelope + " " + translate("$notifications_showDefault"),possibleButton.parentNode,"cursor: pointer;font-size: small");
@@ -74,15 +74,15 @@ function enhanceNotifications(forceFlag){
 				create("p",false,translate("$notifications_softBlock_description1"),manager);
 				let form = create("div",false,false,manager);
 				create("span",false,"Username: ",form);
-				let userInput = create("input","hohNativeInput",false,form);
-				let userAdd = create("button","hohButton",translate("$button_add"),form,"margin-left: 10px");
+				let userInput = create("input","altoolkitNativeInput",false,form);
+				let userAdd = create("button","altoolkitButton",translate("$button_add"),form,"margin-left: 10px");
 				let userList = create("div",false,false,manager);
 				let renderSoftBlock = function(){
 					removeChildren(userList);
 					useScripts.softBlock.forEach((user,index) => {
 						let item = create("p",false,false,userList,"position: relative");
 						create("span",false,user,item);
-						let removeButton = create("span","hohDisplayBoxClose",svgAssets.cross,item,"top: 0px");
+						let removeButton = create("span","altoolkitDisplayBoxClose",svgAssets.cross,item,"top: 0px");
 						removeButton.onclick = function(){
 							useScripts.softBlock.splice(index,1);
 							useScripts.save();
@@ -112,25 +112,25 @@ settings > apps.
 You can also turn off this notice there.`,setting)
 			}
 			regularNotifications.onclick = function(){
-				if(displayMode === "hoh"){
+				if(displayMode === "altoolkit"){
 					displayMode = "native";
-					let hohNotsToToggle = document.getElementById("hohNotifications");
-					if(hohNotsToToggle){
-						hohNotsToToggle.style.display = "none"
+					let altoolkitNotsToToggle = document.getElementById("altoolkitNotifications");
+					if(altoolkitNotsToToggle){
+						altoolkitNotsToToggle.style.display = "none"
 					}
 					Array.from(
 						document.getElementsByClassName("notification")
 					).forEach(elem => {
 						elem.style.display = "grid"
 					})
-					regularNotifications.innerText = svgAssets.envelope + " " + translate("$notifications_showHoh");
+					regularNotifications.innerText = svgAssets.envelope + " " + translate("$notifications_showScript");
 					setting.style.display = "none"
 				}
 				else{
-					displayMode = "hoh";
-					let hohNotsToToggle = document.getElementById("hohNotifications");
-					if(hohNotsToToggle){
-						hohNotsToToggle.style.display = "block"
+					displayMode = "altoolkit";
+					let altoolkitNotsToToggle = document.getElementById("altoolkitNotifications");
+					if(altoolkitNotsToToggle){
+						altoolkitNotsToToggle.style.display = "block"
 					}
 					Array.from(
 						document.getElementsByClassName("notification")
@@ -147,7 +147,7 @@ You can also turn off this notice there.`,setting)
 				}
 			}
 			catch(e){
-				console.warn("Unexpected Anilist UI. Is " + script_type + " up to date?")
+				console.warn("Unexpected Anilist UI. Is " + scriptInfo.name + " up to date?")
 			}
 		}
 	}
@@ -160,21 +160,21 @@ You can also turn off this notice there.`,setting)
 				(data.data.Activity.replies.length <= 50 ? 0 : data.data.Activity.replies.length - 30),
 				data.data.Activity.replies.length
 			).forEach(function(reply){
-				let quickCom = create("div","hohQuickCom",false,comment.children[1]);
-				let quickComName = create("span","hohQuickComName",reply.user.name,quickCom);
+				let quickCom = create("div","altoolkitQuickCom",false,comment.children[1]);
+				let quickComName = create("span","altoolkitQuickComName",reply.user.name,quickCom);
 				if(reply.user.name === whoAmI){
-					quickComName.classList.add("hohThisIsMe")
+					quickComName.classList.add("altoolkitThisIsMe")
 				}
-				let quickComContent = create("span","hohQuickComContent",false,quickCom);
+				let quickComContent = create("span","altoolkitQuickComContent",false,quickCom);
 				quickComContent.innerHTML = DOMPurify.sanitize(reply.text) //reason for innerHTML: preparsed sanitized HTML from the Anilist API
-				let quickComLikes = create("span","hohQuickComLikes","♥",quickCom);
+				let quickComLikes = create("span","altoolkitQuickComLikes","♥",quickCom);
 				if(reply.likes.length > 0){
 					quickComLikes.innerText = reply.likes.length + "♥";
 					quickComLikes.title = reply.likes.map(a => a.name).join("\n")
 				}
 				reply.likes.forEach(like => {
 					if(like.name === whoAmI){
-						quickComLikes.classList.add("hohILikeThis")
+						quickComLikes.classList.add("altoolkitILikeThis")
 					}
 				});
 				if(useScripts.accessToken){
@@ -195,7 +195,7 @@ You can also turn off this notice there.`,setting)
 						);
 						if(reply.likes.some(like => like.name === whoAmI)){
 							reply.likes.splice(reply.likes.findIndex(user => user.name === whoAmI),1);
-							quickComLikes.classList.remove("hohILikeThis");
+							quickComLikes.classList.remove("altoolkitILikeThis");
 							if(reply.likes.length > 0){
 								quickComLikes.innerText = reply.likes.length + "♥"
 							}
@@ -205,7 +205,7 @@ You can also turn off this notice there.`,setting)
 						}
 						else{
 							reply.likes.push({name: whoAmI});
-							quickComLikes.classList.add("hohILikeThis");
+							quickComLikes.classList.add("altoolkitILikeThis");
 							quickComLikes.innerText = reply.likes.length + "♥"
 						}
 						quickComLikes.title = reply.likes.map(a => a.name).join("\n")
@@ -215,8 +215,8 @@ You can also turn off this notice there.`,setting)
 			let loading = create("div",false,false,comment.children[1]);
 			let statusInput = create("div",false,false,comment.children[1]);
 			let inputArea = create("textarea",false,false,statusInput,"width: 99%;border-width: 1px;padding: 4px;border-radius: 2px;color: rgb(159, 173, 189);");
-			let cancelButton = create("button",["hohButton","button"],"Cancel",statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
-			let publishButton = create("button",["hohButton","button"],"Publish",statusInput,"display:none;");
+			let cancelButton = create("button",["altoolkitButton","button"],"Cancel",statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
+			let publishButton = create("button",["altoolkitButton","button"],"Publish",statusInput,"display:none;");
 			inputArea.placeholder = translate("$placeholder_reply");
 			inputArea.onfocus = function(){
 				cancelButton.style.display = "inline";
@@ -254,7 +254,7 @@ You can also turn off this notice there.`,setting)
 							time: NOW(),
 							duration: 24*60*60*1000
 						});
-						localStorage.setItem("hohListActivityCall" + data.data.Activity.id,saltedHam);
+						localStorage.setItem("altoolkitListActivityCall" + data.data.Activity.id,saltedHam);
 						commentCallback(data);
 					}
 				);
@@ -266,14 +266,14 @@ You can also turn off this notice there.`,setting)
 		})
 	};
 	let findAct = function(act){
-		let modi = document.querySelector("#hohNotifications [href='" + act.href + "'");
+		let modi = document.querySelector("#altoolkitNotifications [href='" + act.href + "'");
 		let ide = act.href.match(/(anime|manga)\/(\d+)\//);
 		if(modi){
-			modi.parentNode.querySelector(".hohDataChange").innerHTML = DOMPurify.sanitize(act.text);
+			modi.parentNode.querySelector(".altoolkitDataChange").innerHTML = DOMPurify.sanitize(act.text);
 			if(!modi.parentNode.querySelector(".reason-markdown")){
 				if(ide && reasons.has(parseInt(ide[2]))){
 					let text = reasons.get(parseInt(ide[2]));
-					let anchor = modi.parentNode.querySelector(".hohDataChange").children[0];
+					let anchor = modi.parentNode.querySelector(".altoolkitDataChange").children[0];
 					let cont = create("div","reason-markdown",false,anchor);
 					let contCont = create("div","markdown",false,cont);
 					create("p",false,text,contCont)
@@ -285,11 +285,11 @@ You can also turn off this notice there.`,setting)
 		}
 	}
 	let notificationDrawer = function(activities){
-		let newContainer = document.getElementById("hohNotifications")
+		let newContainer = document.getElementById("altoolkitNotifications")
 		if(newContainer){
 			newContainer.remove()
 		}
-		newContainer = create("div","#hohNotifications");
+		newContainer = create("div","#altoolkitNotifications");
 		let notificationsContainer = document.querySelector(".notifications");
 		if(!notificationsContainer){
 			return
@@ -307,7 +307,7 @@ You can also turn off this notice there.`,setting)
 			}
 			let newNotification = create("div");
 			newNotification.onclick = function(){
-				this.classList.remove("hohUnread");
+				this.classList.remove("altoolkitUnread");
 				let notiCount = document.getElementsByClassName("notification-dot");
 				if(notiCount.length){
 					const actualCount = parseInt(notiCount[0].textContent);
@@ -322,14 +322,14 @@ You can also turn off this notice there.`,setting)
 				}
 			};
 			if(activities[i].unread){
-				newNotification.classList.add("hohUnread")
+				newNotification.classList.add("altoolkitUnread")
 			}
-			newNotification.classList.add("hohNotification");
-			let notImage = create("a","hohUserImage"); //container for profile images
+			newNotification.classList.add("altoolkitNotification");
+			let notImage = create("a","altoolkitUserImage"); //container for profile images
 			notImage.href = activities[i].href;
 			notImage.style.backgroundImage = activities[i].image;
-			let notNotImageContainer = create("span","hohMediaImageContainer"); //container for series images
-			let text = create("a","hohMessageText");
+			let notNotImageContainer = create("span","altoolkitMediaImageContainer"); //container for series images
+			let text = create("a","altoolkitMessageText");
 			let textName = create("span");
 			let textSpan = create("span");
 			textName.style.color = "rgb(var(--color-blue))";
@@ -343,7 +343,7 @@ You can also turn off this notice there.`,setting)
 					counter++
 				){//one person likes several of your media activities
 					let notNotImage = create("a",false,false,notNotImageContainer);
-					create("img",["hohMediaImage",activities[i + counter].link],false,notNotImage);
+					create("img",["altoolkitMediaImage",activities[i + counter].link],false,notNotImage);
 					notNotImage.href = activities[i + counter].directLink;
 					let possibleDirect = activities[i + counter].directLink.match(/activity\/(\d+)/);
 					if(possibleDirect){
@@ -366,7 +366,7 @@ You can also turn off this notice there.`,setting)
 						&& activities[i + counter].link === activities[i].link
 					){//several people likes one of your activities
 						let miniImageWidth = 40;
-						let miniImage = create("a","hohUserImageSmall",false,newNotification);
+						let miniImage = create("a","altoolkitUserImageSmall",false,newNotification);
 						miniImage.href = activities[i + counter].href;
 						miniImage.title = activities[i + counter].textName;
 						miniImage.style.backgroundImage = activities[i + counter].image;
@@ -395,7 +395,7 @@ You can also turn off this notice there.`,setting)
 					}
 				}
 				else{
-					newNotification.classList.add("hohCombined")
+					newNotification.classList.add("altoolkitCombined")
 				}
 				textName.innerText = activities[i].textName;
 				text.appendChild(textName);
@@ -404,7 +404,7 @@ You can also turn off this notice there.`,setting)
 			}
 			else if(activities[i].type === "reply" ){
 				let notNotImage = create("a",false,false,notNotImageContainer);
-				create("img",["hohMediaImage",activities[i].link],false,notNotImage);
+				create("img",["altoolkitMediaImage",activities[i].link],false,notNotImage);
 				notNotImage.href = activities[i].directLink;
 				let samePerson = true;
 				while(
@@ -413,7 +413,7 @@ You can also turn off this notice there.`,setting)
 					&& activities[i + counter].link === activities[i].link
 				){
 					let miniImageWidth = 40;
-					let miniImage = create("a","hohUserImageSmall",false,newNotification);
+					let miniImage = create("a","altoolkitUserImageSmall",false,newNotification);
 					miniImage.href = activities[i + counter].href;
 					miniImage.style.backgroundImage = activities[i + counter].image;
 					miniImage.style.height = miniImageWidth + "px";
@@ -465,7 +465,7 @@ You can also turn off this notice there.`,setting)
 			}
 			else if(activities[i].type === "replyReply" ){
 				let notNotImage = create("a",false,false,notNotImageContainer);
-				create("img",["hohMediaImage",activities[i].link],false,notNotImage);
+				create("img",["altoolkitMediaImage",activities[i].link],false,notNotImage);
 				notNotImage.href = activities[i].directLink;
 				let samePerson = true;
 				while(
@@ -474,7 +474,7 @@ You can also turn off this notice there.`,setting)
 					&& activities[i + counter].link === activities[i].link
 				){
 					let miniImageWidth = 40;
-					let miniImage = create("a","hohUserImageSmall",false,newNotification);
+					let miniImage = create("a","altoolkitUserImageSmall",false,newNotification);
 					miniImage.href = activities[i + counter].href;
 					miniImage.title = activities[i + counter].textName;
 					miniImage.style.backgroundImage = activities[i + counter].image;
@@ -526,7 +526,7 @@ You can also turn off this notice there.`,setting)
 				activities[i].type === "likeReply"
 			){
 				let notNotImage = create("a",false,false,notNotImageContainer);
-				create("img",["hohMediaImage",activities[i].link],false,notNotImage);
+				create("img",["altoolkitMediaImage",activities[i].link],false,notNotImage);
 				notNotImage.href = activities[i].directLink;
 				let samePerson = true;
 				while(
@@ -535,7 +535,7 @@ You can also turn off this notice there.`,setting)
 					&& activities[i + counter].link === activities[i].link
 				){//several people likes one of your activity replies
 					let miniImageWidth = 40;
-					let miniImage = create("a","hohUserImageSmall",false,newNotification);
+					let miniImage = create("a","altoolkitUserImageSmall",false,newNotification);
 					miniImage.href = activities[i + counter].href;
 					miniImage.title = activities[i + counter].textName;
 					miniImage.style.backgroundImage = activities[i + counter].image;
@@ -591,7 +591,7 @@ You can also turn off this notice there.`,setting)
 				|| activities[i].type === "mention"
 			){
 				let notNotImage = create("a",false,false,notNotImageContainer);
-				create("img",["hohMediaImage",activities[i].link],false,notNotImage);
+				create("img",["altoolkitMediaImage",activities[i].link],false,notNotImage);
 				notNotImage.href = activities[i].directLink;
 				text.href = activities[i].directLink;
 				let possibleDirect = activities[i].directLink.match(/activity\/(\d+)/);
@@ -669,7 +669,7 @@ You can also turn off this notice there.`,setting)
 				text.style.marginTop = "17px"
 			}
 			else if(activities[i].type === "newMedia"){
-				textSpan.classList.add("hohNewMedia");
+				textSpan.classList.add("altoolkitNewMedia");
 				textSpan.innerHTML = DOMPurify.sanitize(activities[i].text);
 				textSpan.querySelector(".context").innerText = translate("$notification_newMedia");
 				text.appendChild(textSpan);
@@ -677,31 +677,31 @@ You can also turn off this notice there.`,setting)
 				text.href = activities[i].href
 			}
 			else if(activities[i].type === "dataChange"){
-				textSpan.classList.add("hohDataChange");
+				textSpan.classList.add("altoolkitDataChange");
 				text.href = activities[i].href;
-				notImage.classList.remove("hohUserImage");
-				notImage.classList.add("hohBackgroundCover");
+				notImage.classList.remove("altoolkitUserImage");
+				notImage.classList.add("altoolkitBackgroundCover");
 				textSpan.innerHTML = DOMPurify.sanitize(activities[i].text);//reason for innerHTML: preparsed sanitized HTML from the Anilist API
 				text.style.marginTop = "10px";
 				text.style.marginLeft = "10px";
 				text.appendChild(textSpan)
 			}
 			else{//display as-is
-				textSpan.classList.add("hohUnhandledSpecial");
+				textSpan.classList.add("altoolkitUnhandledSpecial");
 				textSpan.innerHTML = DOMPurify.sanitize(activities[i].text);//reason for innerHTML: preparsed sanitized HTML from the Anilist API
 				text.appendChild(textSpan)
 			}
 			newNotification.appendChild(notImage);
 			newNotification.appendChild(text);
 			newNotification.appendChild(notNotImageContainer);
-			let time = create("div","hohTime");
+			let time = create("div","altoolkitTime");
 			if(activities[i - counter + 1].time){
 				time.appendChild(nativeTimeElement(activities[i - counter + 1].time))
 			}
 			newNotification.appendChild(time);
-			let commentsContainer = create("div",["hohCommentsContainer","b" + activities[i].link]);
-			let comments = create("a",["hohComments","link"],translate("$notifications_comments"),commentsContainer);
-			create("span","hohMonospace","+",comments);
+			let commentsContainer = create("div",["altoolkitCommentsContainer","b" + activities[i].link]);
+			let comments = create("a",["altoolkitComments","link"],translate("$notifications_comments"),commentsContainer);
+			create("span","altoolkitMonospace","+",comments);
 			comments.onclick = function(){
 				if(this.children[0].innerText === "+"){
 					this.children[0].innerText = "-";
@@ -709,14 +709,14 @@ You can also turn off this notice there.`,setting)
 					let variables = {
 						id: +this.parentNode.classList[1].substring(1)
 					};
-					generalAPIcall(queryActivity,variables,commentCallback,"hohListActivityCall" + variables.id,24*60*60*1000,true,true)
+					generalAPIcall(queryActivity,variables,commentCallback,"altoolkitListActivityCall" + variables.id,24*60*60*1000,true,true)
 				}
 				else{
 					this.children[0].innerText = "+";
 					this.parentNode.children[1].style.display = "none"
 				}
 			};
-			let commentsArea = create("div","hohCommentsArea",false,commentsContainer);
+			let commentsArea = create("div","altoolkitCommentsArea",false,commentsContainer);
 			newNotification.appendChild(commentsContainer)
 			newContainer.appendChild(newNotification)
 		}
@@ -890,7 +890,7 @@ You can also turn off this notice there.`,setting)
 				Array.from(document.getElementsByClassName(data.data.Activity.id)).forEach(stuff => {
 					stuff.style.backgroundColor = data.data.Activity.media.coverImage.color || "rgb(var(--color-foreground))";
 					stuff.src = data.data.Activity.media.coverImage.large;
-					stuff.classList.add("hohBackgroundCover");
+					stuff.classList.add("altoolkitBackgroundCover");
 					if(data.data.Activity.media.title){
 						stuff.parentNode.title = data.data.Activity.media.title.romaji
 					}
@@ -899,7 +899,7 @@ You can also turn off this notice there.`,setting)
 			else if(type === "TEXT"){
 				Array.from(document.getElementsByClassName(data.data.Activity.id)).forEach(stuff => {
 					stuff.src = data.data.Activity.user.avatar.large;
-					stuff.classList.add("hohBackgroundUserCover");
+					stuff.classList.add("altoolkitBackgroundUserCover");
 					stuff.parentNode.style.background = "none"
 				})
 			}
@@ -919,7 +919,7 @@ You can also turn off this notice there.`,setting)
 			};
 			if(!pending[activities[i].link]){
 				pending[activities[i].link] = true;
-				generalAPIcall(queryActivity,variables,imageCallBack,"hohListActivityCall" + variables.id,24*60*60*1000,true)
+				generalAPIcall(queryActivity,variables,imageCallBack,"altoolkitListActivityCall" + variables.id,24*60*60*1000,true)
 			}
 		}
 	}

@@ -5,8 +5,10 @@ try{
 	localStorage.removeItem("test");
 }
 catch(e){
-	console.log("LocalStorage, required for saving settings, is not available. " + script_type + " may not work correctly.")
+	console.log("LocalStorage, required for saving settings, is not available. " + scriptInfo.name + " may not work correctly.")
 }
+
+const shipFullStatTables = false;
 
 const notificationColourDefaults = {
 	"ACTIVITY_LIKE":             {"colour":"rgb(250,122,122)","supress":false},
@@ -91,7 +93,6 @@ let useScripts = {
 	customCSS: false,
 	rightToLeft: false,
 	subTitleInfo: false,
-	customCSSValue: "",
 	pinned: "",
 	negativeCustomList: false,
 	globalCustomList: false,
@@ -147,26 +148,35 @@ else{
 	}
 }
 
-//Script is boneless: enable
-//User is mod: enable
-//user is hoh: enable
-if(script_type !== "Boneless" && userObject && (userObject.donatorTier > 0 && (new Date()).valueOf() > (new Date('2020-09-01T03:24:00')).valueOf()) && userObject.name !== "hoh" && !userObject.moderatorStatus){
-	alert("Sorry, " + script_type + " does not work for donators")
+if(document.altoolkitTypeScriptRunning || document.hohTypeScriptRunning){
+	console.warn("Duplicate script detected. Please make sure you don't have more than one instance of " + scriptInfo.name + " or similar installed");
 	return
 }
-
-if(document.hohTypeScriptRunning){
-	console.warn("Duplicate script detected. Please make sure you don't have more than one instance of " + script_type + " or similar installed");
-	return
-}
-document.hohTypeScriptRunning = script_type;
+document.altoolkitTypeScriptRunning = scriptInfo.name;
+document.hohTypeScriptRunning = scriptInfo.name;
 
 let forceRebuildFlag = false;
 
 useScripts.save = function(){
-	localStorage.setItem("hohSettings",JSON.stringify(useScripts))
+	localStorage.setItem("altoolkitSettings",JSON.stringify(useScripts))
 };
-const useScriptsSettings = JSON.parse(localStorage.getItem("hohSettings"));
+const legacySettings = localStorage.getItem("hohSettings");
+if(
+	legacySettings
+	&& !localStorage.getItem("altoolkitSettings")
+	&& !localStorage.getItem("altoolkitLegacyIgnored")
+){
+	if(confirm("Settings from an earlier version of this script were found. Import them?")){
+		localStorage.setItem("altoolkitSettings",legacySettings);
+		if(confirm("Settings imported. Delete the old copy from browser storage?")){
+			localStorage.removeItem("hohSettings")
+		}
+	}
+	else{
+		localStorage.setItem("altoolkitLegacyIgnored","true")
+	}
+}
+const useScriptsSettings = JSON.parse(localStorage.getItem("altoolkitSettings"));
 if(useScriptsSettings){
 	let keys = Object.keys(useScriptsSettings);
 	keys.forEach(//this is to keep the default settings if the version in local storage is outdated

@@ -10,6 +10,10 @@
 	let loadingStatus = create("p",false,false,miscResults);
 	loadingStatus.innerText = "Looking up ID...";
 	generalAPIcall("query($name:String){User(name:$name){id}}",{name: user},function(data){
+		if(!data || !data.data || !data.data.User){
+			loadingStatus.innerText = "Could not look up the user. The API is likely rate limiting, try again in a minute.";
+			return
+		}
 		let userId = data.data.User.id;
 		let currentLocation = location.pathname;
 		loadingStatus.innerText = "Loading media list...";
@@ -21,9 +25,16 @@
 				listType: typeList
 			},
 			function(data){
+				let ownList = returnList(data);
+				if(!ownList){
+					loadingStatus.innerText = "Could not load your list. The API is likely rate limiting, try again in a minute.";
+					return
+				}
 				loadingStatus.innerText = "Loading users...";
-				let comDisplay = create("div","hohComDisplay",false,miscResults);
-				let list = returnList(data).filter(element => element.scoreRaw);
+				let failedStatus = create("p",false,false,miscResults);
+				let failedUsers = [];
+				let comDisplay = create("div","altoolkitComDisplay",false,miscResults);
+				let list = ownList.filter(element => element.scoreRaw);
 				let comCache = [];
 				let drawComCache = function(){
 					removeChildren(comDisplay)
@@ -63,6 +74,13 @@
 						}`,
 						{id: userId,page: page},
 						function(data){
+							if(!data || !data.data || !data.data.Page){
+								loadingStatus.innerText = "Rate limited by the API. Waiting before continuing...";
+								setTimeout(function(){
+									friendsCaller(page)
+								},15000);
+								return
+							}
 							let index = 0;
 							let delayer = function(){
 								if(location.pathname !== currentLocation){
@@ -78,6 +96,10 @@
 										comCache.push(data);
 										comCache.sort((a,b) => a.difference - b.difference);
 										drawComCache();
+									}
+									else if(data.failed){
+										failedUsers.push(data.user);
+										failedStatus.innerText = "Skipped (API errors): " + failedUsers.join(", ")
 									}
 								});
 								if(++index < data.data.Page.following.length){
@@ -95,7 +117,7 @@
 						}
 					)
 				};friendsCaller(1);
-			},"hohCompat" + typeList + user,5*60*1000
+			},"altoolkitCompat" + typeList + user,5*60*1000
 		);
-	},"hohIDlookup" + user.toLowerCase());
+	},"altoolkitIDlookup" + user.toLowerCase());
 }},

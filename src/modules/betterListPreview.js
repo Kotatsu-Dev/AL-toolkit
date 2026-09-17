@@ -1,3 +1,17 @@
+const nativePreviewExpanded = () => !!document.querySelector(".home.full-width");
+
+const restoreNativePreview = function(){
+	let altoolkitListPreviewToRemove = document.getElementById("altoolkitListPreview");
+	if(altoolkitListPreviewToRemove){
+		altoolkitListPreviewToRemove.remove()
+	}
+	document.querySelectorAll(".list-preview-wrap").forEach(wrap => {
+		wrap.style.display = "block"
+	})
+}
+
+let listPreviewWatcherRunning = false;
+
 function betterListPreview(){
 	if(window.screen.availWidth && window.screen.availWidth <= 1040){
 		return
@@ -5,32 +19,50 @@ function betterListPreview(){
 	let errorHandler = function(e){
 		console.error(e);
 		console.warn("Alternative list preview failed. Trying to bring back the native one");
-		let hohListPreviewToRemove = document.getElementById("hohListPreview");
-		if(hohListPreviewToRemove){
-			hohListPreviewToRemove.remove()
-		}
-		document.querySelectorAll(".list-preview-wrap").forEach(wrap => {
-			wrap.style.display = "block"
-		})
+		restoreNativePreview()
+	}
+	if(!listPreviewWatcherRunning){
+		listPreviewWatcherRunning = true;
+		let wasExpanded = nativePreviewExpanded();
+		let expandWatcher = function(){
+			if(!location.pathname.match(/^\/home\/?$/)){
+				listPreviewWatcherRunning = false;
+				return
+			}
+			let expanded = nativePreviewExpanded();
+			if(expanded !== wasExpanded){
+				wasExpanded = expanded;
+				if(expanded){
+					restoreNativePreview()
+				}
+				else{
+					betterListPreview()
+				}
+			}
+			setTimeout(expandWatcher,1000)
+		};setTimeout(expandWatcher,1000)
+	}
+	if(nativePreviewExpanded()){
+		return
 	}
 	try{//it's complex, and could go wrong. Furthermore, we want a specific behavour when it fails, namely bringing back the native preview
-	let hohListPreview = document.getElementById("hohListPreview");
-	if(hohListPreview){
+	let altoolkitListPreview = document.getElementById("altoolkitListPreview");
+	if(altoolkitListPreview){
 		return
 	}
 	let buildPreview = function(data,overWrite){try{
 		if(!data){
 			return
 		}
-		if(!hohListPreview){
+		if(!altoolkitListPreview){
 			overWrite = true;
 			let listPreviews = document.querySelectorAll(".list-previews h2");
 			if(!listPreviews.length){
 				setTimeout(function(){buildPreview(data)},200);
 				return
 			}
-			hohListPreview = create("div","#hohListPreview");
-			listPreviews[0].parentNode.parentNode.parentNode.parentNode.insertBefore(hohListPreview,listPreviews[0].parentNode.parentNode.parentNode);
+			altoolkitListPreview = create("div","#altoolkitListPreview");
+			listPreviews[0].parentNode.parentNode.parentNode.parentNode.insertBefore(altoolkitListPreview,listPreviews[0].parentNode.parentNode.parentNode);
 			listPreviews.forEach(heading => {
 				if(!heading.innerText.includes("Manga") && !heading.innerText.includes(translate("$preview_mangaSection_title"))){
 					heading.parentNode.parentNode.style.display = "none"
@@ -143,9 +175,16 @@ function betterListPreview(){
 			if(airingImportant > 3){
 				airingImportant = Math.min(5*Math.ceil((airingImportant - 1)/5),airing.length)
 			}
-			removeChildren(hohListPreview)
+			let movedExpander = altoolkitListPreview.querySelector(".size-toggle");
+			if(movedExpander){
+				let nativeHeader = document.querySelector(".list-previews .section-header");
+				if(nativeHeader){
+					nativeHeader.appendChild(movedExpander)
+				}
+			}
+			removeChildren(altoolkitListPreview)
 			let drawSection = function(list,name,moveExpander){
-				let airingSection = create("div","list-preview-wrap",false,hohListPreview,"margin-bottom: 20px;");
+				let airingSection = create("div","list-preview-wrap",false,altoolkitListPreview,"margin-bottom: 20px;");
 				let airingSectionHeader = create("div","section-header",false,airingSection);
 				if(name === "Airing"){
 					create("a","asHeading",name,airingSectionHeader,"font-size: 1.4rem;font-weight: 500;")
@@ -157,9 +196,9 @@ function betterListPreview(){
 				if(moveExpander && document.querySelector(".size-toggle")){
 					airingSectionHeader.appendChild(document.querySelector(".size-toggle"))
 				}
-				let airingListPreview = create("div","list-preview",false,airingSection,"display:grid;grid-template-columns: repeat(5,85px);grid-template-rows: repeat(auto-fill,115px);grid-gap: 20px;padding: 20px;background: rgb(var(--color-foreground));");
+				let airingListPreview = create("div","list-preview",false,airingSection,"display:grid;grid-template-columns: repeat(auto-fill,85px);grid-template-rows: repeat(auto-fill,115px);grid-gap: 20px;justify-content: space-between;padding: 20px;background: rgb(var(--color-foreground));");
 				list.forEach((air,index) => {
-					let card = create("div",["media-preview-card","small","hohFallback"],false,airingListPreview,"width: 85px;height: 115px;background: rgb(var(--color-foreground));border-radius: 3px;display: inline-grid;");
+					let card = create("div",["media-preview-card","small","altoolkitFallback"],false,airingListPreview,"width: 85px;height: 115px;background: rgb(var(--color-foreground));border-radius: 3px;display: inline-grid;");
 					if(air.media.coverImage.color && !useScripts.SFWmode){
 						card.style.backgroundColor = air.media.coverImage.color
 					}
@@ -295,7 +334,7 @@ function betterListPreview(){
 										data => {}
 									);
 								}
-								localStorage.setItem("hohListPreview",JSON.stringify(data));
+								localStorage.setItem("altoolkitListPreview",JSON.stringify(data));
 							}
 						}
 						else{
@@ -315,7 +354,7 @@ function betterListPreview(){
 								{id: air.id,progress: air.progress},
 								data => {}
 							);
-							localStorage.setItem("hohListPreview",JSON.stringify(data));
+							localStorage.setItem("altoolkitListPreview",JSON.stringify(data));
 						}
 						if(air.media.nextAiringEpisode){
 							if(air.progress === air.media.nextAiringEpisode.episode - 1){
@@ -328,7 +367,7 @@ function betterListPreview(){
 						e.preventDefault();
 						return false
 					}
-					let fallback = create("span","hohFallback",air.media.title.userPreferred,card,"background-color: rgb(var(--color-foreground),0.6);padding: 3px;border-radius: 3px;");
+					let fallback = create("span","altoolkitFallback",air.media.title.userPreferred,card,"background-color: rgb(var(--color-foreground),0.6);padding: 3px;border-radius: 3px;");
 					if(useScripts.titleLanguage === "ROMAJI"){
 						fallback.innerText = air.media.title.userPreferred
 					}
@@ -351,7 +390,7 @@ function betterListPreview(){
 	}catch(e){errorHandler(e)}}
 	authAPIcall(
 		`query($name: String){
-			Page(page:1){
+			Page(page:1,perPage:50){
 				mediaList(type:ANIME,status_in:[CURRENT,REPEATING],userName:$name,sort:UPDATED_TIME_DESC){
 					id
 					priority
@@ -368,11 +407,11 @@ function betterListPreview(){
 				}
 			}
 		}`,{name: whoAmI},function(data){
-			localStorage.setItem("hohListPreview",JSON.stringify(data));
+			localStorage.setItem("altoolkitListPreview",JSON.stringify(data));
 			buildPreview(data,true)
 		}
 	);
-	buildPreview(JSON.parse(localStorage.getItem("hohListPreview")),false);
+	buildPreview(JSON.parse(localStorage.getItem("altoolkitListPreview")),false);
 	}
 	catch(e){
 		errorHandler(e)

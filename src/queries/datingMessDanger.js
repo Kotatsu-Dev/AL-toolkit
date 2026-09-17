@@ -12,11 +12,11 @@
 	create("p",false,"- Completed entries with 1 episode/chapter, no rewatches, no start date, but a completion date will have the start date set equal to the completion date",miscResults);
 	create("p",false,"- A list of all the changes will be printed.",miscResults);
 	create("p",false,"- This will run slowly, and can be stopped at any time.",miscResults);
-	let dryRun = create("button",["button","hohButton"],"Dry run",miscResults);
+	let dryRun = create("button",["button","altoolkitButton"],"Dry run",miscResults);
 	let dryRunDesc = create("span",false,"(no changes made)",miscResults);
 	create("hr",false,false,miscResults);
-	let fullRun = create("button",["button","hohButton","danger"],"RUN",miscResults);
-	let stopRun = create("button",["button","hohButton"],"Abort!",miscResults);
+	let fullRun = create("button",["button","altoolkitButton","danger"],"RUN",miscResults);
+	let stopRun = create("button",["button","altoolkitButton"],"Abort!",miscResults);
 	create("hr",false,false,miscResults);
 	let changeLog = create("div",false,false,miscResults);
 	let allowRunner = true;
@@ -104,7 +104,7 @@
 				},
 				proc
 			);
-		},"hohIDlookup" + user.toLowerCase())
+		},"altoolkitIDlookup" + user.toLowerCase())
 	};
 	stopRun.onclick = function(){
 		allowRun = false;

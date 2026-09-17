@@ -121,27 +121,27 @@ query($id: Int){
 					}
 				}
 				if(simpleQuery && bestGuess){
-					create("span","hohGuess"," (" + bestGuess + "?)",possibleReleaseStatus)
+					create("span","altoolkitGuess"," (" + bestGuess + "?)",possibleReleaseStatus)
 				}
 				else{
 					bestGuess = Math.max(bestGuess,data.data.MediaList.progress);
 					if(bestGuess){
 						if(bestGuess === data.data.MediaList.progress){
-							create("span","hohGuess"," (" + bestGuess + "?)",possibleReleaseStatus,"color:rgb(var(--color-green));")
+							create("span","altoolkitGuess"," (" + bestGuess + "?)",possibleReleaseStatus,"color:rgb(var(--color-green));")
 						}
 						else{
-							create("span","hohGuess"," (" + bestGuess + "?)",possibleReleaseStatus);
-							create("span","hohGuess"," [+" + (bestGuess - data.data.MediaList.progress) + "]",possibleReleaseStatus,"color:rgb(var(--color-red));")
+							create("span","altoolkitGuess"," (" + bestGuess + "?)",possibleReleaseStatus);
+							create("span","altoolkitGuess"," [+" + (bestGuess - data.data.MediaList.progress) + "]",possibleReleaseStatus,"color:rgb(var(--color-red));")
 						}
 					}
 				}
 			}
 		};
 		try{
-			generalAPIcall(query,variables,highestChapterFinder,"hohMangaGuess" + variables.id,30*60*1000)
+			generalAPIcall(query,variables,highestChapterFinder,"altoolkitMangaGuess" + variables.id,30*60*1000)
 		}
 		catch(e){
-			sessionStorage.removeItem("hohMangaGuess" + variables.id)
+			sessionStorage.removeItem("altoolkitMangaGuess" + variables.id)
 		}
 	}
 	let mutationConfig = {

@@ -71,7 +71,7 @@ async function addActivityLinks(activityID){
 							}
 						}
 						if(useScripts.partialLocalisationLanguage === "日本語"){
-							status.parentNode.classList.add("hohReverseTitle")
+							status.parentNode.classList.add("altoolkitReverseTitle")
 						}
 					}
 				}
@@ -137,7 +137,7 @@ query($userId: Int,$createdAt: Int){
 }`;
 		}
 		else if(data.Activity.type === "MESSAGE"){
-			let link = create("a","hohPostLink","↑",false,"left:-25px;top:25px;");
+			let link = create("a","altoolkitPostLink","↑",false,"left:-25px;top:25px;");
 			link.href = "/user/" + data.Activity.recipient.name + "/";
 			link.title = translate("$navigation_profileLink",data.Activity.recipient.name);
 			adder(link);
@@ -172,7 +172,7 @@ query($userId: Int,$messengerId: Int,$createdAt: Int){
 		}
 		if(res.previous){
 			if(res.previous !== "FIRST"){
-				let link = create("a","hohPostLink","←",false,"left:-25px;");
+				let link = create("a","altoolkitPostLink","←",false,"left:-25px;");
 				link.href = res.previous;
 				link.rel = "prev";
 				link.title = "Previous activity";
@@ -184,13 +184,13 @@ query($userId: Int,$messengerId: Int,$createdAt: Int){
 			const prevRes = await anilistAPI(queryPrevious, {variables});
 			const {data: pdata, errors} = prevRes;
 			if(!errors){
-				let link = create("a","hohPostLink","←",false,"left:-25px;");
+				let link = create("a","altoolkitPostLink","←",false,"left:-25px;");
 				link.title = "Previous activity";
 				link.rel = "prev";
 				link.href = pdata.Activity.siteUrl;
 				adder(link);
 				res.previous = pdata.Activity.siteUrl;
-				updateCache("hohActivity" + activityID, res);
+				updateCache("altoolkitActivity" + activityID, res);
 				pdata.Activity.type = data.Activity.type;
 				pdata.Activity.userId = variables.userId;
 				pdata.Activity.media = data.Activity.media;
@@ -198,11 +198,11 @@ query($userId: Int,$messengerId: Int,$createdAt: Int){
 				pdata.Activity.recipientId = data.Activity.recipientId;
 				pdata.Activity.recipient = data.Activity.recipient;
 				prevRes.next = document.URL;
-				saveCache("hohActivity" + pdata.Activity.id, Object.assign(prevRes,{data: pdata}), 20*60*1000);
+				saveCache("altoolkitActivity" + pdata.Activity.id, Object.assign(prevRes,{data: pdata}), 20*60*1000);
 			}
 		}
 		if(res.next){
-			let link = create("a","hohPostLink","→",false,"right:-25px;");
+			let link = create("a","altoolkitPostLink","→",false,"right:-25px;");
 			link.href = res.next;
 			link.rel = "next";
 			link.title = "Next activity";
@@ -214,13 +214,13 @@ query($userId: Int,$messengerId: Int,$createdAt: Int){
 			if(errors){
 				return;
 			}
-			let link = create("a","hohPostLink","→",false,"right:-25px;");
+			let link = create("a","altoolkitPostLink","→",false,"right:-25px;");
 			link.href = ndata.Activity.siteUrl;
 			link.rel = "next";
 			link.title = "Next activity";
 			adder(link);
 			res.next = ndata.Activity.siteUrl;
-			updateCache("hohActivity" + activityID, res);
+			updateCache("altoolkitActivity" + activityID, res);
 			ndata.Activity.type = data.Activity.type;
 			ndata.Activity.userId = variables.userId;
 			ndata.Activity.media = data.Activity.media;
@@ -228,7 +228,7 @@ query($userId: Int,$messengerId: Int,$createdAt: Int){
 			ndata.Activity.recipientId = data.Activity.recipientId;
 			ndata.Activity.recipient = data.Activity.recipient;
 			nextRes.previous = document.URL;
-			saveCache("hohActivity" + ndata.Activity.id, Object.assign(nextRes,{data: ndata}), 20*60*1000);
+			saveCache("altoolkitActivity" + ndata.Activity.id, Object.assign(nextRes,{data: ndata}), 20*60*1000);
 		}
 		return
 	}
@@ -259,7 +259,7 @@ query($id: Int){
 	//has to be auth now that private messages are a thing
 	const data = await anilistAPI(dataQuery, {
 		variables: {id: activityID},
-		cacheKey: "hohActivity" + activityID,
+		cacheKey: "altoolkitActivity" + activityID,
 		duration: 20*60*1000,
 		auth: true
 	})

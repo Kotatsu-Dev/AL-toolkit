@@ -32,7 +32,7 @@ pageLocation.parentNode.style.background = "rgb(39,44,56)";
 pageLocation.parentNode.style.color = "rgb(159,173,189)";
 let terms = create("div",["container","termsFeed"],false,pageLocation.parentNode,"max-width: 1100px;margin-left:170px;margin-right:170px;");
 pageLocation.style.display = "none";
-let policy = create("button",["hohButton","button"],translate("$terms_privacyPolicy"),terms,"font-size:1rem;color:initial;padding:3px;");
+let policy = create("button",["altoolkitButton","button"],translate("$terms_privacyPolicy"),terms,"font-size:1rem;color:initial;padding:3px;");
 policy.title = translate("$terms_privacyPolicy_title");
 policy.onclick = function(){
 	pageLocation.style.display = "initial";
@@ -82,7 +82,7 @@ if(searchParams.get("activity")){
 	onlyActivity = parseInt(searchParams.get("activity"))
 }
 onlyMediaInput.setAttribute("list","userMedialist");
-let feed = create("div","hohFeed",false,terms);
+let feed = create("div","altoolkitFeed",false,terms);
 let topNav = create("div",false,false,feed,"position:relative;min-height:60px;margin-bottom:15px;");
 let loading = create("p",false,translate("$loading"),topNav);
 let pageCount = create("p",false,translate("$page",1),topNav);
@@ -94,11 +94,11 @@ let inputArea = create("textarea",false,false,statusInput,"width: 99%;border-wid
 inputArea.rows = 3;
 inputArea.placeholder = translate("$placeholder_status");
 create("br",false,false,statusInput);
-let cancelButton = create("button",["hohButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
-let publishButton = create("button",["hohButton","button"],translate("$button_publish"),statusInput,"display:none;");
+let cancelButton = create("button",["altoolkitButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
+let publishButton = create("button",["altoolkitButton","button"],translate("$button_publish"),statusInput,"display:none;");
 let previewArea = create("div",false,false,statusInput,"display:none;");
-let topPrevious = create("button",["hohButton","button"],translate("$button_refresh"),topNav,"position:fixed;top:120px;left:calc(5% - 50px);z-index:50;");
-let topNext = create("button",["hohButton","button"],translate("$button_next"),topNav,"position:fixed;top:120px;right:calc(5% - 50px);z-index:50;");
+let topPrevious = create("button",["altoolkitButton","button"],translate("$button_refresh"),topNav,"position:fixed;top:120px;left:calc(5% - 50px);z-index:50;");
+let topNext = create("button",["altoolkitButton","button"],translate("$button_next"),topNav,"position:fixed;top:120px;right:calc(5% - 50px);z-index:50;");
 let feedContent = create("div",false,false,feed);
 let notiLink = create("a",["link"],"",topNav,"position:fixed;top:10px;right:10px;color:rgb(var(--color-blue));text-decoration:none;background:rgb(var(--color-red));border-radius: 10px;min-width: 20px;text-align: center;color:white;cursor: pointer;");
 let lastUpdated = 0;
@@ -285,7 +285,7 @@ let viewSingleActivity = function(id){
 			let activity = data.data.Activity;
 			let act = create("div","activity",false,feedContent);
 			let diff = NOW() - (new Date(activity.createdAt * 1000)).valueOf();
-			let time = create("span",["time","hohMonospace"],formatTime(Math.round(diff/1000),"short"),act,"width:50px;position:absolute;left:1px;top:2px;");
+			let time = create("span",["time","altoolkitMonospace"],formatTime(Math.round(diff/1000),"short"),act,"width:50px;position:absolute;left:1px;top:2px;");
 			time.title = (new Date(activity.createdAt * 1000)).toLocaleString();
 			let content = create("div",false,false,act,"margin-left:60px;position:relative;");
 			if(!activity.user){
@@ -297,21 +297,21 @@ let viewSingleActivity = function(id){
 			}
 			user.href = "/user/" + activity.user.name + "/";
 			let actions = create("div","actions",false,content,"position:absolute;text-align:right;");
-			let replyWrap = create("span",["action","hohReplies"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+			let replyWrap = create("span",["action","altoolkitReplies"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 			let replyCount = create("span","count",(activity.replies.length || activity.replyCount ? activity.replies.length || activity.replyCount : " "),replyWrap);
 			let replyIcon = create("span",false,false,replyWrap);
 			replyIcon.appendChild(svgAssets2.reply.cloneNode(true));
 			replyWrap.style.cursor = "pointer";
 			replyIcon.children[0].style.width = "13px";
 			replyIcon.stylemarginLeft = "-2px";
-			let likeWrap = create("span",["action","hohLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+			let likeWrap = create("span",["action","altoolkitLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 			likeWrap.title = activity.likes.map(a => a.name).join("\n");
 			let likeCount = create("span","count",(activity.likes.length ? activity.likes.length : " "),likeWrap);
 			let heart = create("span",false,"♥",likeWrap,"position:relative;");
-			let likeQuickView = create("div","hohLikeQuickView",false,heart);
+			let likeQuickView = create("div","altoolkitLikeQuickView",false,heart);
 			likeWrap.style.cursor = "pointer";
 			if(activity.likes.some(like => like.name === whoAmI)){
-				likeWrap.classList.add("hohILikeThis")
+				likeWrap.classList.add("altoolkitILikeThis")
 			}
 			likeify(activity.likes,likeQuickView);
 			likeWrap.onclick = function(){
@@ -320,7 +320,7 @@ let viewSingleActivity = function(id){
 					{id: activity.id},
 					data => {}
 				);
-				if(likeWrap.classList.contains("hohILikeThis")){
+				if(likeWrap.classList.contains("altoolkitILikeThis")){
 					activity.likes.splice(activity.likes.findIndex(user => user.name === whoAmI),1);
 					if(activity.likes.length === 0){
 						likeCount.innerText = " "
@@ -333,7 +333,7 @@ let viewSingleActivity = function(id){
 					activity.likes.push({name: whoAmI});
 					likeCount.innerText = activity.likes.length
 				}
-				likeWrap.classList.toggle("hohILikeThis");
+				likeWrap.classList.toggle("altoolkitILikeThis");
 				likeWrap.title = activity.likes.map(a => a.name).join("\n");
 				likeify(activity.likes,likeQuickView);
 			};
@@ -353,7 +353,7 @@ let viewSingleActivity = function(id){
 							reply.text = makeHtml(reply.text);
 							let rep = create("div","reply",false,replies);
 							let ndiff = NOW() - (new Date(reply.createdAt * 1000)).valueOf();
-							let time = create("span",["time","hohMonospace"],formatTime(Math.round(ndiff/1000),"short"),rep,"width:50px;position:absolute;left:1px;top:2px;");
+							let time = create("span",["time","altoolkitMonospace"],formatTime(Math.round(ndiff/1000),"short"),rep,"width:50px;position:absolute;left:1px;top:2px;");
 							time.title = (new Date(activity.createdAt * 1000)).toLocaleString();
 							let user = create("a",["link","newTab"],reply.user.name,rep,"margin-left:60px;position:absolute;");
 							if(reply.user.name === whoAmI){
@@ -376,14 +376,14 @@ let viewSingleActivity = function(id){
 									.href = "https://www.youtube.com/watch?v=" + ytLink.id
 							});
 							let actions = create("div","actions",false,rep,"position:absolute;text-align:right;right:4px;bottom:0px;");
-							let likeWrap = create("span",["action","hohLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+							let likeWrap = create("span",["action","altoolkitLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 							likeWrap.title = reply.likes.map(a => a.name).join("\n");
 							let likeCount = create("span","count",(reply.likes.length ? reply.likes.length : " "),likeWrap);
 							let heart = create("span",false,"♥",likeWrap,"position:relative;");
-							let likeQuickView = create("div","hohLikeQuickView",false,heart,"position:absolute;bottom:0px;left:30px;font-size:70%;white-space:nowrap;");
+							let likeQuickView = create("div","altoolkitLikeQuickView",false,heart,"position:absolute;bottom:0px;left:30px;font-size:70%;white-space:nowrap;");
 							likeWrap.style.cursor = "pointer";
 							if(reply.likes.some(like => like.name === whoAmI)){
-								likeWrap.classList.add("hohILikeThis");
+								likeWrap.classList.add("altoolkitILikeThis");
 							}
 							likeify(reply.likes,likeQuickView);
 							likeWrap.onclick = function(){
@@ -392,7 +392,7 @@ let viewSingleActivity = function(id){
 									{id: reply.id},
 									data => {}
 								);
-								if(likeWrap.classList.contains("hohILikeThis")){
+								if(likeWrap.classList.contains("altoolkitILikeThis")){
 									reply.likes.splice(reply.likes.findIndex(user => user.name === whoAmI),1);
 									if(reply.likes.length === 0){
 										likeCount.innerText = " ";
@@ -405,7 +405,7 @@ let viewSingleActivity = function(id){
 									reply.likes.push({name: whoAmI});
 									likeCount.innerText = reply.likes.length;
 								}
-								likeWrap.classList.toggle("hohILikeThis");
+								likeWrap.classList.toggle("altoolkitILikeThis");
 								likeWrap.title = reply.likes.map(a => a.name).join("\n");
 								likeify(reply.likes,likeQuickView);
 							};
@@ -433,8 +433,8 @@ let viewSingleActivity = function(id){
 						});
 						statusInput = create("div",false,false,replies);
 						inputArea = create("textarea",false,false,statusInput,"width: 99%;border-width: 1px;padding: 4px;border-radius: 2px;color: rgb(159, 173, 189);resize: vertical;");
-						cancelButton = create("button",["hohButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
-						publishButton = create("button",["hohButton","button"],translate("$button_publish"),statusInput,"display:none;");
+						cancelButton = create("button",["altoolkitButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
+						publishButton = create("button",["altoolkitButton","button"],translate("$button_publish"),statusInput,"display:none;");
 						inputArea.placeholder = translate("$placeholder_reply");
 						inputArea.onfocus = function(){
 							cancelButton.style.display = "inline";
@@ -745,7 +745,7 @@ notiLink.onclick = function(){
 		(data ? data.data.Page.notifications : []).forEach((notification,index) => {
 			let noti = create("div","activity",false,feedContent);
 			let diff = NOW() - (new Date(notification.createdAt * 1000)).valueOf();
-			let time = create("span",["time","hohMonospace"],formatTime(Math.round(diff/1000),"short"),noti,"width:50px;position:absolute;left:1px;top:2px;");
+			let time = create("span",["time","altoolkitMonospace"],formatTime(Math.round(diff/1000),"short"),noti,"width:50px;position:absolute;left:1px;top:2px;");
 			time.title = (new Date(notification.createdAt * 1000)).toLocaleString();
 			let content = create("div",false,false,noti,"margin-left:60px;position:relative;");
 			if(notification.user){
@@ -955,7 +955,7 @@ let buildPage = function(activities,type,requestTime){
 		}
 		let act = create("div","activity",false,feedContent);
 		let diff = NOW() - (new Date(activity.createdAt * 1000)).valueOf();
-		let time = create("span",["time","hohMonospace"],formatTime(Math.round(diff/1000),"short"),act,"width:50px;position:absolute;left:1px;top:2px;");
+		let time = create("span",["time","altoolkitMonospace"],formatTime(Math.round(diff/1000),"short"),act,"width:50px;position:absolute;left:1px;top:2px;");
 		time.title = (new Date(activity.createdAt * 1000)).toLocaleString();
 		let content = create("div",false,false,act,"margin-left:60px;position:relative;");
 		if(!activity.user){
@@ -970,24 +970,24 @@ let buildPage = function(activities,type,requestTime){
 		}
 		user.href = "/user/" + activity.user.name + "/";
 		let actions = create("div","actions",false,content,"position:absolute;text-align:right;");
-		let replyWrap = create("span",["action","hohReplies"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+		let replyWrap = create("span",["action","altoolkitReplies"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 		let replyCount = create("span","count",(activity.replies.length || activity.replyCount ? activity.replies.length || activity.replyCount : " "),replyWrap);
 		let replyIcon = create("span",false,false,replyWrap);
 		replyIcon.appendChild(svgAssets2.reply.cloneNode(true));
 		replyWrap.style.cursor = "pointer";
 		replyIcon.children[0].style.width = "13px";
 		replyIcon.stylemarginLeft = "-2px";
-		let likeWrap = create("span",["action","hohLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+		let likeWrap = create("span",["action","altoolkitLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 		likeWrap.title = activity.likes.map(a => a.name).join("\n");
 		let likeCount = create("span","count",(activity.likes.length ? activity.likes.length : " "),likeWrap);
 		let heart = create("span",false,"♥",likeWrap,"position:relative;");
-		let likeQuickView = create("div","hohLikeQuickView",false,heart);
+		let likeQuickView = create("div","altoolkitLikeQuickView",false,heart);
 		if(type === "review"){
 			heart.innerText = activity.rating + "/" + activity.ratingAmount
 		}
 		likeWrap.style.cursor = "pointer";
 		if(activity.likes.some(like => like.name === whoAmI)){
-			likeWrap.classList.add("hohILikeThis")
+			likeWrap.classList.add("altoolkitILikeThis")
 		}
 		likeify(activity.likes,likeQuickView);
 		likeWrap.onclick = function(){
@@ -999,7 +999,7 @@ let buildPage = function(activities,type,requestTime){
 				{id: activity.id},
 				data => {}
 			);
-			if(likeWrap.classList.contains("hohILikeThis")){
+			if(likeWrap.classList.contains("altoolkitILikeThis")){
 				activity.likes.splice(activity.likes.findIndex(user => user.name === whoAmI),1);
 				if(activity.likes.length === 0){
 					likeCount.innerText = " "
@@ -1012,7 +1012,7 @@ let buildPage = function(activities,type,requestTime){
 				activity.likes.push({name: whoAmI});
 				likeCount.innerText = activity.likes.length
 			}
-			likeWrap.classList.toggle("hohILikeThis");
+			likeWrap.classList.toggle("altoolkitILikeThis");
 			likeWrap.title = activity.likes.map(a => a.name).join("\n");
 			likeify(activity.likes,likeQuickView);
 		};
@@ -1035,7 +1035,7 @@ let buildPage = function(activities,type,requestTime){
 						reply.text = makeHtml(reply.text);
 						let rep = create("div","reply",false,replies);
 						let ndiff = NOW() - (new Date(reply.createdAt * 1000)).valueOf();
-						let time = create("span",["time","hohMonospace"],formatTime(Math.round(ndiff/1000),"short"),rep,"width:50px;position:absolute;left:1px;top:2px;");
+						let time = create("span",["time","altoolkitMonospace"],formatTime(Math.round(ndiff/1000),"short"),rep,"width:50px;position:absolute;left:1px;top:2px;");
 						time.title = (new Date(activity.createdAt * 1000)).toLocaleString();
 						let user = create("a",["link","newTab"],reply.user.name,rep,"margin-left:60px;position:absolute;");
 						if(reply.user.name === whoAmI){
@@ -1058,14 +1058,14 @@ let buildPage = function(activities,type,requestTime){
 								.href = "https://www.youtube.com/watch?v=" + ytLink.id
 						});
 						let actions = create("div","actions",false,rep,"position:absolute;text-align:right;right:4px;bottom:0px;");
-						let likeWrap = create("span",["action","hohLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
+						let likeWrap = create("span",["action","altoolkitLikes"],false,actions,"display:inline-block;min-width:35px;margin-left:2px");
 						likeWrap.title = reply.likes.map(a => a.name).join("\n");
 						let likeCount = create("span","count",(reply.likes.length ? reply.likes.length : " "),likeWrap);
 						let heart = create("span",false,"♥",likeWrap,"position:relative;");
-						let likeQuickView = create("div","hohLikeQuickView",false,heart,"position:absolute;bottom:0px;left:30px;font-size:70%;white-space:nowrap;");
+						let likeQuickView = create("div","altoolkitLikeQuickView",false,heart,"position:absolute;bottom:0px;left:30px;font-size:70%;white-space:nowrap;");
 						likeWrap.style.cursor = "pointer";
 						if(reply.likes.some(like => like.name === whoAmI)){
-							likeWrap.classList.add("hohILikeThis");
+							likeWrap.classList.add("altoolkitILikeThis");
 						}
 						likeify(reply.likes,likeQuickView);
 						likeWrap.onclick = function(){
@@ -1074,7 +1074,7 @@ let buildPage = function(activities,type,requestTime){
 								{id: reply.id},
 								data => {}
 							);
-							if(likeWrap.classList.contains("hohILikeThis")){
+							if(likeWrap.classList.contains("altoolkitILikeThis")){
 								reply.likes.splice(reply.likes.findIndex(user => user.name === whoAmI),1);
 								if(reply.likes.length === 0){
 									likeCount.innerText = " ";
@@ -1087,7 +1087,7 @@ let buildPage = function(activities,type,requestTime){
 								reply.likes.push({name: whoAmI});
 								likeCount.innerText = reply.likes.length;
 							}
-							likeWrap.classList.toggle("hohILikeThis");
+							likeWrap.classList.toggle("altoolkitILikeThis");
 							likeWrap.title = reply.likes.map(a => a.name).join("\n");
 							likeify(reply.likes,likeQuickView);
 						};
@@ -1115,8 +1115,8 @@ let buildPage = function(activities,type,requestTime){
 					});
 					statusInput = create("div",false,false,replies);
 					inputArea = create("textarea",false,false,statusInput,"width: 99%;border-width: 1px;padding: 4px;border-radius: 2px;color: rgb(159, 173, 189);resize: vertical;");
-					cancelButton = create("button",["hohButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
-					publishButton = create("button",["hohButton","button"],translate("$button_publish"),statusInput,"display:none;");
+					cancelButton = create("button",["altoolkitButton","button"],translate("$button_cancel"),statusInput,"background:rgb(31,35,45);display:none;color: rgb(159, 173, 189);");
+					publishButton = create("button",["altoolkitButton","button"],translate("$button_publish"),statusInput,"display:none;");
 					inputArea.placeholder = translate("$placeholder_reply");
 					inputArea.onfocus = function(){
 						cancelButton.style.display = "inline";
@@ -1414,7 +1414,7 @@ let buildPage = function(activities,type,requestTime){
 			link.href = "https://anilist.co/" + type + "/" + activity.id + "/"
 		}
 		if(activity.user.name === whoAmI){
-			let deleteActivity = create("span","hohDeleteActivity",svgAssets.cross,act);
+			let deleteActivity = create("span","altoolkitDeleteActivity",svgAssets.cross,act);
 			deleteActivity.title = "Delete";
 			deleteActivity.onclick = function(){
 				authAPIcall(
@@ -1471,12 +1471,12 @@ let requestPage = function(npage,userID){
 			}
 			else{
 				loading.innerText = "Not Found";
-				deleteCacheItem("hohIDlookup" + specificUser.toLowerCase());
+				deleteCacheItem("altoolkitIDlookup" + specificUser.toLowerCase());
 				if(!onlyUserInput.value){
 					requestPage(npage)
 				}
 			}
-		},"hohIDlookup" + specificUser.toLowerCase());
+		},"altoolkitIDlookup" + specificUser.toLowerCase());
 		return;
 	}
 	let requestTime = NOW();
@@ -1748,7 +1748,7 @@ onlyMediaInput.onblur = function(){
 			function(data){
 				removeChildren(mediaDisplayResults)
 				data.data.Page.media.forEach((media,index) => {
-					let result = create("div",["hohSearchResult",media.type.toLowerCase()],false,mediaDisplayResults);
+					let result = create("div",["altoolkitSearchResult",media.type.toLowerCase()],false,mediaDisplayResults);
 					let title = create("span",false,titlePicker(media),result);
 					if(useScripts.accessToken){
 						let editButton = create("span","termsFeedEdit","edit",result);
@@ -1775,7 +1775,7 @@ onlyMediaInput.onblur = function(){
 									}
 									let editor = createDisplayBox("width:600px;height:500px;top:100px;left:220px",titlePicker(media));
 									let progressLabel = create("p",false,translate("$preview_progress"),editor);
-									let progressInput = create("input","hohInput",false,editor);
+									let progressInput = create("input","altoolkitInput",false,editor);
 									progressInput.type = "number";
 									progressInput.min = 0;
 									if(entry && entry.data.MediaList.progress){
@@ -1786,7 +1786,7 @@ onlyMediaInput.onblur = function(){
 									}
 
 									let scoreLabel = create("p",false,translate("$preview_score"),editor);
-									let scoreInput = create("input","hohInput",false,editor);
+									let scoreInput = create("input","altoolkitInput",false,editor);
 									scoreInput.type = "number";
 									scoreInput.min = 0;
 									if(entry && entry.data.MediaList.score){
@@ -1795,13 +1795,13 @@ onlyMediaInput.onblur = function(){
 
 									create("hr",false,false,editor);
 
-									let saveButton = create("button","hohButton","Save",editor);
-									let hohSpinner = create("span","hohSpinner","",editor);
+									let saveButton = create("button","altoolkitButton","Save",editor);
+									let altoolkitSpinner = create("span","altoolkitSpinner","",editor);
 									saveButton.onclick = function(){
-										hohSpinner.innerText = svgAssets.loading;
-										hohSpinner.classList.remove("spinnerError");
-										hohSpinner.classList.remove("spinnerDone");
-										hohSpinner.classList.add("spinnerLoading");
+										altoolkitSpinner.innerText = svgAssets.loading;
+										altoolkitSpinner.classList.remove("spinnerError");
+										altoolkitSpinner.classList.remove("spinnerDone");
+										altoolkitSpinner.classList.add("spinnerLoading");
 										if(entry){
 											authAPIcall(
 												`mutation($progress: Int${(parseFloat(scoreInput.value) ? ",$score: Float" : "")},$id: Int){
@@ -1809,14 +1809,14 @@ onlyMediaInput.onblur = function(){
 												}`,
 												{id: entry.data.MediaList.id, progress: parseInt(progressInput.value), score: parseFloat(scoreInput.value)},
 												data => {
-													hohSpinner.classList.remove("spinnerLoading");
+													altoolkitSpinner.classList.remove("spinnerLoading");
 													if(data && data[0] && data[0].message){
-														hohSpinner.classList.add("spinnerError");
-														hohSpinner.innerText = svgAssets.cross;
+														altoolkitSpinner.classList.add("spinnerError");
+														altoolkitSpinner.innerText = svgAssets.cross;
 													}
 													else{
-														hohSpinner.innerText = svgAssets.check;
-														hohSpinner.classList.add("spinnerDone");
+														altoolkitSpinner.innerText = svgAssets.check;
+														altoolkitSpinner.classList.add("spinnerDone");
 													}
 												}
 											)
@@ -1828,14 +1828,14 @@ onlyMediaInput.onblur = function(){
 												}`,
 												{id: media.id, progress: parseInt(progressInput.value), score: parseFloat(scoreInput.value)},
 												data => {
-													hohSpinner.classList.remove("spinnerLoading");
+													altoolkitSpinner.classList.remove("spinnerLoading");
 													if(data && data[0] && data[0].message){
-														hohSpinner.classList.add("spinnerError");
-														hohSpinner.innerText = svgAssets.cross;
+														altoolkitSpinner.classList.add("spinnerError");
+														altoolkitSpinner.innerText = svgAssets.cross;
 													}
 													else{
-														hohSpinner.innerText = svgAssets.check;
-														hohSpinner.classList.add("spinnerDone");
+														altoolkitSpinner.innerText = svgAssets.check;
+														altoolkitSpinner.classList.add("spinnerDone");
 													}
 												}
 											)
@@ -1978,7 +1978,7 @@ publishButton.onclick = function(){
 			else{
 				loading.innerText = "Not Found"
 			}
-		},"hohIDlookup" + onlyUserInput.value.toLowerCase())
+		},"altoolkitIDlookup" + onlyUserInput.value.toLowerCase())
 	}
 	else{
 		loading.innerText = "Publishing...";
@@ -2068,7 +2068,7 @@ let buildPreview = function(data){
 							data => {}
 						)
 					}
-					localStorage.setItem("hohListPreview",JSON.stringify(data))
+					localStorage.setItem("altoolkitListPreview",JSON.stringify(data))
 				}
 			}
 			else{
@@ -2085,7 +2085,7 @@ let buildPreview = function(data){
 					{id: mediaList.id,progress: mediaList.progress},
 					data => {}
 				);
-				localStorage.setItem("hohListPreview",JSON.stringify(data))
+				localStorage.setItem("altoolkitListPreview",JSON.stringify(data))
 			}
 			e.stopPropagation();
 			e.preventDefault();
@@ -2112,10 +2112,10 @@ authAPIcall(
 			}
 		}
 	}`,{name: whoAmI},function(data){
-		localStorage.setItem("hohListPreview",JSON.stringify(data));
+		localStorage.setItem("altoolkitListPreview",JSON.stringify(data));
 		buildPreview(data,true)
 	}
 );
-buildPreview(JSON.parse(localStorage.getItem("hohListPreview")),false)
+buildPreview(JSON.parse(localStorage.getItem("altoolkitListPreview")),false)
 }
 })

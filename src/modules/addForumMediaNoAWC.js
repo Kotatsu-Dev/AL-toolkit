@@ -11,7 +11,7 @@ async function addForumMediaNoAWC(){
 			setTimeout(function(){buildPreview(data)},400);
 			return;
 		}
-		forumPreview.classList.add("hohNoAWC");
+		forumPreview.classList.add("altoolkitNoAWC");
 		removeChildren(forumPreview)
 		data.Page.threads.filter(
 			thread => !(

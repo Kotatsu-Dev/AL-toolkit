@@ -33,8 +33,8 @@ exportModule({
 			let eps = null;
 			let dur = null;
 			let anchor = null;
-			if(document.querySelector(".hohHasDurationTooltip")){
-				document.querySelector(".hohHasDurationTooltip").title = ""
+			if(document.querySelector(".altoolkitHasDurationTooltip")){
+				document.querySelector(".altoolkitHasDurationTooltip").title = ""
 			}
 			try{
 				let found = false
@@ -63,7 +63,7 @@ exportModule({
 					else{
 						anchor.title = "total " + formatTime(eps*dur*60,"twoPart");
 					}
-					anchor.classList.add("hohHasDurationTooltip")
+					anchor.classList.add("altoolkitHasDurationTooltip")
 				}
 			}
 			catch(e){

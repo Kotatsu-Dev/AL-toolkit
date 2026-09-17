@@ -96,7 +96,7 @@ if(useScripts.reinaDark){
 	--color-foreground-blue: 26, 33, 45;
 	--color-foreground-grey: 15, 22, 28;
 	--color-foreground-grey-dark: 6, 12, 13;
-	--color-nav-hoh: rgb(20, 25, 31);
+	--color-nav-altoolkit: rgb(20, 25, 31);
 }
 .site-theme-dark {
 	/* Notification Dropdown */
@@ -438,8 +438,8 @@ if(useScripts.reinaDark){
 	border-bottom-color: rgb(var(--color-foreground-grey-dark)) !important;
 	border-top-color: rgb(var(--color-foreground-grey-dark)) !important;
 }
-/* hoh styling */
-#hohSettings .hohCategories {
+/* altoolkit styling */
+#altoolkitSettings .altoolkitCategories {
 	display: flex;
 	flex-wrap: wrap;
 	position: relative;
@@ -450,7 +450,7 @@ if(useScripts.reinaDark){
 	background-color: rgb(var(--color-background));
 	border-radius: 3px;
 }
-#hohSettings .hohCategories .hohCategory {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory {
 	border: none;
 	line-height: inherit;
 	font-size: 1.2rem;
@@ -462,53 +462,53 @@ if(useScripts.reinaDark){
 	color: rgb(var(--color-text-lighter));
 	border-radius: 3px;
 }
-#hohSettings .hohCategories .hohCategory:hover {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:hover {
 	background-color: inherit;
 	color: rgb(var(--color-blue));
 }
-#hohSettings .hohCategories .hohCategory.active,
-#hohSettings .hohCategories .hohCategory:active,
-#hohSettings .hohCategories .hohCategory:focus {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory.active,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:active,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:focus {
 	font-weight: 500;
 	background-color: rgb(var(--color-foreground-blue));
 	color: rgb(var(--color-text));
 	border-radius: 0;
 }
-#hohSettings .hohCategories .hohCategory.active:hover,
-#hohSettings .hohCategories .hohCategory:active:hover,
-#hohSettings .hohCategories .hohCategory:focus:hover {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory.active:hover,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:active:hover,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:focus:hover {
 	background-color: rgb(var(--color-foreground-blue));
 }
-#hohSettings .hohCategories .hohCategory:active:first-of-type,
-#hohSettings .hohCategories .hohCategory:first-of-type.active,
-#hohSettings .hohCategories .hohCategory:focus:first-of-type {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:active:first-of-type,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:first-of-type.active,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:focus:first-of-type {
 	border-radius: 3px 0 0 3px;
 }
-#hohSettings .hohCategories .hohCategory:active:last-of-type,
-#hohSettings .hohCategories .hohCategory:last-of-type.active,
-#hohSettings .hohCategories .hohCategory:focus:last-of-type {
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:active:last-of-type,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:last-of-type.active,
+#altoolkitSettings .altoolkitCategories .altoolkitCategory:focus:last-of-type {
 	border-radius: 0 3px 3px 0;
 }
-#hohSettings .hohDisplayBox {
+#altoolkitSettings .altoolkitDisplayBox {
 	border-color: #0e1216;
 	border-radius: 5px;
 }
-#hohSettings .scrollableContent {
+#altoolkitSettings .scrollableContent {
 	padding: 30px;
 	padding-top: 35px;
 	padding-left: 15px;
 }
-#hohSettings .hohDisplayBoxTitle {
+#altoolkitSettings .altoolkitDisplayBoxTitle {
 	top: 25px;
 	left: 35px;
 	font-weight: bold;
 	font-size: 1.7em;
 }
-#hohSettings .hohResizePearl {
+#altoolkitSettings .altoolkitResizePearl {
 	right: 10px;
 	bottom: 10px;
 }
-#hohSettings .hohDisplayBoxClose {
+#altoolkitSettings .altoolkitDisplayBoxClose {
 	padding: 4px;
 	border-radius: 20px;
 	border-width: 2px;
@@ -519,8 +519,8 @@ if(useScripts.reinaDark){
 	vertical-align: bottom;
 	font-weight: bold;
 }
-#hohSettings input,
-#hohSettings select {
+#altoolkitSettings input,
+#altoolkitSettings select {
 	height: 40px;
 	border-radius: 4px;
 	color: rgb(var(--color-text));
@@ -532,7 +532,7 @@ if(useScripts.reinaDark){
 	padding-right: 10px;
 	padding-left: 15px;
 }
-#hohSettings textarea {
+#altoolkitSettings textarea {
 	border-radius: 4px;
 	color: rgb(var(--color-text));
 	outline: 0;
@@ -544,7 +544,7 @@ if(useScripts.reinaDark){
 	width: 100%;
 	height: 200px;
 }
-.hohNativeInput {
+.altoolkitNativeInput {
 	height: 40px;
 	border-radius: 4px;
 	color: rgb(var(--color-text));

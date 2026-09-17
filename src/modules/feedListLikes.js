@@ -8,9 +8,9 @@ exportModule({
 
 let likeLoop = setInterval(function(){
 	document.querySelectorAll(
-		".activity-entry > .wrap > .actions .action.likes:not(.hohHandledLike)"
+		".activity-entry > .wrap > .actions .action.likes:not(.altoolkitHandledLike)"
 	).forEach(thingy => {
-		thingy.classList.add("hohHandledLike");
+		thingy.classList.add("altoolkitHandledLike");
 		thingy.onmouseover = function(){
 			if(!thingy.querySelector(".count")){
 				return
@@ -19,7 +19,7 @@ let likeLoop = setInterval(function(){
 			if(likeCount <= 5){
 				return
 			}
-			if(thingy.classList.contains("hohLoadedLikes")){
+			if(thingy.classList.contains("altoolkitLoadedLikes")){
 				let dataSetCache = parseInt(thingy.dataset.cacheLikeCount);
 				if(isNaN(dataSetCache)){//API query already in progress
 					return
@@ -30,7 +30,7 @@ let likeLoop = setInterval(function(){
 					//at least, this is better than what was previously done, namely never refetching the data at all, even if the count changed
 				}
 			}
-			thingy.classList.add("hohLoadedLikes");
+			thingy.classList.add("altoolkitLoadedLikes");
 			const id = parseInt(thingy.parentNode.parentNode.querySelector(`[href^="/activity/"`).href.match(/\d+/));
 			generalAPIcall(`
 query($id: Int){

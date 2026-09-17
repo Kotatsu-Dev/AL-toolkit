@@ -8,9 +8,9 @@ function enhanceSocialTabFeed(){
 		setTimeout(enhanceSocialTabFeed,100);
 		return
 	}
-	let hohFeed = create("div","hohSocialFeed");
-	feedLocation.insertBefore(hohFeed,feedLocation.children[0]);
-	let optionsContainer = create("div",false,false,hohFeed,"position:absolute;top:0px;right:0px;");
+	let altoolkitFeed = create("div","altoolkitSocialFeed");
+	feedLocation.insertBefore(altoolkitFeed,feedLocation.children[0]);
+	let optionsContainer = create("div",false,false,altoolkitFeed,"display:flex;justify-content:flex-end;align-items:center;");
 	let hasReplies = createCheckbox(optionsContainer);
 	create("span",false,translate("$filter_replies"),optionsContainer,"margin-right:7px;");
 	let isFollowing = createCheckbox(optionsContainer);
@@ -20,9 +20,9 @@ function enhanceSocialTabFeed(){
 	else{
 		isFollowing.parentNode.style.display = "none"
 	}
-	let feedHeader = create("h2",false,translate("$feedHeader"),hohFeed,"display:none;");
-	let feedContent = create("div",false,false,hohFeed,"display:none;");
-	let loadMore = create("div","load-more",translate("$load_more"),hohFeed);
+	let feedHeader = create("h2",false,translate("$feedHeader"),altoolkitFeed,"display:none;");
+	let feedContent = create("div",false,false,altoolkitFeed,"display:none;");
+	let loadMore = create("div","load-more",translate("$load_more"),altoolkitFeed);
 	let query = "";
 	let buildFeed = function(page){
 		authAPIcall(//use also when accessToken is not available, since it will fall back to a regular API call
@@ -33,7 +33,7 @@ function enhanceSocialTabFeed(){
 			},
 			function(data){
 				if(!data){//restore regular feed
-					feedLocation.classList.remove("hohReplaceFeed");
+					feedLocation.classList.remove("altoolkitReplaceFeed");
 					feedContent.style.display = "none";
 					feedHeader.style.display = "none";
 					loadMore.style.display = "none";
@@ -237,7 +237,7 @@ function enhanceSocialTabFeed(){
 												if(rep.likes.some(like => like.name === whoAmI)){
 													rep.likes.splice(rep.likes.findIndex(user => user.name === whoAmI),1);
 													repLikeButton.classList.remove("liked");
-													repLikeButton.classList.remove("hohILikeThis");
+													repLikeButton.classList.remove("altoolkitILikeThis");
 													if(rep.likes.length > 0){
 														repLikeButton.querySelector(".count").innerText = rep.likes.length
 													}
@@ -248,7 +248,7 @@ function enhanceSocialTabFeed(){
 												else{
 													rep.likes.push({name: whoAmI});
 													repLikeButton.classList.add("liked");
-													repLikeButton.classList.add("hohILikeThis");
+													repLikeButton.classList.add("altoolkitILikeThis");
 													repLikeButton.querySelector(".count").innerText = rep.likes.length;
 												}
 												repLikeButton.title = rep.likes.map(a => a.name).join("\n")
@@ -265,7 +265,7 @@ function enhanceSocialTabFeed(){
 	};
 	hasReplies.oninput = isFollowing.oninput = function(){
 		if(hasReplies.checked || isFollowing.checked){
-			feedLocation.classList.add("hohReplaceFeed");
+			feedLocation.classList.add("altoolkitReplaceFeed");
 			feedContent.style.display = "block";
 			feedHeader.style.display = "block";
 			removeChildren(feedContent)
@@ -407,7 +407,7 @@ query($mediaId: Int,$page: Int){
 			buildFeed(1)
 		}
 		else{
-			feedLocation.classList.remove("hohReplaceFeed");
+			feedLocation.classList.remove("altoolkitReplaceFeed");
 			feedContent.style.display = "none";
 			feedHeader .style.display = "none";
 			loadMore   .style.display = "none"

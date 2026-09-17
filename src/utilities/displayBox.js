@@ -1,17 +1,17 @@
 function createDisplayBox(cssProperties,windowTitle){
-	let displayBox = create("div","hohDisplayBox",false,document.querySelector("#app") || document.querySelector(".termsFeed") || document.body,cssProperties);
+	let displayBox = create("div","altoolkitDisplayBox",false,document.querySelector("#app") || document.querySelector(".termsFeed") || document.body,cssProperties);
 	if(windowTitle){
-		create("span","hohDisplayBoxTitle",windowTitle,displayBox)
+		create("span","altoolkitDisplayBoxTitle",windowTitle,displayBox)
 	}
 	let mousePosition;
 	let offset = [0,0];
 	let isDown = false;
 	let isDownResize = false;
-	let displayBoxClose = create("span","hohDisplayBoxClose",svgAssets.cross,displayBox);
+	let displayBoxClose = create("span","altoolkitDisplayBoxClose",svgAssets.cross,displayBox);
 	displayBoxClose.onclick = function(){
 		displayBox.remove();
 	};
-	let resizePearl = create("span","hohResizePearl",false,displayBox);
+	let resizePearl = create("span","altoolkitResizePearl",false,displayBox);
 	displayBox.addEventListener("mousedown",function(e){
 		let root = e.target;
 		while(root.parentNode){//don't annoy people trying to copy-paste

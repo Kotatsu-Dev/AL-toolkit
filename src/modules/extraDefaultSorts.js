@@ -90,7 +90,7 @@ exportModule({
 										|| (useScripts.customDefaultListOrder === "" && option.name === nativeOrder)
 									){
 										element.classList.add("selected")
-										element.classList.add("hohSelected")
+										element.classList.add("altoolkitSelected")
 									}
 									element.onclick = function(){
 										if(option.native){
@@ -105,11 +105,11 @@ exportModule({
 											selector.value = useScripts.customDefaultListOrder;
 											useScripts.save()
 										}
-										let badSelected = ul.querySelector(".hohSelected");
+										let badSelected = ul.querySelector(".altoolkitSelected");
 										badSelected.classList.remove("selected");
-										badSelected.classList.remove("hohSelected");
+										badSelected.classList.remove("altoolkitSelected");
 										element.classList.add("selected");
-										element.classList.add("hohSelected");
+										element.classList.add("altoolkitSelected");
 										ul.children[nativeIndex].click()
 									}
 								})
@@ -139,11 +139,11 @@ exportModule({
 					setTimeout(optionsAdder,200);
 					return
 				}
-				if(selector.classList.contains("hohCustomSelected")){
+				if(selector.classList.contains("altoolkitCustomSelected")){
 					return
 				}
 				selector.click();
-				selector.classList.add("hohCustomSelected");
+				selector.classList.add("altoolkitCustomSelected");
 				let findDropdown = function(){
 					if(!location.pathname.match(/^\/user\/(.+)\/(animelist|mangalist)/)){
 						return

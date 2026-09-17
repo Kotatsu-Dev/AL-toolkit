@@ -73,13 +73,13 @@ query ($id: Int) {
 			statusTypes.forEach(status => {
 				const statusWrap = create("p", null, null, miscResults);
 				create("span", null, capitalize(status.replace("_", " ")) + ": ", statusWrap)
-				create("span", "hohStatValue", data[subtype + "_" + status].pageInfo.total, statusWrap)
+				create("span", "altoolkitStatValue", data[subtype + "_" + status].pageInfo.total, statusWrap)
 			})
 			const total = data[subtype + "_total"].pageInfo.total;
 			grandTotal += total
 			const totalWrap = create("p", null, null, miscResults);
 			create("span", null, "Total: ", totalWrap)
-			create("span", "hohStatValue", total, totalWrap)
+			create("span", "altoolkitStatValue", total, totalWrap)
 			const firstSub = data[subtype + "_total"].submissions[0] ? data[subtype + "_total"].submissions[0].createdAt : undefined;
 			if(firstSub) create("p", null, "First submission created on " + new Date(firstSub*1000).toLocaleString(), miscResults)
 			create("br", null, null, miscResults)
@@ -87,7 +87,7 @@ query ($id: Int) {
 		create("br", null, null, miscResults)
 		const grandTotalWrap = create("p", null, null, miscResults);
 		create("span", null, "You have made a grand total of ", grandTotalWrap)
-		create("span", "hohStatValue", grandTotal, grandTotalWrap)
+		create("span", "altoolkitStatValue", grandTotal, grandTotalWrap)
 		create("span", null, " submissions.", grandTotalWrap)
 	}
 

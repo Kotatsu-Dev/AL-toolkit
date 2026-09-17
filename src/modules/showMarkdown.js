@@ -2,7 +2,7 @@ function showMarkdown(id){
 	if(!location.pathname.match(id)){
 		return
 	}
-	if(document.querySelector(".hohGetMarkdown")){
+	if(document.querySelector(".altoolkitGetMarkdown")){
 		return
 	}
 	let timeContainer = document.querySelector(".activity-text .time,.activity-message .time");
@@ -13,12 +13,12 @@ function showMarkdown(id){
 	if(!useScripts.accessToken && document.querySelector(".private-badge")){
 		return//can't fetch private messages without privileges
 	}
-	let codeLink = create("span",["action","hohGetMarkdown"],"</>",false,"font-weight:bolder;");
+	let codeLink = create("span",["action","altoolkitGetMarkdown"],"</>",false,"font-weight:bolder;");
 	timeContainer.insertBefore(codeLink,timeContainer.firstChild);
 	codeLink.onclick = function(){
 		let activityMarkdown = document.querySelector(".activity-markdown");
 		if(activityMarkdown.style.display === "none"){
-			let markdownSource = document.querySelector(".hohMarkdownSource");
+			let markdownSource = document.querySelector(".altoolkitMarkdownSource");
 			if(markdownSource){
 				markdownSource.style.display = "none"
 			}
@@ -26,7 +26,7 @@ function showMarkdown(id){
 		}
 		else{
 			activityMarkdown.style.display = "none";
-			let markdownSource = document.querySelector(".hohMarkdownSource");
+			let markdownSource = document.querySelector(".altoolkitMarkdownSource");
 			if(markdownSource){
 				markdownSource.style.display = "initial"
 			}
@@ -37,11 +37,11 @@ function showMarkdown(id){
 						return
 					}
 					if(!data){
-						markdownSource = create("div",["activity-markdown","hohMarkdownSource","hohError"],translate("$error_markdown"),activityMarkdown.parentNode);
+						markdownSource = create("div",["activity-markdown","altoolkitMarkdownSource","altoolkitError"],translate("$error_markdown"),activityMarkdown.parentNode);
 						return
 					}
-					markdownSource = create("div",["activity-markdown","hohMarkdownSource"],data.data.Activity.text,activityMarkdown.parentNode);
-				},"hohGetMarkdown" + id,20*1000)
+					markdownSource = create("div",["activity-markdown","altoolkitMarkdownSource"],data.data.Activity.text,activityMarkdown.parentNode);
+				},"altoolkitGetMarkdown" + id,20*1000)
 			}
 		}
 	}

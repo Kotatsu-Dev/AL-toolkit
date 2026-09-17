@@ -23,12 +23,12 @@ exportModule({
 				return
 			}
 			place.style.position = "relative";
-			if(document.querySelector(".hohNoSequelSetting")){
+			if(document.querySelector(".altoolkitNoSequelSetting")){
 				return
 			}
-			let setting = create("span","hohNoSequelSetting",false,place);
+			let setting = create("span","altoolkitNoSequelSetting",false,place);
 			let input = createCheckbox(setting);
-			input.classList.add("hohNoSequelSetting_input");
+			input.classList.add("altoolkitNoSequelSetting_input");
 			input.checked = useScripts.noSequel_value;
 			input.onchange = function(){
 				useScripts.noSequel_value = this.checked;
@@ -40,7 +40,7 @@ exportModule({
 					clearInterval(remover);
 					return
 				}
-				let input = document.querySelector(".hohNoSequelSetting_input");
+				let input = document.querySelector(".altoolkitNoSequelSetting_input");
 				if(!input){
 					clearInterval(remover);
 					return
@@ -59,10 +59,10 @@ exportModule({
 					if(id && id[2]){
 						id = parseInt(id[2]);
 						if((sequelList.has(id) || sequelList_manga.has(id) || link.match(/2nd|3rd|season-2|season-3/i)) && input.checked){
-							hit.classList.add("hohHiddenSequel")
+							hit.classList.add("altoolkitHiddenSequel")
 						}
 						else{
-							hit.classList.remove("hohHiddenSequel")
+							hit.classList.remove("altoolkitHiddenSequel")
 						}
 					}
 				})
@@ -70,5 +70,5 @@ exportModule({
 		};
 		optionInserter()
 	},
-	css: ".hohHiddenSequel{display: none!important}"
+	css: ".altoolkitHiddenSequel{display: none!important}"
 })

@@ -6,7 +6,7 @@
 	miscResults.innerText = `This only applies to you, regardless of what stats page you ran this query from. Furthermore, it probably won't find everyone.
 Use the other query if you just want the number.`;
 	let flag = true;
-	let stopButton = create("button",["button","hohButton"],"Stop",miscResults,"display:block");
+	let stopButton = create("button",["button","altoolkitButton"],"Stop",miscResults,"display:block");
 	let progress = create("p",false,false,miscResults);
 	stopButton.onclick = function(){
 		flag = false

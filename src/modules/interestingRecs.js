@@ -14,7 +14,7 @@ exportModule({
 			}
 			let switchL = document.querySelector(".page-content .switch:not(.list-switch) .options");
 			if(switchL && document.querySelector(".recommendations-wrap")){
-				switchL.parentNode.classList.add("hohRecsSwitch");
+				switchL.parentNode.classList.add("altoolkitRecsSwitch");
 				let optionWrapper = create("div","option",false,switchL);
 				let option = create("span",false,translate("$recs_forYou"),optionWrapper);
 				option.title = translate("$recs_description");

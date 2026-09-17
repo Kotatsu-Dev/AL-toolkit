@@ -388,7 +388,7 @@ query($type: MediaType,$page: Int){
 	let throttle;
 	let flag = true;
 	let page = 1;
-	let stopButton = create("button",["button","danger","hohButton"],translate("$button_stop"),miscResults);
+	let stopButton = create("button",["button","danger","altoolkitButton"],translate("$button_stop"),miscResults);
 	let progress = create("p",false,false,miscResults);
 	stopButton.onclick = function(){
 		flag = false;

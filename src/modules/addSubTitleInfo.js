@@ -3,8 +3,8 @@ function addSubTitleInfo(){
 	if(!URLstuff){
 		return
 	}
-	else if(document.querySelector(".hohExtraBox")){
-		document.querySelector(".hohExtraBox").remove()
+	else if(document.querySelector(".altoolkitExtraBox")){
+		document.querySelector(".altoolkitExtraBox").remove()
 	}
 	let sidebar = document.querySelector(".sidebar");
 	if(!sidebar){
@@ -58,7 +58,7 @@ function addSubTitleInfo(){
 		return
 	}
 	let title = document.querySelector(".content > h1");
-	let extraBox = create("div","hohExtraBox");
+	let extraBox = create("div","altoolkitExtraBox");
 	title.parentNode.insertBefore(extraBox,title.nextElementSibling);
 	let subTitle = create("p","value","",extraBox,"margin:2px;font-style:italic;");
 	if(useScripts.titleLanguage === "NATIVE"){

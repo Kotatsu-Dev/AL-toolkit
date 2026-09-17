@@ -2,7 +2,7 @@ async function addMALscore(type,id){
 	if(!location.pathname.match(/^\/(anime|manga)/)){
 		return
 	}
-	let MALscore = document.getElementById("hohMALscore");
+	let MALscore = document.getElementById("altoolkitMALscore");
 	if(MALscore){
 		if(parseInt(MALscore.dataset.id) === id){
 			return
@@ -11,7 +11,7 @@ async function addMALscore(type,id){
 			MALscore.remove()
 		}
 	}
-	let MALserial = document.getElementById("hohMALserialization");
+	let MALserial = document.getElementById("altoolkitMALserialization");
 	if(MALserial){
 		if(parseInt(MALserial.dataset.id) === id){
 			return
@@ -28,18 +28,18 @@ async function addMALscore(type,id){
 	const MALlocation = possibleReleaseStatus.find(element => element.innerText === "Mean Score");
 	if(MALlocation){
 		MALscore = create("div","data-set");
-		MALscore.id = "hohMALscore";
+		MALscore.id = "altoolkitMALscore";
 		MALscore.dataset.id = id;
 		MALlocation.parentNode.parentNode.insertBefore(MALscore,MALlocation.parentNode.nextSibling);
 		if(type === "manga"){
 			MALserial = create("div","data-set");
-			MALserial.id = "hohMALserialization";
+			MALserial.id = "altoolkitMALserialization";
 			MALserial.dataset.id = id;
 			MALlocation.parentNode.parentNode.insertBefore(MALserial,MALlocation.parentNode.nextSibling.nextSibling)
 		}
 		const data = await anilistAPI("query($id:Int){Media(id:$id){idMal}}", {
 			variables: {id},
-			cacheKey: "hohIDmal" + id,
+			cacheKey: "altoolkitIDmal" + id,
 			duration: 30*60*1000
 		});
 		if(data.errors){
@@ -68,8 +68,8 @@ async function addMALscore(type,id){
 						setTimeout(adder,500);
 						return
 					}
-					(possibleOverview.querySelector(".hohRecContainer") || {remove: ()=>{}}).remove();
-					let recContainer = create("div",["grid-section-wrap","hohRecContainer"],false,possibleOverview);
+					(possibleOverview.querySelector(".altoolkitRecContainer") || {remove: ()=>{}}).remove();
+					let recContainer = create("div",["grid-section-wrap","altoolkitRecContainer"],false,possibleOverview);
 					create("h2",false,"MAL Recommendations",recContainer);
 					let pattern = /class="picSurround"><a href="https:\/\/myanimelist\.net\/(anime|manga)\/(\d+)\/[\s\S]*?detail-user-recs-text.*?">([\s\S]*?)<\/div>/g;
 					let matching = [];
@@ -83,8 +83,8 @@ async function addMALscore(type,id){
 					matching.forEach(async function(item){
 						let idMal = item[2];
 						let description = item[3];
-						let rec = create("div","hohRec",false,recContainer);
-						let recImage = create("a","hohBackgroundCover",false,rec,"border-radius: 3px;");
+						let rec = create("div","altoolkitRec",false,recContainer);
+						let recImage = create("a","altoolkitBackgroundCover",false,rec,"border-radius: 3px;");
 						let recTitle = create("a","title",false,rec,"position:absolute;top:35px;left:80px;color:rgb(var(--color-blue));");
 						recTitle.innerText = "MAL ID " + idMal;
 						let recDescription = create("p",false,false,rec,"font-size: 1.4rem;line-height: 1.5;");
@@ -93,7 +93,7 @@ async function addMALscore(type,id){
 							"query($idMal:Int,$type:MediaType){Media(idMal:$idMal,type:$type){id title{romaji native english} coverImage{large color} siteUrl}}",
 							{
 								variables: {idMal:idMal,type:item[1].toUpperCase()},
-								cacheKey: "hohIDmalReverse" + idMal,
+								cacheKey: "altoolkitIDmalReverse" + idMal,
 								duration: 30*60*1000
 							}
 						);

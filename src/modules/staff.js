@@ -2,7 +2,7 @@ function enhanceStaff(){
 	if(!document.URL.match(/^https:\/\/anilist\.co\/staff\/.*/)){
 		return
 	}
-	if(document.querySelector(".hohFavCount")){
+	if(document.querySelector(".altoolkitFavCount")){
 		return
 	}
 	const variables = {id: document.URL.match(/\/staff\/(\d+)\/?/)[1]};
@@ -32,5 +32,5 @@ function enhanceStaff(){
 			setTimeout(function(){favCallback(data)},200)
 		}
 	};
-	generalAPIcall(query,variables,favCallback,"hohStaffFavs" + variables.id,60*60*1000)
+	generalAPIcall(query,variables,favCallback,"altoolkitStaffFavs" + variables.id,60*60*1000)
 }

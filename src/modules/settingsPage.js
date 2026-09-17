@@ -46,17 +46,17 @@ exportModule({
 		if(location.pathname !== "/settings/apps"){
 			return
 		}
-		if(document.getElementById("hohSettings")){
+		if(document.getElementById("altoolkitSettings")){
 			return
 		}
 		let targetLocation = document.querySelector(".settings.container .content");
-		let hohSettings = create("div","#hohSettings",false,targetLocation);
-		hohSettings.classList.add("all");
-		let scriptStatsHead = create("h1",false,translate("$settings_title"),hohSettings);
-		let scriptStats = create("div",false,false,hohSettings);
+		let altoolkitSettings = create("div","#altoolkitSettings",false,targetLocation);
+		altoolkitSettings.classList.add("all");
+		let scriptStatsHead = create("h1",false,translate("$settings_title"),altoolkitSettings);
+		let scriptStats = create("div",false,false,altoolkitSettings);
 		let sVersion = create("p",false,false,scriptStats);
 		create("span",false,translate("$settings_version"),sVersion);
-		create("span","hohStatValue",scriptInfo.version,sVersion);
+		create("span","altoolkitStatValue",scriptInfo.version,sVersion);
 		let sHome = create("p",false,translate("$settings_homepage"),scriptStats);
 		let sHomeLink = create("a","external",scriptInfo.link,sHome);
 		sHomeLink.href = scriptInfo.link;
@@ -64,43 +64,40 @@ exportModule({
 		let sHomeLink2 = create("a","external",scriptInfo.repo,sHome2);
 		sHomeLink2.href = scriptInfo.repo;
 		if(!useScripts.accessToken){
-			if(script_type === "Boneless"){
-				create("p",false,"Faded options only have limited functionallity without signing in to the script (scroll down to the bottom of the page for that) which also requires persistent cookies",scriptStats)
-			}
-			else{
+			{
 				create("p",false,"Faded options only have limited functionallity without signing in to the script (scroll down to the bottom of the page for that) which also requires persistent cookies, see https://github.com/hohMiyazawa/Automail/issues/26#issuecomment-623677462",scriptStats)
 			}
 		}
-		let categories = create("div",["container","hohCategories"],false,scriptStats);
+		let categories = create("div",["container","altoolkitCategories"],false,scriptStats);
 		let catList = ["Notifications","Feeds","Forum","Lists","Profiles","Stats","Media","Navigation","Browse","Script","Login","Newly Added"];
 		let activeCategory = "";
 		catList.forEach(function(category){
-			let catBox = create("div","hohCategory",translate("$settings_category_" + category),categories);
+			let catBox = create("div","altoolkitCategory",translate("$settings_category_" + category),categories);
 			catBox.onclick = function(){
-				hohSettings.className = "";
+				altoolkitSettings.className = "";
 				if(activeCategory === category){
 					catBox.classList.remove("active");
 					activeCategory = "";
-					hohSettings.classList.add("all");
+					altoolkitSettings.classList.add("all");
 				}
 				else{
 					if(activeCategory !== ""){
-						categories.querySelector(".hohCategory.active").classList.remove("active")
+						categories.querySelector(".altoolkitCategory.active").classList.remove("active")
 					}
 					catBox.classList.add("active");
-					hohSettings.classList.add(category.replace(" ",""));
+					altoolkitSettings.classList.add(category.replace(" ",""));
 					activeCategory = category
 				}
 			}
 		});
-		let scriptSettings = create("div",false,false,hohSettings);
+		let scriptSettings = create("div",false,false,altoolkitSettings);
 		if(!useScripts.accessToken){
 			scriptSettings.classList.add("noLogin")
 		}
 		useScriptsDefinitions.sort((b,a) => (a.importance || 0) - (b.importance || 0));
 		useScriptsDefinitions.forEach(function(def){
-			let setting = create("p","hohSetting",false,scriptSettings);
-			if(def.visible === false || (script_type === "Boneless" && def.boneless_disable)){
+			let setting = create("p","altoolkitSetting",false,scriptSettings);
+			if(def.visible === false){
 				setting.style.display = "none"
 			}
 			if(hasOwn(def, "type")){//other kinds of input
@@ -193,7 +190,7 @@ exportModule({
 			}
 			create("span",false,translate(def.description),setting);
 			if(def.extendedDescription){
-				let infoButton = create("span","hohInfoButton",null,setting);
+				let infoButton = create("span","altoolkitInfoButton",null,setting);
 				infoButton.title = translate("$settings_moreInfo_tooltip");
 				infoButton.appendChild(svgAssets2.info.cloneNode(true))
 				infoButton.onclick = function(){
@@ -212,7 +209,7 @@ exportModule({
 		);
 		titleAliasInput.rows = "6";
 		titleAliasInput.cols = "50";
-		let titleAliasChange = create("button",["hohButton","button"],translate("$button_submit"));
+		let titleAliasChange = create("button",["altoolkitButton","button"],translate("$button_submit"));
 		titleAliasChange.onclick = function(){
 			let newAliases = [];
 			let aliasContent = titleAliasInput.value.split("\n");
@@ -237,7 +234,7 @@ exportModule({
 		create("br",false,false,titleAliasSettings);
 		titleAliasSettings.appendChild(titleAliasChange);
 		titleAliasSettings.appendChild(create("hr"));
-		hohSettings.appendChild(titleAliasSettings);
+		altoolkitSettings.appendChild(titleAliasSettings);
 		//
 		let notificationColour = create("div");
 		if(useScripts.accessToken){
@@ -267,7 +264,7 @@ exportModule({
 					.value = colour.value
 			);
 			create("br",false,false,notificationColour);
-			let resetAll = create("button",["hohButton","button"],translate("$button_resetAll"),notificationColour);
+			let resetAll = create("button",["altoolkitButton","button"],translate("$button_resetAll"),notificationColour);
 			resetAll.onclick = function(){
 				useScripts.notificationColours = notificationColourDefaults;
 				useScripts.save();
@@ -286,9 +283,9 @@ exportModule({
 			};
 			nColourValue.value = useScripts.notificationColours[nColourType.value].colour;
 			supressOption.checked = useScripts.notificationColours[nColourType.value].supress;
-			hohSettings.appendChild(notificationColour);
+			altoolkitSettings.appendChild(notificationColour);
 		}
-		hohSettings.appendChild(create("hr"));
+		altoolkitSettings.appendChild(create("hr"));
 		let blockList = localStorage.getItem("blockList");
 		if(blockList){
 			blockList = JSON.parse(blockList)
@@ -335,26 +332,26 @@ exportModule({
 				blockMediaInput.value = pastedData
 			}
 		});
-		let blockAddInput = create("button",["button","hohButton"],translate("$button_add"),blockInput);
+		let blockAddInput = create("button",["button","altoolkitButton"],translate("$button_add"),blockInput);
 		let blockVisual = create("div",false,false,blockSettings);
 		let drawBlockList = function(){
 			removeChildren(blockVisual)
 			blockList.forEach(function(blockItem,index){
-					let item = create("div","hohBlock",false,blockVisual);
-					let cross = create("span","hohBlockCross",svgAssets.cross,item);
+					let item = create("div","altoolkitBlock",false,blockVisual);
+					let cross = create("span","altoolkitBlockCross",svgAssets.cross,item);
 					cross.onclick = function(){
 						blockList.splice(index,1);
 						localStorage.setItem("blockList",JSON.stringify(blockList));
 						drawBlockList();
 					};
 					if(blockItem.user){
-						create("span","hohBlockSpec",blockItem.user,item)
+						create("span","altoolkitBlockSpec",blockItem.user,item)
 					}
 					if(blockItem.status){
-						create("span","hohBlockSpec",capitalize(blockItem.status),item)
+						create("span","altoolkitBlockSpec",capitalize(blockItem.status),item)
 					}
 					if(blockItem.media){
-						create("span","hohBlockSpec","ID:" + blockItem.media,item)
+						create("span","altoolkitBlockSpec","ID:" + blockItem.media,item)
 					}
 			})
 		};drawBlockList();
@@ -379,23 +376,23 @@ exportModule({
 				drawBlockList();
 			}
 		};
-		hohSettings.appendChild(blockSettings);
+		altoolkitSettings.appendChild(blockSettings);
 		//
-		hohSettings.appendChild(create("hr"));
+		altoolkitSettings.appendChild(create("hr"));
 		if(useScripts.profileBackground && useScripts.accessToken){
-			let backgroundSettings = create("div",false,false,hohSettings);
+			let backgroundSettings = create("div",false,false,altoolkitSettings);
 			create("p",false,translate("$profileBackground_help1"),backgroundSettings);
-			create("pre","hohCode","red",backgroundSettings);
-			create("pre","hohCode","#640064",backgroundSettings);
-			create("pre","hohCode","url(https://www.example.com/myBackground.jpg)",backgroundSettings);
+			create("pre","altoolkitCode","red",backgroundSettings);
+			create("pre","altoolkitCode","#640064",backgroundSettings);
+			create("pre","altoolkitCode","url(https://www.example.com/myBackground.jpg)",backgroundSettings);
 			create("p",false,translate("$profileBackground_help2"),backgroundSettings);
-			create("pre","hohCode","rgb(100,0,100,0.4)",backgroundSettings);
+			create("pre","altoolkitCode","rgb(100,0,100,0.4)",backgroundSettings);
 			create("p",false,translate("$profileBackground_help3"),backgroundSettings);
-			create("pre","hohCode","linear-gradient(rgb(var(--color-background),0.8),rgb(var(--color-background),0.8)), url(https://www.example.com/myBackground.jpg) center/100% fixed",backgroundSettings);
+			create("pre","altoolkitCode","linear-gradient(rgb(var(--color-background),0.8),rgb(var(--color-background),0.8)), url(https://www.example.com/myBackground.jpg) center/100% fixed",backgroundSettings);
 			let inputField = create("input",false,false,backgroundSettings);
 			inputField.value = useScripts.profileBackgroundValue;
 			create("br",false,false,backgroundSettings);
-			let backgroundChange = create("button",["hohButton","button"],translate("$button_submit"),backgroundSettings);
+			let backgroundChange = create("button",["altoolkitButton","button"],translate("$button_submit"),backgroundSettings);
 			backgroundChange.onclick = function(){
 				useScripts.profileBackgroundValue = inputField.value;
 				useScripts.save();
@@ -430,86 +427,26 @@ exportModule({
 						if(!data){
 							return
 						}
-						deleteCacheItem("hohProfileBackground" + whoAmI)
+						deleteCacheItem("altoolkitProfileBackground" + whoAmI)
 					}
 				)
 			};
-			hohSettings.appendChild(create("hr"));
+			altoolkitSettings.appendChild(create("hr"));
 		}
-		if(useScripts.customCSS && useScripts.accessToken && script_type !== "Boneless"){
-			let backgroundSettings = create("div",false,false,hohSettings);
-			create("p",false,translate("$settings_CSSadd"),backgroundSettings);
-			let inputField = create("textarea",false,false,backgroundSettings,"width: 100%;scrollbar-width: auto;");
-			inputField.value = useScripts.customCSSValue;
-			if(inputField.value){
-				inputField.rows = 10
-			}
-			else{
-				inputField.rows = 4
-			}
-			create("br",false,false,backgroundSettings);
-			create("p",false,translate("$settings_CSSlinkTip"),backgroundSettings);
-			let backgroundChange = create("button",["hohButton","button"],translate("$button_submit"),backgroundSettings);
-			backgroundChange.onclick = function(){
-				useScripts.customCSSValue = inputField.value;
-				let jsonMatch = (userObject.about || "").match(/^\[\]\(json([A-Za-z0-9+/=]+)\)/);
-				let profileJson = {};
-				if(jsonMatch){
-					try{
-						profileJson = JSON.parse(atob(jsonMatch[1]))
-					}
-					catch(e){
-						try{
-							profileJson = JSON.parse(LZString.decompressFromBase64(jsonMatch[1]))
-						}
-						catch(e){
-							console.warn(translate("$settings_errorInvalidJSON"))
-						}
-					}
-				}
-				profileJson.customCSS = useScripts.customCSSValue;
-				if(!profileJson.customCSS){
-					delete profileJson["customCSS"]
-				}
-				//let newDescription = "[](json" + btoa(JSON.stringify(profileJson)) + ")" + (userObject.about.replace(/^\[\]\(json([A-Za-z0-9+/=]+)\)/,""));
-				let newDescription = "[](json" + LZString.compressToBase64(JSON.stringify(profileJson)) + ")" + ((userObject.about || "").replace(/^\[\]\(json([A-Za-z0-9+/=]+)\)/,""));
-				if(newDescription.length > 1e6){
-					alert(translate("$cssTooBig"))
-				}
-				else{
-					useScripts.save();
-					authAPIcall(
-						`mutation($about: String){
-							UpdateUser(about: $about){
-								about
-							}
-						}`,
-						{about: newDescription},
-						function(data){
-							if(!data){
-								alert("failed to save custom CSS")
-							}
-							deleteCacheItem("hohProfileBackground" + whoAmI)
-						}
-					)
-				}
-			};
-			hohSettings.appendChild(create("hr"))
-		}
-		if(useScripts.customCSS && useScripts.accessToken && script_type !== "Boneless"){
-			let pinSettings = create("div",false,false,hohSettings);
+		if(useScripts.customCSS && useScripts.accessToken){
+			let pinSettings = create("div",false,false,altoolkitSettings);
 			create("p",false,translate("$settings_pinnedActivity"),pinSettings);
 			let inputField = create("input",false,false,pinSettings);
 			inputField.value = useScripts.pinned;
 			inputField.setAttribute("placeholder","activity link");
 			create("br",false,false,pinSettings);
-			let pinChange = create("button",["hohButton","button"],translate("$button_submit"),pinSettings);
-			let hohSpinner = create("span","hohSpinner","",pinSettings);
+			let pinChange = create("button",["altoolkitButton","button"],translate("$button_submit"),pinSettings);
+			let altoolkitSpinner = create("span","altoolkitSpinner","",pinSettings);
 			pinChange.onclick = function(){
-				hohSpinner.innerText = svgAssets.loading;
-				hohSpinner.classList.remove("spinnerError");
-				hohSpinner.classList.remove("spinnerDone");
-				hohSpinner.classList.add("spinnerLoading");
+				altoolkitSpinner.innerText = svgAssets.loading;
+				altoolkitSpinner.classList.remove("spinnerError");
+				altoolkitSpinner.classList.remove("spinnerDone");
+				altoolkitSpinner.classList.add("spinnerLoading");
 				let activityID = parseInt(inputField.value);
 				if(inputField.value !== ""){
 					if(!activityID){
@@ -520,9 +457,9 @@ exportModule({
 					}
 					if(!activityID){
 						alert(translate("$settings_errorInvalidActivity"));
-						hohSpinner.innerText = svgAssets.cross;
-						hohSpinner.classList.add("spinnerError");
-						hohSpinner.classList.remove("spinnerLoading");
+						altoolkitSpinner.innerText = svgAssets.cross;
+						altoolkitSpinner.classList.add("spinnerError");
+						altoolkitSpinner.classList.remove("spinnerLoading");
 						return
 					}
 					generalAPIcall(
@@ -544,10 +481,10 @@ query{
 						{},
 						function(data){
 							if(!data){
-								hohSpinner.innerText = svgAssets.cross;
-								hohSpinner.classList.add("spinnerError");
-								hohSpinner.classList.remove("spinnerLoading");
-								hohSpinner.classList.remove("spinnerDone");
+								altoolkitSpinner.innerText = svgAssets.cross;
+								altoolkitSpinner.classList.add("spinnerError");
+								altoolkitSpinner.classList.remove("spinnerLoading");
+								altoolkitSpinner.classList.remove("spinnerDone");
 								alert(translate("$settings_errorInvalidActivity"))
 							}
 						}
@@ -568,9 +505,9 @@ query{
 							profileJson = JSON.parse(LZString.decompressFromBase64(jsonMatch[1]))
 						}
 						catch(e){
-							hohSpinner.innerText = svgAssets.cross;
-							hohSpinner.classList.add("spinnerError");
-							hohSpinner.classList.remove("spinnerLoading");
+							altoolkitSpinner.innerText = svgAssets.cross;
+							altoolkitSpinner.classList.add("spinnerError");
+							altoolkitSpinner.classList.remove("spinnerLoading");
 							console.warn(translate("$settings_errorInvalidJSON"));
 							return
 						}
@@ -582,9 +519,9 @@ query{
 				}
 				let newDescription = "[](json" + LZString.compressToBase64(JSON.stringify(profileJson)) + ")" + ((userObject.about || "").replace(/^\[\]\(json([A-Za-z0-9+/=]+)\)/,""));
 				if(newDescription.length > 1e6){
-					hohSpinner.innerText = svgAssets.cross;
-					hohSpinner.classList.add("spinnerError");
-					hohSpinner.classList.remove("spinnerLoading");
+					altoolkitSpinner.innerText = svgAssets.cross;
+					altoolkitSpinner.classList.add("spinnerError");
+					altoolkitSpinner.classList.remove("spinnerLoading");
 					alert(translate("$jsonTooBig"))
 				}
 				else{
@@ -598,41 +535,41 @@ query{
 						{about: newDescription},
 						function(data){
 							if(!data){
-								hohSpinner.innerText = svgAssets.cross;
-								hohSpinner.classList.add("spinnerError");
-								hohSpinner.classList.remove("spinnerLoading");
+								altoolkitSpinner.innerText = svgAssets.cross;
+								altoolkitSpinner.classList.add("spinnerError");
+								altoolkitSpinner.classList.remove("spinnerLoading");
 								alert("failed to save pinned activity")
 							}
 							else{
-								hohSpinner.innerText = svgAssets.check;
-								hohSpinner.classList.add("spinnerDone");
-								hohSpinner.classList.remove("spinnerLoading");
+								altoolkitSpinner.innerText = svgAssets.check;
+								altoolkitSpinner.classList.add("spinnerDone");
+								altoolkitSpinner.classList.remove("spinnerLoading");
 							}
-							deleteCacheItem("hohProfileBackground" + whoAmI)
+							deleteCacheItem("altoolkitProfileBackground" + whoAmI)
 						}
 					)
 				}
 			};
-			hohSettings.appendChild(create("hr"))
+			altoolkitSettings.appendChild(create("hr"))
 		}
 
-		create("p",false,translate("$settings_resetDefaultSettings"),hohSettings);
-		let cleanEverything= create("button",["hohButton","button","danger"],translate("$button_defaultSettings"),hohSettings);
+		create("p",false,translate("$settings_resetDefaultSettings"),altoolkitSettings);
+		let cleanEverything= create("button",["altoolkitButton","button","danger"],translate("$button_defaultSettings"),altoolkitSettings);
 		cleanEverything.onclick = function(){
-			localStorage.removeItem("hohSettings");
+			localStorage.removeItem("altoolkitSettings");
 			window.location.reload(false);
 		}
-		create("hr","hohSeparator",false,hohSettings);
-		let loginURL = create("a",false,translate("$terms_signin_link"),hohSettings,"font-size: x-large;");
+		create("hr","altoolkitSeparator",false,altoolkitSettings);
+		let loginURL = create("a",false,translate("$terms_signin_link"),altoolkitSettings,"font-size: x-large;");
 		loginURL.href = authUrl;
 		loginURL.style.color = "rgb(var(--color-blue))";
-		create("p",false,translate("$terms_signin_description"),hohSettings);
-		if(script_type !== "Boneless"){
-			create("h4",false,translate("$terms_signin_selfhost_title"),hohSettings);
-			create("p",false,translate("$terms_signin_selfhost_line1"),hohSettings);
-			create("p",false,translate("$terms_signin_selfhost_line2"),hohSettings);
-			create("p",false,translate("$terms_signin_selfhost_line3"),hohSettings);
-			let ele = create("p",false,"4. ",hohSettings);
+		create("p",false,translate("$terms_signin_description"),altoolkitSettings);
+		{
+			create("h4",false,translate("$terms_signin_selfhost_title"),altoolkitSettings);
+			create("p",false,translate("$terms_signin_selfhost_line1"),altoolkitSettings);
+			create("p",false,translate("$terms_signin_selfhost_line2"),altoolkitSettings);
+			create("p",false,translate("$terms_signin_selfhost_line3"),altoolkitSettings);
+			let ele = create("p",false,"4. ",altoolkitSettings);
 			let lonk = create("span",false,translate("$terms_signin_selfhost_line4"),ele,"color:rgb(var(--color-blue));cursor:pointer");
 			lonk.onclick = function(){
 				let id = parseInt(prompt(translate("$terms_signin_selfhost_clientid")));
@@ -646,18 +583,18 @@ query{
 				}
 			}
 			if(useScripts.accessToken){
-				create("hr","hohSeparator",false,hohSettings);
-				create("p",false,translate("$settings_currentAccessToken"),hohSettings);
-				create("p","hohMonospace",useScripts.accessToken,hohSettings,"word-wrap: anywhere;font-size: small;line-break: anywhere;")
+				create("hr","altoolkitSeparator",false,altoolkitSettings);
+				create("p",false,translate("$settings_currentAccessToken"),altoolkitSettings);
+				create("p","altoolkitMonospace",useScripts.accessToken,altoolkitSettings,"word-wrap: anywhere;font-size: small;line-break: anywhere;")
 			}
 		}
 
-		hohSettings.appendChild(create("hr"));
+		altoolkitSettings.appendChild(create("hr"));
 
-		let debugInfo = create("button",["hohButton","button"],translate("$settings_button_export"),hohSettings);
-		create("p",false,translate("$settings_export_description"),hohSettings);
-		create("p",false,translate("$settings_import"),hohSettings);
-		let debugImport = create("input","input-file",false,hohSettings);
+		let debugInfo = create("button",["altoolkitButton","button"],translate("$settings_button_export"),altoolkitSettings);
+		create("p",false,translate("$settings_export_description"),altoolkitSettings);
+		create("p",false,translate("$settings_import"),altoolkitSettings);
+		let debugImport = create("input","input-file",false,altoolkitSettings);
 		debugImport.setAttribute("type","file");
 		debugImport.setAttribute("name","json");
 		debugImport.setAttribute("accept","application/json");
@@ -667,10 +604,10 @@ query{
 				export_settings.accessToken = "[REDACTED]"
 			}
 			if(whoAmI){
-				saveAs(export_settings,script_type + "_settings_" + whoAmI + ".json")
+				saveAs(export_settings,scriptInfo.name + "_settings_" + whoAmI + ".json")
 			}
 			else{
-				saveAs(export_settings,script_type + "_settings.json")
+				saveAs(export_settings,scriptInfo.name + "_settings.json")
 			}
 		}
 		debugImport.oninput = function(){
@@ -708,6 +645,6 @@ query{
 				alert(translate("$settings_import_error_reading_file"))
 			}
 		}
-		create("p",false,translate("$debug_tip"),hohSettings);
+		create("p",false,translate("$debug_tip"),altoolkitSettings);
 	}
 })

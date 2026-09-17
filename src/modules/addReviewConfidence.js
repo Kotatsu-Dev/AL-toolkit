@@ -15,7 +15,7 @@ exportModule({
 			pageCount++
 			const {data, errors} = await anilistAPI("query($page:Int){Page(page:$page,perPage:30){reviews(sort:ID_DESC){id rating ratingAmount}}}", {
 				variables: {page: pageCount},
-				cacheKey: "hohRecentReviewsPage" + pageCount,
+				cacheKey: "altoolkitRecentReviewsPage" + pageCount,
 				duration: 30*1000,
 				auth: adultContent // api doesn't return reviews for adult content unless authed + have the option enabled
 			})

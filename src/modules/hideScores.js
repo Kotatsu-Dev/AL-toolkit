@@ -69,15 +69,15 @@ exportModule({
 				pNode = document.querySelector(".forum-thread") || await watchElem(".forum-thread");
 			}
 			let removeEmbedScore = function(mutations,observer){
-				let embed = Array.from(pNode.querySelectorAll(".embed .wrap .info:not(.hohEmbedHiddenScore)"));
+				let embed = Array.from(pNode.querySelectorAll(".embed .wrap .info:not(.altoolkitEmbedHiddenScore)"));
 				if(embed.length){
 					embed.forEach(element => {
 						if(element.children[2] && element.children[2].innerText.includes("Not Yet Released")){
-							element.classList.add("hohEmbedHiddenScore");
+							element.classList.add("altoolkitEmbedHiddenScore");
 						}
 						if(element.children[4] && /^([1-9][0-9]?|100)%$/.test(element.children[4].innerText.trim().slice(-3))){
 							element.children[4].innerText = "";
-							element.classList.add("hohEmbedHiddenScore")
+							element.classList.add("altoolkitEmbedHiddenScore")
 						}
 						if(element.children[3] && element.children[3].innerText.trim().slice(-1) == "·"){
 							element.children[3].innerText = element.children[3].innerText.replace("·","").trim()

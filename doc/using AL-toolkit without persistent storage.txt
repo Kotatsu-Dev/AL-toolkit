@@ -1,19 +1,19 @@
-Automail has configurable settings.
+AL-toolkit has configurable settings.
 If those settings are to be kept, they have to be stored somewhere.
 
-Since Automail DOES NOT make use of a central server, they have to be saved locally on your computer.
+Since AL-toolkit DOES NOT make use of a central server, they have to be saved locally on your computer.
 Browsers provide several APIs for this, generally known as cookies.
 
 
 
-Automail still mostly works without persistant storage, but in case you want to re-enable it anyway, it should be sufficient to only enable it for the anilist.co domain.
+AL-toolkit still mostly works without persistant storage, but in case you want to re-enable it anyway, it should be sufficient to only enable it for the anilist.co domain.
 
 
 
 
 Case 1. All storage disabled
 
-	Automail will always have the default settings, and you will not be able to sign in to it, making certain modules unavailable
+	AL-toolkit will always have the default settings, and you will not be able to sign in to it, making certain modules unavailable
 
 
 Case 2. Storage is not kept between sessions.

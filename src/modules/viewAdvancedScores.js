@@ -35,11 +35,11 @@ function viewAdvancedScores(url){
 						return
 					}
 					document.querySelectorAll(
-						".list-entries .entry .title > a:not(.hohAdvanced)"
+						".list-entries .entry .title > a:not(.altoolkitAdvanced)"
 					).forEach(function(entry){
-						entry.classList.add("hohAdvanced");
+						entry.classList.add("altoolkitAdvanced");
 						let key = parseInt(entry.href.match(/\/(\d+)\//)[1]);
-						let dollar = create("span",["hohAdvancedDollar","noselect"],"$",entry.parentNode);
+						let dollar = create("span",["altoolkitAdvancedDollar","noselect"],"$",entry.parentNode);
 						let advanced = list.get(key);
 						let reasonable = Object.keys(advanced).map(
 							key => [key,advanced[key]]

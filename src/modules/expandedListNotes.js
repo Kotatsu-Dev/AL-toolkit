@@ -56,7 +56,7 @@ exportModule({
 							function(data){
 								data.data.Page.activities.forEach(activity => {
 									create("hr",false,false,floatyWindowThingy);
-									let activityEntry = create("div","hohTimelineEntry",false,floatyWindowThingy);
+									let activityEntry = create("div","altoolkitTimelineEntry",false,floatyWindowThingy);
 									let activityContext = create("a","newTab",capitalize(activity.status),activityEntry);
 									activityContext.href = activity.siteUrl;
 									if(["watched episode","read chapter","rewatched episode","reread chapter"].includes(activity.status)){
@@ -68,7 +68,7 @@ exportModule({
 										"position:absolute;right:7px;"
 									).title = (new Date(activity.createdAt*1000)).toLocaleString()
 									if(activity.replies.length){
-										let activityReplies = create("div",["hohTimelineEntry","replies"],false,floatyWindowThingy,"margin-left: 30px;");
+										let activityReplies = create("div",["altoolkitTimelineEntry","replies"],false,floatyWindowThingy,"margin-left: 30px;");
 										activity.replies.forEach(reply => {
 											let reply_container = create("div","reply",false,activityReplies,"padding: 10px;margin: 2px;border-radius: 5px;background: rgb(var(--color-background));");
 											create("span","name",reply.user.name + ": ",reply_container);
@@ -79,7 +79,7 @@ exportModule({
 								})
 							}
 						)},
-						"hohIDlookup" + name.toLowerCase()
+						"altoolkitIDlookup" + name.toLowerCase()
 					)
 				}
 			})

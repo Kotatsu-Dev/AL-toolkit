@@ -9,7 +9,7 @@ async function addActivityTimeline(){
 	if(!whoAmIid){
 		const {data, errors} = await anilistAPI("query($name:String){User(name:$name){id}}", {
 			variables: {name: whoAmI},
-			cacheKey: "hohIDlookup" + whoAmI.toLowerCase(),
+			cacheKey: "altoolkitIDlookup" + whoAmI.toLowerCase(),
 			duration: 5*60*1000
 		});
 		if(errors){
@@ -53,7 +53,7 @@ query($userId: Int,$mediaId: Int,$page: Int){
 	const lineCaller = async function(query,variables){
 		const data = await anilistAPI(query, {
 			variables,
-			cacheKey: `hohMediaTimeline${variables.mediaId}u${variables.userId}p${variables.page}`,
+			cacheKey: `altoolkitMediaTimeline${variables.mediaId}u${variables.userId}p${variables.page}`,
 			duration: 120*1000
 		});
 		if(data.errors){
@@ -69,9 +69,9 @@ query($userId: Int,$mediaId: Int,$page: Int){
 		data.data.Page.activities.forEach(function(activity){
 			let diffTime = activity.createdAt - previousTime;
 			if(previousTime && diffTime > 60*60*24*30*3){//three months
-				create("div","hohTimelineGap","― " + formatTime(diffTime) + " ―",activityTimeline)
+				create("div","altoolkitTimelineGap","― " + formatTime(diffTime) + " ―",activityTimeline)
 			}
-			let activityEntry = create("div","hohTimelineEntry",false,activityTimeline);
+			let activityEntry = create("div","altoolkitTimelineEntry",false,activityTimeline);
 			if(activity.replyCount){
 				activityEntry.style.color = "rgb(var(--color-blue))"
 			}
@@ -158,7 +158,7 @@ query($userId: Int,$mediaId: Int,$page: Int){
 	let lookingElseInput = create("input",false,false,lookingElse);
 	lookingElseInput.placeholder = translate("$input_user_placeholder");
 	lookingElseInput.setAttribute("list","socialUsers");
-	let lookingElseButton = create("button",["button","hohButton"],translate("$button_search"),lookingElse);
+	let lookingElseButton = create("button",["button","altoolkitButton"],translate("$button_search"),lookingElse);
 	let lookingElseError = create("span",false,"",lookingElse);
 	lookingElseButton.onclick = async function(){
 		if(lookingElseInput.value){
@@ -166,7 +166,7 @@ query($userId: Int,$mediaId: Int,$page: Int){
 			const userName = lookingElseInput.value.trim();
 			const {data, errors} = await anilistAPI("query($name:String){User(name:$name){id}}", {
 				variables: {name: userName},
-				cacheKey: "hohIDlookup" + userName.toLowerCase(),
+				cacheKey: "altoolkitIDlookup" + userName.toLowerCase(),
 				duration: 5*60*1000
 			});
 			if(errors){
@@ -192,7 +192,7 @@ query($userId: Int,$mediaId: Int,$page: Int){
 `;
 	create("hr",false,false,followingLocation.parentNode);
 	let findFavs = create("div",false,false,followingLocation.parentNode);
-	let findFavsButton = create("button",["button","hohButton"],"People with this in favs",findFavs);
+	let findFavsButton = create("button",["button","altoolkitButton"],"People with this in favs",findFavs);
 	findFavsButton.onclick = async function(){
 		let resultsArea = create("div",false,false,findFavs);
 		let searchStatus = create("div",false,"searching...",resultsArea);
@@ -201,7 +201,7 @@ query($userId: Int,$mediaId: Int,$page: Int){
 		let caller = async function(page){
 			const {data, errors} = await anilistAPI(favFindQuery, {
 				variables: {page: page, mediaId: parseInt(URLstuff[2])},
-				cacheKey: "hohFavFinder" + page + "id" + parseInt(URLstuff[2]),
+				cacheKey: "altoolkitFavFinder" + page + "id" + parseInt(URLstuff[2]),
 				duration: 10*60*1000
 			});
 			if(errors){

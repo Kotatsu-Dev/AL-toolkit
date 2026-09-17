@@ -12,7 +12,7 @@ exportModule({
 		if(!URLstuff){
 			return
 		}
-		if(document.querySelector(".hohExtraFilters")){
+		if(document.querySelector(".altoolkitExtraFilters")){
 			return
 		}
 		let waiter = function(){
@@ -21,45 +21,45 @@ exportModule({
 				setTimeout(waiter,200);
 				return
 			}
-			let extraFilters = create("div","hohExtraFilters");
+			let extraFilters = create("div","altoolkitExtraFilters");
 			extraFilters.style.marginTop = "15px";
 			if(useScripts.draw3x3){
-				let buttonDraw3x3 = create("button",["#hohDraw3x3","hohButton","button"],translate("$make3x3"),extraFilters);
+				let buttonDraw3x3 = create("button",["#altoolkitDraw3x3","altoolkitButton","button"],translate("$make3x3"),extraFilters);
 				buttonDraw3x3.title = translate("$make3x3_title");
 				buttonDraw3x3.onclick = function(){
 					//this.style.color = "rgb(var(--color-blue))";
 					let displayBox = createDisplayBox(false,"3x3 maker");
-					let col_input = create("input","hohNativeInput",false,displayBox);
+					let col_input = create("input","altoolkitNativeInput",false,displayBox);
 					let col_label = create("span",false,"columns",displayBox,"margin: 5px");
 					col_input.type = "number";
 					col_input.value = 3;
 					col_input.step = 1;
 					col_input.min = 0;
-					let row_input = create("input","hohNativeInput",false,displayBox);
+					let row_input = create("input","altoolkitNativeInput",false,displayBox);
 					let row_label = create("span",false,"rows",displayBox,"margin: 5px");
 					create("br",false,false,displayBox)
 					row_input.type = "number";
 					row_input.value = 3;
 					row_input.step = 1;
 					row_input.min = 0;
-					let margin_input = create("input","hohNativeInput",false,displayBox);
+					let margin_input = create("input","altoolkitNativeInput",false,displayBox);
 					let margin_label = create("span",false,"spacing (px)",displayBox,"margin: 5px");
 					create("br",false,false,displayBox)
 					margin_input.type = "number";
 					margin_input.value = 0;
 					margin_input.min = 0;
-					let width_input = create("input","hohNativeInput",false,displayBox);
+					let width_input = create("input","altoolkitNativeInput",false,displayBox);
 					let width_label = create("span",false,"image width (px)",displayBox,"margin: 5px");
 					width_input.type = "number";
 					width_input.value = 230;
 					width_input.min = 0;
-					let height_input = create("input","hohNativeInput",false,displayBox);
+					let height_input = create("input","altoolkitNativeInput",false,displayBox);
 					let height_label = create("span",false,"image height (px)",displayBox,"margin: 5px");
 					create("br",false,false,displayBox)
 					height_input.type = "number";
 					height_input.value = 345;
 					height_input.min = 0;
-					let fitMode = create("select","hohNativeInput",false,displayBox);
+					let fitMode = create("select","altoolkitNativeInput",false,displayBox);
 					let fitMode_label = create("span",false,"image fitting",displayBox,"margin	: 5px");
 					let addOption = function(value,text){
 						let newOption = create("option",false,text,fitMode);
@@ -83,7 +83,7 @@ exportModule({
 					let rows = 3;
 					let mode = fitMode.value;
 
-					displayBox.parentNode.querySelector(".hohDisplayBoxClose").onclick = function(){
+					displayBox.parentNode.querySelector(".altoolkitDisplayBoxClose").onclick = function(){
 						displayBox.parentNode.remove();
 						keepUpdating = false;
 						cardList.forEach(function(card){
@@ -184,7 +184,7 @@ exportModule({
 						image_width = parseInt(width_input.value) || 230;
 						image_height = parseInt(height_input.value) || 345;
 						mode = fitMode.value;
-						displayBox.parentNode.querySelector(".hohDisplayBoxTitle").textContent = columns + "x" + rows + " maker";
+						displayBox.parentNode.querySelector(".altoolkitDisplayBoxTitle").textContent = columns + "x" + rows + " maker";
 						recipe.innerText = "Click " + (rows*columns) + " media entries, then save the image below"
 						updateDrawing();
 					}
@@ -235,9 +235,9 @@ exportModule({
 				newChaptersInsertion(extraFilters)
 			}
 			if(URLstuff[2] === "mangalist"){
-				let alMangaButton = create("button",["button","hohButton"],translate("$export_JSON"),extraFilters);
+				let alMangaButton = create("button",["button","altoolkitButton"],translate("$export_JSON"),extraFilters);
 				alMangaButton.onclick = function(){
-					generalAPIcall(backupQueryManga,
+					authAPIcall(backupQueryManga,
 						{name: decodeURIComponent(URLstuff[1])},
 						function(data){
 							if(!data){
@@ -255,9 +255,9 @@ exportModule({
 				}
 			}
 			if(URLstuff[2] === "animelist"){
-				let alAnimeButton = create("button",["button","hohButton"],"Export JSON",extraFilters);
+				let alAnimeButton = create("button",["button","altoolkitButton"],"Export JSON",extraFilters);
 				alAnimeButton.onclick = function(){
-					generalAPIcall(
+					authAPIcall(
 						backupQueryAnime,
 						{name: decodeURIComponent(URLstuff[1])},
 						function(data){
@@ -306,14 +306,14 @@ exportModule({
 						if(!URLstuff2 || URLstuff[0] !== URLstuff2[0]){
 							return
 						}
-						Array.from(document.querySelectorAll(".hohDescriptions")).forEach(matching => matching.remove());
+						Array.from(document.querySelectorAll(".altoolkitDescriptions")).forEach(matching => matching.remove());
 						blurbs.forEach(blurb => {
 							blurb.forEach(list => {
 								if(list.name && list.info){
 									let titles = document.querySelectorAll("h3.section-name");
 									for(var i=0;i<titles.length;i++){
 										if(titles[i].innerText === list.name){
-											let descriptionNode = create("p","hohDescriptions",list.info);
+											let descriptionNode = create("p","altoolkitDescriptions",list.info);
 											titles[i].parentNode.insertBefore(descriptionNode,titles[i].nextSibling);
 											break
 										}
@@ -394,7 +394,7 @@ exportModule({
 }`,
 						variables,
 						collectNotes,
-						"hohCustomTagIndex" + variables.listType + variables.name,
+						"altoolkitCustomTagIndex" + variables.listType + variables.name,
 						60*1000
 					)
 				}
@@ -495,11 +495,11 @@ exportModule({
 									);
 								}
 							};
-							let changeMinus = create("span","hohChangeScore","-");
+							let changeMinus = create("span","altoolkitChangeScore","-");
 							entry.insertBefore(changeMinus,entry.firstChild);
-							let changePluss = create("span","hohChangeScore","+",entry);
+							let changePluss = create("span","altoolkitChangeScore","+",entry);
 							if(useScripts.CSSdecimalPoint){
-								entry.classList.add("hohNeedsPositioning");
+								entry.classList.add("altoolkitNeedsPositioning");
 								changePluss.style.position = "absolute";
 								changePluss.style.right = "calc(50% - 2em)";
 							}

@@ -2,7 +2,7 @@ function addEntryScore(id,tries){
 	if(!location.pathname.match(/^\/(anime|manga)/)){
 		return
 	}
-	let existing = document.getElementById("hohEntryScore");
+	let existing = document.getElementById("altoolkitEntryScore");
 	if(existing){
 		if(existing.dataset.mediaId === id && !tries){
 			return
@@ -13,7 +13,7 @@ function addEntryScore(id,tries){
 	}
 	let possibleLocation = document.querySelector(".actions .list .add");
 	if(possibleLocation){
-		let miniHolder = create("div","#hohEntryScore",false,possibleLocation.parentNode.parentNode,"position:relative;");
+		let miniHolder = create("div","#altoolkitEntryScore",false,possibleLocation.parentNode.parentNode,"position:relative;");
 		miniHolder.dataset.mediaId = id;
 		let type = possibleLocation.innerText;
 		if(type !== "Add to List" && type !== translate("$mediaStatus_not")){
@@ -24,7 +24,7 @@ function addEntryScore(id,tries){
 					function(data){
 						removeChildren(miniHolder);
 						let MediaList = data.data.MediaList;
-						let scoreSpanContainer = create("div","hohMediaScore",false,miniHolder);
+						let scoreSpanContainer = create("div","altoolkitMediaScore",false,miniHolder);
 						let scoreSpan = create("span",false,false,scoreSpanContainer);
 						scoreSpan.title = "Score";
 						let minScore = 1;
@@ -74,10 +74,10 @@ function addEntryScore(id,tries){
 												}
 											}
 										);
-										let blockingCache = JSON.parse(sessionStorage.getItem("hohEntryScore" + id + whoAmI));
+										let blockingCache = JSON.parse(sessionStorage.getItem("altoolkitEntryScore" + id + whoAmI));
 										blockingCache.data.data.MediaList.score = MediaList.score.roundPlaces(1);
 										blockingCache.time = NOW();
-										sessionStorage.setItem("hohEntryScore" + id + whoAmI,JSON.stringify(blockingCache));
+										sessionStorage.setItem("altoolkitEntryScore" + id + whoAmI,JSON.stringify(blockingCache));
 									}
 									else if(MediaList.score < minScore){
 										MediaList.score = minScore
@@ -86,19 +86,19 @@ function addEntryScore(id,tries){
 										MediaList.score = maxScore
 									}
 								};
-								let changeMinus = create("span","hohChangeScore","-",false,"padding:2px;position:absolute;left:-1px;top:-2.5px;");
+								let changeMinus = create("span","altoolkitChangeScore","-",false,"padding:2px;position:absolute;left:-1px;top:-2.5px;");
 								scoreSpanContainer.insertBefore(changeMinus,scoreSpanContainer.firstChild);
-								let changePluss = create("span","hohChangeScore","+",scoreSpanContainer,"padding:2px;");
+								let changePluss = create("span","altoolkitChangeScore","+",scoreSpanContainer,"padding:2px;");
 								changeMinus.onclick = function(){updateScore(false)};
 								changePluss.onclick = function(){updateScore(true)};
 							}
 						}
 						if(type !== "Completed" && type !== translate("$mediaStatus_completed")){
-							let progressPlace = create("span","hohMediaScore",false,miniHolder,"right:0px;");
+							let progressPlace = create("span","altoolkitMediaScore",false,miniHolder,"right:0px;");
 							progressPlace.title = "Progress";
 							let progressVal = create("span",false,MediaList.progress + (MediaList.media.episodes ? "/" + MediaList.media.episodes : MediaList.media.chapters ? "/" + MediaList.media.chapters : ""),progressPlace);
 							if(useScripts.accessToken){
-								let changePluss = create("span","hohChangeScore","+",progressPlace,"padding:2px;position:absolute;top:-2.5px;");
+								let changePluss = create("span","altoolkitChangeScore","+",progressPlace,"padding:2px;position:absolute;top:-2.5px;");
 								changePluss.onclick = function(){
 									MediaList.progress++;
 									authAPIcall(
@@ -118,21 +118,21 @@ function addEntryScore(id,tries){
 										}
 									);
 									progressVal.innerText = MediaList.progress + (MediaList.media.episodes ? "/" + MediaList.media.episodes : MediaList.media.chapters ? "/" + MediaList.media.chapters : "");
-									let hohGuesses = Array.from(document.querySelectorAll(".hohGuess"));
-									if(hohGuesses.length === 2){
-										let oldProgress = parseInt(hohGuesses[0].innerText.match(/\d+/));
+									let altoolkitGuesses = Array.from(document.querySelectorAll(".altoolkitGuess"));
+									if(altoolkitGuesses.length === 2){
+										let oldProgress = parseInt(altoolkitGuesses[0].innerText.match(/\d+/));
 										if(MediaList.progress >= oldProgress){
-											hohGuesses[1].remove()
+											altoolkitGuesses[1].remove()
 										}
 										else{
-											hohGuesses[1].innerText = "[+" + (MediaList.progress - oldProgress) + "]"
+											altoolkitGuesses[1].innerText = "[+" + (MediaList.progress - oldProgress) + "]"
 										}
 									}
 								}
 							}
 						}
 					},
-					"hohEntryScore" + id + whoAmI,30*1000,undefined,override
+					"altoolkitEntryScore" + id + whoAmI,30*1000,undefined,override
 				)
 			};
 			updateSubInfo();

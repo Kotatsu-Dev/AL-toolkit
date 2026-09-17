@@ -58,11 +58,11 @@ query($page:Int){
 							recursiveCall(userName,amount,Math.floor((minPage + currentPage - 1)/2),minPage,currentPage - 1,type);
 							return;
 						};
-					},"hohRank" + type + currentPage,60*60*1000
+					},"altoolkitRank" + type + currentPage,60*60*1000
 				);
 			};
 			recursiveCall(user,data.data.User.stats.watchedTime,1000,1,undefined,"anime");
 			recursiveCall(user,data.data.User.stats.chaptersRead,500,1,undefined,"manga");
-		},"hohRankStats" + user,2*60*1000
+		},"altoolkitRankStats" + user,2*60*1000
 	);
 }},

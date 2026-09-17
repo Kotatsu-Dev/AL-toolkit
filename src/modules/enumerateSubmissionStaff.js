@@ -20,7 +20,7 @@ exportModule({
 				let firstStaff = document.querySelector(".staff-row .col > .image[href=\"" + staff.href.replace("https://anilist.co","") + "\"]");
 				if(!firstStaff.previousSibling){
 					firstStaff.parentNode.insertBefore(
-						create("span","hohEnumerateStaff",1),
+						create("span","altoolkitEnumerateStaff",1),
 						firstStaff
 					)
 				}
@@ -31,7 +31,7 @@ exportModule({
 				}
 				else{
 					staff.parentNode.insertBefore(
-						create("span","hohEnumerateStaff",(enumerate + 1)),
+						create("span","altoolkitEnumerateStaff",(enumerate + 1)),
 						staff
 					)
 				}

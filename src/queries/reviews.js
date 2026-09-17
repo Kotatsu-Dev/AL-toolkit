@@ -40,7 +40,7 @@ let cache = {
 		list.slice(0,100).forEach((review,index) => {
 			let dataCel = create("p",false,false,datalist1);
 			create("span",false,(index + 1) + ". ",dataCel,"width:35px;display:inline-block;");
-			create("span","hohMonospace",wilson(review.rating,review.ratingAmount).left.toPrecision(3) + " ",dataCel);
+			create("span","altoolkitMonospace",wilson(review.rating,review.ratingAmount).left.toPrecision(3) + " ",dataCel);
 			let userName = "[error]";
 			if(review.user){
 				if(review.user.name){
@@ -56,7 +56,7 @@ let cache = {
 		list.slice(0,100).forEach((review,index) => {
 			let dataCel = create("p",false,false,datalist2);
 			create("span",false,(index + 1) + ". ",dataCel,"width:35px;display:inline-block;");
-			create("span","hohMonospace",wilson(review.rating,review.ratingAmount).right.toPrecision(3) + " ",dataCel);
+			create("span","altoolkitMonospace",wilson(review.rating,review.ratingAmount).right.toPrecision(3) + " ",dataCel);
 			let userName = "[error]";
 			if(review.user){
 				if(review.user.name){
@@ -71,7 +71,7 @@ let cache = {
 		cache.bestReviewers.slice(0,10).forEach((rev,index) => {
 			let dataCel = create("p",false,false,datalist3);
 			create("span",false,(index + 1) + ". ",dataCel,"width:35px;display:inline-block;");
-			create("span","hohMonospace",wilson(rev.rating,rev.ratingAmount).left.toPrecision(3) + " ",dataCel);
+			create("span","altoolkitMonospace",wilson(rev.rating,rev.ratingAmount).left.toPrecision(3) + " ",dataCel);
 			let userName = rev.name || "[private or deleted]";
 			let link = create("a",["link","newTab"],userName,dataCel,"color:rgb(var(--color-blue));");
 			link.href = "/user/" + rev.name || "removed"
@@ -81,7 +81,7 @@ let cache = {
 		cache.worstReviewers.slice(0,10).forEach((rev,index) => {
 			let dataCel = create("p",false,false,datalist4);
 			create("span",false,(index + 1) + ". ",dataCel,"width:35px;display:inline-block;");
-			create("span","hohMonospace",wilson(rev.rating,rev.ratingAmount).right.toPrecision(3) + " ",dataCel);
+			create("span","altoolkitMonospace",wilson(rev.rating,rev.ratingAmount).right.toPrecision(3) + " ",dataCel);
 			let userName = rev.name || "[private or deleted]";
 			let link = create("a",["link","newTab"],userName,dataCel,"color:rgb(var(--color-blue));");
 			link.href = "/user/" + rev.name || "removed"
@@ -93,7 +93,7 @@ let cache = {
 			profilicSum += rev.amount;
 			let dataCel = create("p",false,false,datalist5);
 			create("span",false,(index + 1) + ". ",dataCel,"width:35px;display:inline-block;");
-			create("span","hohMonospace",rev.amount + " ",dataCel);
+			create("span","altoolkitMonospace",rev.amount + " ",dataCel);
 			let userName = rev.name || "[private or deleted]";
 			let link = create("a",["link","newTab"],userName,dataCel,"color:rgb(var(--color-blue));");
 			link.href = "/user/" + rev.name || "removed";

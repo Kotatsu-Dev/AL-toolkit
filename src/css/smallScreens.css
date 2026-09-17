@@ -2,7 +2,7 @@
 	.substitution .container{
 		max-width: 1200px;
 	}
-	.hohStudioSubstitute{
+	.altoolkitStudioSubstitute{
 		grid-template-columns: repeat(2,1fr);
 	}
 }
@@ -36,31 +36,34 @@
 		width: calc(100% - 150px);
 		bottom: 7px;
 		display: flex;
+		justify-content: flex-end;
 	}
 	.home .activity-entry.activity-text > .wrap > .actions,
 	.user .activity-entry.activity-text > .wrap > .actions{
 		width: calc(100% - 150px);
 		bottom: 7px;
 		display: flex;
+		justify-content: flex-end;
 	}
 	.home .activity-entry > .wrap > .actions .action,
 	.user .activity-entry > .wrap > .actions .action{
-		flex: 50%;
+		flex: 0 0 auto;
+		min-width: 55px;
 		text-align: center;
 	}
 }
 @media(max-width: 760px){
-	#hohMALscore{
+	#altoolkitMALscore{
 		padding-right: 25px;
 	}
-	#hohMALscore .type{
+	#altoolkitMALscore .type{
 		font-weight: 400;
 	}
-	#hohMALscore .value{
+	#altoolkitMALscore .value{
 		color: rgb(var(--color-text));
 		font-size: 1.4rem;
 	}
-	.hohMediaImageContainer{
+	.altoolkitMediaImageContainer{
 		position: absolute;
 		right: -22px;
 		max-height: 30px;
@@ -68,32 +71,32 @@
 		overflow: scroll;
 		scrollbar-width: thin;
 	}
-	.hohUserImageSmall{
+	.altoolkitUserImageSmall{
 		display: none;
 	}
-	.hohMessageText{
+	.altoolkitMessageText{
 		margin-top: 30px!important;
 	}
-	.hohBackgroundUserCover{
+	.altoolkitBackgroundUserCover{
 		margin-top: 1px;
 	}
-	.hohMediaImageContainer > a{
+	.altoolkitMediaImageContainer > a{
 		height: 20px;
 	}
-	.hohMediaImage{
+	.altoolkitMediaImage{
 		height: 20px;
 		width: 20px;
 		margin-right: 0px
 	}
-	.hohNotification{
+	.altoolkitNotification{
 		margin-right: 23px;
 		font-size: 1.5rem;
 	}
-	.hohCommentsContainer{
+	.altoolkitCommentsContainer{
 		position: relative;
 		top: 70px;
 	}
-	.hohComments{
+	.altoolkitComments{
 		position: absolute;
 		right: -5px;
 		top: 5px;
@@ -106,16 +109,16 @@
 	.activity-feed .actions .action .count{
 		font-size: 1.6rem;
 	}
-	.hohDownload{
+	.altoolkitDownload{
 		top: 50px;
 	}
-	.media .hohDownload{
+	.media .altoolkitDownload{
 		top: 5px;
 	}
 	#dubNotice{
 		margin: 0px;
 	}
-	.hohFeedFilter .hohDescription{
+	.altoolkitFeedFilter .altoolkitDescription{
 		display: none;
 	}
 	.forum-feed .create-btn + .filter-group > a{
@@ -128,19 +131,19 @@
 		border-width: 1px;
 		border-color: rgb(var(--color-foreground));
 	}
-	.hohExtraFilters{
+	.altoolkitExtraFilters{
 		max-height: 250px;
 		overflow: auto;
 	}
 	.recommendations-wrap .actions .thumbs-down{
 		margin-right: 10px;
 	}
-	.relations.hohRelationStatusDots .hohStatusDot,
-	.recommendation-card .hohStatusDot{
+	.relations.altoolkitRelationStatusDots .altoolkitStatusDot,
+	.recommendation-card .altoolkitStatusDot{
 		position: relative;
 		transform: none;
 	}
-	.hohCategories::after{
+	.altoolkitCategories::after{
 		display: block;
 		color: rgb(var(--color-peach));
 		content: "On mobile? The 'mobile friendly' setting will probably make the script a lot less broken";
@@ -151,7 +154,7 @@
 	.media p.description:empty{
 		display: none;
 	}
-	.hohDisplayBox{
+	.altoolkitDisplayBox{
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -160,15 +163,15 @@
 		min-height: 100px!important;
 		height: 80%;
 	}
-	.hohDisplayBox .scrollableContent{
+	.altoolkitDisplayBox .scrollableContent{
 		padding: 10px;
 		padding-left: 0px;
 		padding-top: 15px;
 	}
-	.hohAdvancedDollar{
+	.altoolkitAdvancedDollar{
 		margin-left: 20px;
 	}
-	.hohAdvancedDollar:hover:before{
+	.altoolkitAdvancedDollar:hover:before{
 		right: 5%;
 	}
 	.title .notes{
@@ -199,19 +202,19 @@
 	.markdown-editor{
 		padding: 12px 2px!important;
 	}
-	.hohColourPicker{
+	.altoolkitColourPicker{
 		display: none;
 	}
 }
 @media(max-height: 500px){
-	.hohDisplayBox{
+	.altoolkitDisplayBox{
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		min-height: 100px!important;
 		height: 90%;
 	}
-	.hohDisplayBox .scrollableContent{
+	.altoolkitDisplayBox .scrollableContent{
 		padding: 10px;
 		padding-left: 0px;
 		padding-top: 15px;

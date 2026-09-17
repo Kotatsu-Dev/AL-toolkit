@@ -33,7 +33,7 @@ exportModule({
 		}
 		const data = await anilistAPI("query($id:Int){Media(id:$id){title{native english romaji} siteUrl}}", {
 			variables: {id},
-			cacheKey: "hohMediaLookup" + id,
+			cacheKey: "altoolkitMediaLookup" + id,
 			duration: 30*60*1000
 		})
 		if(data.errors){

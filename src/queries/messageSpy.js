@@ -2,7 +2,7 @@
 	miscResults.innerText = "";
 	let page = 1;
 	let results = create("div",false,false,miscResults);
-	let moreButton = create("button",["button","hohButton"],"Load more",miscResults);
+	let moreButton = create("button",["button","altoolkitButton"],"Load more",miscResults);
 	let getPage = function(page){
 		generalAPIcall(`
 query($page: Int){

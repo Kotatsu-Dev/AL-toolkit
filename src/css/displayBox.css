@@ -1,4 +1,4 @@
-.hohDisplayBox{
+.altoolkitDisplayBox{
 	position: fixed;
 	top: 80px;
 	left: 200px;
@@ -11,7 +11,7 @@
 	overflow: hidden;
 	filter: brightness(110%);
 }
-.hohDisplayBox .scrollableContent{
+.altoolkitDisplayBox .scrollableContent{
 	overflow: auto;
 	height: 100%;
 	scrollbar-width: thin;
@@ -20,7 +20,7 @@
 	padding-top: 35px;
 	padding-left: 15px;
 }
-.hohDisplayBoxClose{
+.altoolkitDisplayBoxClose{
 	position: absolute;
 	right: 15px;
 	top: 15px;
@@ -34,18 +34,17 @@
 	filter: drop-shadow(0 0 0.2rem crimson);
 	z-index: 20;
 }
-}
-.hohDisplayBoxClose:hover{
+.altoolkitDisplayBoxClose:hover{
 	filter: drop-shadow(0 0 0.75rem crimson);
 }
-.hohNewChapter .hohDisplayBoxClose{
+.altoolkitNewChapter .altoolkitDisplayBoxClose{
 	display: none;
 	top: 7px;
 }
-.hohNewChapter:hover .hohDisplayBoxClose{
+.altoolkitNewChapter:hover .altoolkitDisplayBoxClose{
 	display: inline;
 }
-.hohDisplayBoxTitle{
+.altoolkitDisplayBoxTitle{
 	position: absolute;
 	top: 5px;
 	left: 5px;

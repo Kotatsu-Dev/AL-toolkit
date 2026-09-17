@@ -1,6 +1,6 @@
 //begin "alias.js"
 const moreStyle = create("style");
-moreStyle.id = "conditional-" + script_type.toLowerCase() + "-styles";
+moreStyle.id = "conditional-" + scriptInfo.name.toLowerCase() + "-styles";
 moreStyle.type = "text/css";
 
 let createAlias = function(alias){
@@ -20,11 +20,8 @@ let createAlias = function(alias){
 ,.status > a.title${dataSelect}
 ,.role-card a.content${dataSelect} > .name{
 	visibility: hidden;
-	line-height: 0px;
-}
-.results.media a.title${dataSelect}
-,.home .status > a.title${dataSelect}{
-	font-size: 2%;
+	line-height: 0px!important;
+	font-size: 0px!important;
 }
 
 a.title${dataSelect}::before
@@ -37,6 +34,8 @@ a.title${dataSelect}::before
 ,.title > a${dataSelect}::before{
 	content:"${targetName}";
 	visibility: visible;
+	font-size: 1.4rem;
+	line-height: 1.15;
 }`;
 	}
 }

@@ -4,7 +4,7 @@ if(useScripts.browseSubmenu && useScripts.CSSverticalNav && whoAmI && !useScript
 		if(navThingy){
 			navThingy.classList.add("subMenuContainer");
 			navThingy.style = "position:relative;width:100%;min-height:50px;z-index:134;display:inline-flex;";
-			let subMenu = create("div","hohSubMenu",false,navThingy);
+			let subMenu = create("div","altoolkitSubMenu",false,navThingy);
 
 			[
 				{
@@ -38,7 +38,7 @@ if(useScripts.browseSubmenu && useScripts.CSSverticalNav && whoAmI && !useScript
 					vue: { name: 'Recommendations'}
 				}
 			].forEach(link => {
-				let element = create("a","hohSubMenuLink",translate(link.text),subMenu);
+				let element = create("a","altoolkitSubMenuLink",translate(link.text),subMenu);
 				element.href = link.href;
 				if(link.vue){
 					element.onclick = function(){

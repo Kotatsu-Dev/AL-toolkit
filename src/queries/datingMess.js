@@ -157,5 +157,5 @@
 			},
 			function(data){proc(data,"ANIME")}
 		)
-	},"hohIDlookup" + user.toLowerCase());
+	},"altoolkitIDlookup" + user.toLowerCase());
 }},

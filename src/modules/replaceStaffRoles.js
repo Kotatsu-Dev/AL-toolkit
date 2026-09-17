@@ -13,14 +13,14 @@ let URLstuff = location.pathname.match(/^\/staff\/(\d+)\/?.*/);
 if(!URLstuff){
 	return
 }
-let possibleGarbage = document.getElementById("hoh-media-roles");
+let possibleGarbage = document.getElementById("altoolkit-media-roles");
 if(possibleGarbage){
 	if(possibleGarbage.dataset.staffId === URLstuff[1]){
 		return
 	}
 	else{
 		possibleGarbage.remove();
-		let possibleFilterBar = document.querySelector(".hohFilterBar");
+		let possibleFilterBar = document.querySelector(".altoolkitFilterBar");
 		if(possibleFilterBar){
 			possibleFilterBar.remove()
 		}
@@ -32,7 +32,7 @@ if(!insertParent && !insertParentCharacters){
 	setTimeout(selfcaller	,200);
 	return;
 }
-insertParentCharacters.classList.add("hohSubstitute");
+insertParentCharacters.classList.add("altoolkitSubstitute");
 let substitution = false;
 if(!insertParent){
 	insertParent = create("div",["media-roles","container","substitution"],false,insertParentCharacters.parentNode);
@@ -42,32 +42,32 @@ else{
 	insertParent.classList.add("substitution")
 }
 insertParent.parentNode.classList.add("substitution");
-let hohCharacterRolesBox = create("div","#hoh-character-roles");
-let hohCharacterRolesHeader = create("h4",false,translate("$staff_voiceRoles"),hohCharacterRolesBox);
-hohCharacterRolesHeader.style.display = "none";
-let hohCharacterRoles = create("div","grid-wrap",false,hohCharacterRolesBox);
-hohCharacterRoles.style.margin = "10px";
+let altoolkitCharacterRolesBox = create("div","#altoolkit-character-roles");
+let altoolkitCharacterRolesHeader = create("h4",false,translate("$staff_voiceRoles"),altoolkitCharacterRolesBox);
+altoolkitCharacterRolesHeader.style.display = "none";
+let altoolkitCharacterRoles = create("div","grid-wrap",false,altoolkitCharacterRolesBox);
+altoolkitCharacterRoles.style.margin = "10px";
 
-let hohMediaRoles = create("div","#hoh-media-roles");
-hohMediaRoles.dataset.staffId = URLstuff[1];
-let hohMediaRolesAnimeHeader = create("h4",false,translate("$staff_animeRoles"),hohMediaRoles);
-hohMediaRolesAnimeHeader.style.display = "none";
-let hohMediaRolesAnime = create("div","grid-wrap",false,hohMediaRoles);
-hohMediaRolesAnime.style.margin = "10px";
+let altoolkitMediaRoles = create("div","#altoolkit-media-roles");
+altoolkitMediaRoles.dataset.staffId = URLstuff[1];
+let altoolkitMediaRolesAnimeHeader = create("h4",false,translate("$staff_animeRoles"),altoolkitMediaRoles);
+altoolkitMediaRolesAnimeHeader.style.display = "none";
+let altoolkitMediaRolesAnime = create("div","grid-wrap",false,altoolkitMediaRoles);
+altoolkitMediaRolesAnime.style.margin = "10px";
 
-let hohMediaRolesMangaHeader = create("h4",false,translate("$staff_mangaRoles"),hohMediaRoles);
-hohMediaRolesMangaHeader.style.display = "none";
-let hohMediaRolesManga = create("div","grid-wrap",false,hohMediaRoles);
-hohMediaRolesManga.style.margin = "10px";
+let altoolkitMediaRolesMangaHeader = create("h4",false,translate("$staff_mangaRoles"),altoolkitMediaRoles);
+altoolkitMediaRolesMangaHeader.style.display = "none";
+let altoolkitMediaRolesManga = create("div","grid-wrap",false,altoolkitMediaRoles);
+altoolkitMediaRolesManga.style.margin = "10px";
 //sort
-let hohMediaSort = create("div",["container","hohFilterBar"]);
-let sortText = create("span",false,translate("$staff_sort"),hohMediaSort);
-let sortSelect = create("select",false,false,hohMediaSort);
+let altoolkitMediaSort = create("div",["container","altoolkitFilterBar"]);
+let sortText = create("span",false,translate("$staff_sort"),altoolkitMediaSort);
+let sortSelect = create("select",false,false,altoolkitMediaSort);
 sortSelect.style.marginLeft = "5px";
-let filterSelect = create("input",false,false,hohMediaSort);
+let filterSelect = create("input",false,false,altoolkitMediaSort);
 filterSelect.setAttribute("list","staffRoles");
 filterSelect.placeholder = translate("$staff_filter_placeholder");
-let filterExplanation = create("abbr",false,"?",hohMediaSort,"margin-left:5px;cursor:pointer;");
+let filterExplanation = create("abbr",false,"?",altoolkitMediaSort,"margin-left:5px;cursor:pointer;");
 filterExplanation.title = translate("$staff_filterHelp");
 filterExplanation.onclick = function(){
 	let scrollableContent = createDisplayBox("min-width:400px;width:700px;");
@@ -77,12 +77,12 @@ Text in the field will be matched against all titles, roles, genres, tags, your 
 Regular expressions are permitted for titles.
 
 If you want to limit it to just one filter type, you can do it like "genre:mecha" or "status:watching"
-(status filtering only works if you have granted ${script_type} permission to view your list data)
+(status filtering only works if you have granted ${scriptInfo.name} permission to view your list data)
 
 The start year can also be a range like "2000-2005"`
 };
-let dataList = create("datalist","#staffRoles",false,hohMediaSort);
-let digestStats = create("span",false,false,hohMediaSort,"margin-left:100px;position:relative;");
+let dataList = create("datalist","#staffRoles",false,altoolkitMediaSort);
+let digestStats = create("span",false,false,altoolkitMediaSort,"margin-left:100px;position:relative;");
 let sortOptionAlpha = create("option",false,translate("$sort_alphabetical"),sortSelect);
 sortOptionAlpha.value = "alphabetical";
 let sortOptionChrono2 = create("option",false,translate("$sort_newest"),sortSelect);
@@ -103,15 +103,15 @@ if(useScripts.accessToken){
 }
 let autocomplete = new Set();
 sortSelect.value = useScripts.staffRoleOrder;
-hohMediaSort.style.marginBottom = "10px";
-hohMediaSort.style.marginTop = "3px";
+altoolkitMediaSort.style.marginBottom = "10px";
+altoolkitMediaSort.style.marginTop = "3px";
 //end sort
 let initPerformed = false;
 let UIinit = function(){
 	initPerformed = true;
-	insertParent.parentNode.insertBefore(hohMediaSort,insertParentCharacters);
-	insertParent.insertBefore(hohMediaRoles,insertParent.children[0]);
-	insertParentCharacters.insertBefore(hohCharacterRolesBox,insertParentCharacters.children[0]);
+	insertParent.parentNode.insertBefore(altoolkitMediaSort,insertParentCharacters);
+	insertParent.insertBefore(altoolkitMediaRoles,insertParent.children[0]);
+	insertParentCharacters.insertBefore(altoolkitCharacterRolesBox,insertParentCharacters.children[0]);
 	if(document.querySelector(".filters.container")){
 		document.querySelector(".filters.container").remove()
 	}
@@ -339,20 +339,20 @@ let listRenderer = function(){
 		voiceRolesList.sort(animeSorter);
 		mangaRolesList.sort(mangaSorter);
 	}
-	hohMediaRolesAnimeHeader.style.display = "none";
-	hohMediaRolesMangaHeader.style.display = "none";
-	hohCharacterRolesHeader.style.display = "none";
+	altoolkitMediaRolesAnimeHeader.style.display = "none";
+	altoolkitMediaRolesMangaHeader.style.display = "none";
+	altoolkitCharacterRolesHeader.style.display = "none";
 	if(animeRolesList.length){
-		hohMediaRolesAnimeHeader.style.display = "inline-block";
-		hohMediaRolesAnimeHeader.style.marginBottom = 0;
+		altoolkitMediaRolesAnimeHeader.style.display = "inline-block";
+		altoolkitMediaRolesAnimeHeader.style.marginBottom = 0;
 	}
 	if(mangaRolesList.length){
-		hohMediaRolesMangaHeader.style.display = "inline-block";
-		hohMediaRolesMangaHeader.style.marginBottom = 0;
+		altoolkitMediaRolesMangaHeader.style.display = "inline-block";
+		altoolkitMediaRolesMangaHeader.style.marginBottom = 0;
 	}
 	if(voiceRolesList.length){
-		hohCharacterRolesHeader.style.display = "inline-block";
-		hohCharacterRolesHeader.style.marginBottom = 0;
+		altoolkitCharacterRolesHeader.style.display = "inline-block";
+		altoolkitCharacterRolesHeader.style.marginBottom = 0;
 	}
 	let createRoleCard = function(media,type){
 		let roleCard = create("div",["role-card","view-media"]);
@@ -402,16 +402,16 @@ let listRenderer = function(){
 		}).join(", "),content);
 		role.title = media.role.join("\n");
 		if(sortSelect.value === "popularity"){
-			create("span","hohStaffPageData",media.popularity,content).title = "Popularity"
+			create("span","altoolkitStaffPageData",media.popularity,content).title = "Popularity"
 		}
 		else if(sortSelect.value === "score"){
-			create("span","hohStaffPageData",media.score || "",content).title = "Score"
+			create("span","altoolkitStaffPageData",media.score || "",content).title = "Score"
 		}
 		else if(sortSelect.value === "length"){
-			create("span","hohStaffPageData",media.episodes || media.chapers || media.volumes || "",content).title = "Length"
+			create("span","altoolkitStaffPageData",media.episodes || media.chapers || media.volumes || "",content).title = "Length"
 		}
 		else if(sortSelect.value === "myProgress"){
-			let staffPageData = create("span","hohStaffPageData",false,content)
+			let staffPageData = create("span","altoolkitStaffPageData",false,content)
 			staffPageData.title = "Progress";
 			if(type === "manga"){
 				staffPageData.innerText = mangaValueFunction(media).chapters || ""
@@ -424,10 +424,10 @@ let listRenderer = function(){
 			}
 		}
 		else if(sortSelect.value === "myScore"){
-			create("span","hohStaffPageData",(media.myStatus ? media.myStatus.scoreRaw : null) || "",content).title = "My Score"
+			create("span","altoolkitStaffPageData",(media.myStatus ? media.myStatus.scoreRaw : null) || "",content).title = "My Score"
 		}
 		if(media.myStatus){
-			let statusDot = create("div",["hohStatusDot","hohStatusDotRight"],false,roleCard);
+			let statusDot = create("div",["altoolkitStatusDot","altoolkitStatusDotRight"],false,roleCard);
 			statusDot.style.background = distributionColours[media.myStatus.status];
 			statusDot.title = media.myStatus.status.toLowerCase();
 			if(media.myStatus.status === "CURRENT"){
@@ -450,14 +450,14 @@ let listRenderer = function(){
 	Object.keys(distributionColours).forEach(
 		status => distribution[status] = 0
 	);
-	removeChildren(hohCharacterRoles)
+	removeChildren(altoolkitCharacterRoles)
 	Array.from(insertParentCharacters.children).forEach(child => {
-		if(child.id !== "hoh-character-roles"){
+		if(child.id !== "altoolkit-character-roles"){
 			child.style.display = "none";
 		}
 	})
 	Array.from(insertParent.children).forEach(child => {
-		if(child.id !== "hoh-media-roles"){
+		if(child.id !== "altoolkit-media-roles"){
 			child.style.display = "none"
 		}
 	})
@@ -531,21 +531,21 @@ let listRenderer = function(){
 			if(sortSelect.value === "chronological"){
 				if((anime.startDate.year || anime.endDate.year) > voiceYear){
 					voiceYear = anime.startDate.year || anime.endDate.year;
-					create("h3","hohYearHeading",voiceYear,hohCharacterRoles)
+					create("h3","altoolkitYearHeading",voiceYear,altoolkitCharacterRoles)
 				}
 				else if(!(anime.startDate.year || anime.endDate.year) && voiceYear > 0){
 					animeYear = 0;
-					create("h3","hohYearHeading","No date",hohCharacterRoles)
+					create("h3","altoolkitYearHeading","No date",altoolkitCharacterRoles)
 				}
 			}
 			else if(sortSelect.value === "chronological2"){
 				if((anime.startDate.year || anime.endDate.year) < voiceYear){
 					voiceYear = anime.startDate.year || anime.endDate.year;
-					create("h3","hohYearHeading",voiceYear,hohCharacterRoles)
+					create("h3","altoolkitYearHeading",voiceYear,altoolkitCharacterRoles)
 				}
 				else if(!(anime.startDate.year || anime.endDate.year) && voiceYear > 0){
 					animeYear = 0;
-					create("h3","hohYearHeading","No date",hohCharacterRoles)
+					create("h3","altoolkitYearHeading","No date",altoolkitCharacterRoles)
 				}
 			}
 			let roleCard = createRoleCard(anime,"anime");
@@ -561,7 +561,7 @@ let listRenderer = function(){
 			cheapReload(content,{path: content.pathname})
 			let name = create("a","name",anime.character.name,content);
 			roleCard.insertBefore(character,roleCard.children[0]);
-			hohCharacterRoles.appendChild(roleCard);
+			altoolkitCharacterRoles.appendChild(roleCard);
 			if(anime.myStatus && !alreadyCounted.has(anime.id)){
 				distribution[anime.myStatus.status]++;
 				if(anime.myStatus.status === "CURRENT"){
@@ -576,7 +576,7 @@ let listRenderer = function(){
 			}
 		}
 	});
-	removeChildren(hohMediaRolesAnime)
+	removeChildren(altoolkitMediaRolesAnime)
 	let animeYear = 0;
 	if(sortSelect.value === "chronological2"){
 		animeYear = 3000
@@ -598,25 +598,25 @@ let listRenderer = function(){
 			if(sortSelect.value === "chronological"){
 				if((anime.startDate.year || anime.endDate.year) > animeYear){
 					animeYear = anime.startDate.year || anime.endDate.year;
-					create("h3","hohYearHeading",animeYear,hohMediaRolesAnime)
+					create("h3","altoolkitYearHeading",animeYear,altoolkitMediaRolesAnime)
 				}
 				else if(!(anime.startDate.year || anime.endDate.year) && animeYear > 0){
 					animeYear = 0;
-					create("h3","hohYearHeading","No date",hohMediaRolesAnime)
+					create("h3","altoolkitYearHeading","No date",altoolkitMediaRolesAnime)
 				}
 			}
 			else if(sortSelect.value === "chronological2"){
 				if((anime.startDate.year || anime.endDate.year) < animeYear){
 					animeYear = anime.startDate.year || anime.endDate.year;
-					create("h3","hohYearHeading",animeYear,hohMediaRolesAnime)
+					create("h3","altoolkitYearHeading",animeYear,altoolkitMediaRolesAnime)
 				}
 				else if(!(anime.startDate.year || anime.endDate.year) && animeYear > 0){
 					animeYear = 0;
-					create("h3","hohYearHeading","No date",hohMediaRolesAnime)
+					create("h3","altoolkitYearHeading","No date",altoolkitMediaRolesAnime)
 				}
 			}
 			let roleCard = createRoleCard(anime,"anime");
-			hohMediaRolesAnime.appendChild(roleCard);
+			altoolkitMediaRolesAnime.appendChild(roleCard);
 			if(anime.myStatus && !alreadyCounted.has(anime.id)){
 				distribution[anime.myStatus.status]++;
 				if(anime.myStatus.status === "CURRENT"){
@@ -631,7 +631,7 @@ let listRenderer = function(){
 			}
 		}
 	});
-	removeChildren(hohMediaRolesManga);
+	removeChildren(altoolkitMediaRolesManga);
 	let mangaYear = 0;
 	if(sortSelect.value === "chronological2"){
 		mangaYear = 3000
@@ -653,25 +653,25 @@ let listRenderer = function(){
 			if(sortSelect.value === "chronological"){
 				if((manga.startDate.year || manga.endDate.year) > mangaYear){
 					mangaYear = manga.startDate.year || manga.endDate.year;
-					create("h3","hohYearHeading",mangaYear,hohMediaRolesManga)
+					create("h3","altoolkitYearHeading",mangaYear,altoolkitMediaRolesManga)
 				}
 				else if(!(manga.startDate.year || manga.endDate.year) && mangaYear > 0){
 					mangaYear = 0;
-					create("h3","hohYearHeading","No date",hohMediaRolesManga)
+					create("h3","altoolkitYearHeading","No date",altoolkitMediaRolesManga)
 				}
 			}
 			else if(sortSelect.value === "chronological2"){
 				if((manga.startDate.year || manga.endDate.year) < mangaYear){
 					mangaYear = manga.startDate.year || manga.endDate.year;
-					create("h3","hohYearHeading",mangaYear,hohMediaRolesManga)
+					create("h3","altoolkitYearHeading",mangaYear,altoolkitMediaRolesManga)
 				}
 				else if(!(manga.startDate.year || manga.endDate.year) && mangaYear > 0){
 					mangaYear = 0;
-					create("h3","hohYearHeading","No date",hohMediaRolesManga)
+					create("h3","altoolkitYearHeading","No date",altoolkitMediaRolesManga)
 				}
 			}
 			let roleCard = createRoleCard(manga,"manga");
-			hohMediaRolesManga.appendChild(roleCard);
+			altoolkitMediaRolesManga.appendChild(roleCard);
 			if(manga.myStatus){
 				distribution[manga.myStatus.status]++;
 				if(manga.myStatus.status === "CURRENT"){
@@ -714,7 +714,7 @@ let listRenderer = function(){
 		let statusList = create("span","#statusList",false,digestStats,"position: absolute;top: -2px;margin-left: 20px;width: 300px;");
 		semmanticStatusOrder.forEach(status => {
 			if(distribution[status]){
-				let statusSumDot = create("div","hohSummableStatus",distribution[status],statusList);
+				let statusSumDot = create("div","altoolkitSummableStatus",distribution[status],statusList);
 				statusSumDot.style.background = distributionColours[status];
 				let title = capitalize(translate("$mediaStatus_" + status.toLowerCase()));
 				if(status === "CURRENT" && !animeCurrentFlag){

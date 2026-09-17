@@ -39,9 +39,9 @@ query($page: Int!){
 		}
 		data = data.data.Page.staff;
 		data.forEach(function(staff,index){
-			create("span","hohFavCountBrowse",staff.favourites,resultsToTag[(page - 1)*data.length + index]).title = "Favourites";
+			create("span","altoolkitFavCountBrowse",staff.favourites,resultsToTag[(page - 1)*data.length + index]).title = "Favourites";
 			if(staff.anime.pageInfo.total + staff.manga.pageInfo.total > staff.characters.pageInfo.total){
-				let roleLine = create("div","hohRoleLine",false,resultsToTag[(page - 1)*data.length + index]);
+				let roleLine = create("div","altoolkitRoleLine",false,resultsToTag[(page - 1)*data.length + index]);
 				roleLine.style.backgroundImage =
 				"linear-gradient(to right,hsla(" + Math.round(
 					120*(1 + staff.anime.pageInfo.total/(staff.anime.pageInfo.total + staff.manga.pageInfo.total))

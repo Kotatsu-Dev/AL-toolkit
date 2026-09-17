@@ -20,7 +20,7 @@ function addMoreStats(){
 	if(!document.URL.match(/\/stats\/?/)){
 		return
 	}
-	if(document.querySelector(".hohStatsTrigger")){
+	if(document.querySelector(".altoolkitStatsTrigger")){
 		return
 	}
 	let filterGroup = document.querySelector(".filter-wrap");
@@ -30,8 +30,8 @@ function addMoreStats(){
 		},200);//takes some time to load
 		return;
 	}
-	let hohStats;
-	let hohGenres;
+	let altoolkitStats;
+	let altoolkitGenres;
 	let regularFilterHeading;
 	let regularGenresTable;
 	let regularTagsTable;
@@ -40,17 +40,17 @@ function addMoreStats(){
 	let animeStaff;
 	let mangaStaff;
 	let animeStudios;
-	let hohStatsTrigger = create("span","hohStatsTrigger",translate("$stats_moreStats_title"),filterGroup);
-	let hohGenresTrigger = create("span","hohStatsTrigger",translate("$stats_genresTags_title"),filterGroup);
-	let hohSiteStats = create("a","hohStatsTrigger",translate("$stats_siteStats_title"),filterGroup);
-	hohSiteStats.href = "/site-stats";
-	cheapReload(hohSiteStats,{name: "SiteStats"});
+	let altoolkitStatsTrigger = create("span","altoolkitStatsTrigger",translate("$stats_moreStats_title"),filterGroup);
+	let altoolkitGenresTrigger = create("span","altoolkitStatsTrigger",translate("$stats_genresTags_title"),filterGroup);
+	let altoolkitSiteStats = create("a","altoolkitStatsTrigger",translate("$stats_siteStats_title"),filterGroup);
+	altoolkitSiteStats.href = "/site-stats";
+	cheapReload(altoolkitSiteStats,{name: "SiteStats"});
 	let generateStatPage = async function(){
-		let personalStats = create("div","#personalStats",translate("$stats_loadingAnime"),hohStats);
-		let personalStatsManga = create("div","#personalStatsManga",translate("$stats_loadingManga"),hohStats);
-		let miscQueries = create("div","#miscQueries",false,hohStats);
-		create("hr","hohSeparator",false,miscQueries);
-		create("h1","hohStatHeading",translate("$stats_varousStats_heading"),miscQueries);
+		let personalStats = create("div","#personalStats",translate("$stats_loadingAnime"),altoolkitStats);
+		let personalStatsManga = create("div","#personalStatsManga",translate("$stats_loadingManga"),altoolkitStats);
+		let miscQueries = create("div","#miscQueries",false,altoolkitStats);
+		create("hr","altoolkitSeparator",false,miscQueries);
+		create("h1","altoolkitStatHeading",translate("$stats_varousStats_heading"),miscQueries);
 		let miscInput = create("div",false,false,miscQueries,"padding-top:10px;padding-bottom:10px;");
 		let miscOptions = create("div","#queryOptions",false,miscQueries);
 		let miscResults = create("div","#queryResults",false,miscQueries);
@@ -68,7 +68,7 @@ function addMoreStats(){
 			m4_include(queries/queries.js)
 		];
 		let miscInputSelect = create("select",false,false,miscInput);
-		let miscInputButton = create("button",["button","hohButton"],translate("$button_run"),miscInput);
+		let miscInputButton = create("button",["button","altoolkitButton"],translate("$button_run"),miscInput);
 		availableQueries.forEach(que => {
 			create("option",false,que.name,miscInputSelect).value = que.name
 		});
@@ -331,7 +331,7 @@ function addMoreStats(){
 			tableLocation.innerText = "";
 			let hasScores = data.some(elem => elem.average);
 			let header = create("p",false,formatter.title);
-			let tableContent = create("div",["table","hohTable"]);
+			let tableContent = create("div",["table","altoolkitTable"]);
 			let headerRow = create("div",["header","row"],false,tableContent);
 			let indexAccumulator = 0;
 			formatter.headings.forEach(function(heading){
@@ -389,7 +389,7 @@ function addMoreStats(){
 					data[i].list.sort(formatter.sorting[formatter.focus]);
 				}
 				data[i].list.forEach((nil,ind) => {
-					let secondaryRow = create("div",["row","hohSecondaryRow"]);
+					let secondaryRow = create("div",["row","altoolkitSecondaryRow"]);
 					formatter.celData.forEach(celData => {
 						let cel = create("div");
 						celData(cel,data[i].list,ind,false,isTag);
@@ -403,17 +403,17 @@ function addMoreStats(){
 			tableLocation.appendChild(header);
 			tableLocation.appendChild(tableContent);
 			if(autoHide){
-				let tableHider = create("span",["hohMonospace","hohTableHider"],"[-]",header);
+				let tableHider = create("span",["altoolkitMonospace","altoolkitTableHider"],"[-]",header);
 				let regularTagsSetting = create("p",false,false,tableLocation);
 				let regularTagsSettingLabel = create("span",false,translate("$stats_regularTags"),regularTagsSetting);
 				let regularTagsSettingContent = create("span",false,false,regularTagsSetting);
 				let regularTagsSettingNew = create("input",false,false,regularTagsSetting);
-				let regularTagsSettingAdd = create("button",["hohButton","button"],"+",regularTagsSetting);
+				let regularTagsSettingAdd = create("button",["altoolkitButton","button"],"+",regularTagsSetting);
 				let regularTags = JSON.parse(localStorage.getItem("regularTags" + formatter.title)) || [];
 				for(let i=0;i<regularTags.length;i++){
-					let tag = create("span","hohRegularTag",false,regularTagsSettingContent);
+					let tag = create("span","altoolkitRegularTag",false,regularTagsSettingContent);
 					let tagContent = create("span",false,regularTags[i],tag);
-					let tagCross = create("span","hohCross",svgAssets.cross,tag);
+					let tagCross = create("span","altoolkitCross",svgAssets.cross,tag);
 					tagCross.regularTag = regularTags[i] + "";
 					tagCross.addEventListener("click",function(){
 						for(let j=0;j<regularTags.length;j++){
@@ -433,9 +433,9 @@ function addMoreStats(){
 					}
 					newTagName = capitalize(newTagName);
 					regularTags.push(newTagName);
-					let tag = create("span","hohRegularTag");
+					let tag = create("span","altoolkitRegularTag");
 					let tagContent = create("span",false,newTagName,tag);
-					let tagCross = create("span","hohCross",svgAssets.cross,tag);
+					let tagCross = create("span","altoolkitCross",svgAssets.cross,tag);
 					tagCross.regularTag = newTagName + "";
 					tagCross.addEventListener("click",function(){
 						for(let j=0;j<regularTags.length;j++){
@@ -559,10 +559,10 @@ function addMoreStats(){
 									nameCellTag.href += "&adult=true"
 								}
 							}
-							let nameCellStatus = create("span","hohSummableStatusContainer",false,cel);
+							let nameCellStatus = create("span","altoolkitSummableStatusContainer",false,cel);
 							semmanticStatusOrder.forEach(function(status){
 								if(data[index].status[status]){
-									let statusSumDot = create("div","hohSummableStatus",data[index].status[status],nameCellStatus);
+									let statusSumDot = create("div","altoolkitSummableStatus",data[index].status[status],nameCellStatus);
 									statusSumDot.style.background = distributionColours[status];
 									statusSumDot.title = data[index].status[status] + " " + capitalize(statusTypes[status]);
 									if(data[index].status[status] > 99){
@@ -586,7 +586,7 @@ function addMoreStats(){
 							})
 						}
 						else{
-							let nameCellTag = create("a",["title","hohNameCel"],data[index].name,cel);
+							let nameCellTag = create("a",["title","altoolkitNameCel"],data[index].name,cel);
 							if(data[index].type === "ANIME"){
 								nameCellTag.href = "/anime/" + data[index].mediaId + "/";
 								nameCellTag.style.color = "rgb(var(--color-blue))"
@@ -602,7 +602,7 @@ function addMoreStats(){
 							cel.innerText = data[index].list.length
 						}
 						else{
-							let statusDot = create("div","hohStatusDot",false,cel);
+							let statusDot = create("div","altoolkitStatusDot",false,cel);
 							statusDot.style.backgroundColor = distributionColours[data[index].status];
 							statusDot.title = data[index].status.toLowerCase();
 							if(data[index].status === "COMPLETED"){
@@ -666,21 +666,21 @@ function addMoreStats(){
 					let filterWrap = create("div",false,false,regularFilterHeading);
 					create("p",false,"tip: click a row to show individual media entries",regularFilterHeading);
 					let filterLabel = create("span",false,translate("$filters"),filterWrap);
-					let tableHider = create("span",["hohMonospace","hohTableHider"],"[+]",filterWrap);
+					let tableHider = create("span",["altoolkitMonospace","altoolkitTableHider"],"[+]",filterWrap);
 					let filters = create("div",false,false,filterWrap,"display: none");
 
-					let animeSetting = create("p","hohSetting",false,filters);
+					let animeSetting = create("p","altoolkitSetting",false,filters);
 					let input_a = createCheckbox(animeSetting);
 					input_a.checked = true;
 					create("span",false,translate("$generic_anime"),animeSetting);
 
-					let mangaSetting = create("p","hohSetting",false,filters);
+					let mangaSetting = create("p","altoolkitSetting",false,filters);
 					let input_m = createCheckbox(mangaSetting);
 					input_m.checked = true;
 					create("span",false,translate("$generic_manga"),mangaSetting);
 
-					let minSetting = create("p","hohSetting",false,filters);
-					let min_s_input = create("input","hohNativeInput",false,minSetting,"width: 80px;margin-right: 10px;");
+					let minSetting = create("p","altoolkitSetting",false,filters);
+					let min_s_input = create("input","altoolkitNativeInput",false,minSetting,"width: 80px;margin-right: 10px;");
 					min_s_input.type = "number";
 					min_s_input.min = 0;
 					min_s_input.max = 100;
@@ -688,16 +688,16 @@ function addMoreStats(){
 					min_s_input.value = 0;
 					create("span",false,"Minimum rating",minSetting);
 
-					let minEpisodeSetting = create("p","hohSetting",false,filters);
-					let min_e_input = create("input","hohNativeInput",false,minEpisodeSetting,"width: 80px;margin-right: 10px;");
+					let minEpisodeSetting = create("p","altoolkitSetting",false,filters);
+					let min_e_input = create("input","altoolkitNativeInput",false,minEpisodeSetting,"width: 80px;margin-right: 10px;");
 					min_e_input.type = "number";
 					min_e_input.min = 0;
 					min_e_input.step = 1;
 					min_e_input.value = 0;
 					create("span",false,"Minimum episode progress",minEpisodeSetting);
 
-					let minChapterSetting = create("p","hohSetting",false,filters);
-					let min_c_input = create("input","hohNativeInput",false,minChapterSetting,"width: 80px;margin-right: 10px;");
+					let minChapterSetting = create("p","altoolkitSetting",false,filters);
+					let min_c_input = create("input","altoolkitNativeInput",false,minChapterSetting,"width: 80px;margin-right: 10px;");
 					min_c_input.type = "number";
 					min_c_input.min = 0;
 					min_c_input.step = 1;
@@ -706,7 +706,7 @@ function addMoreStats(){
 
 					let statusFilter = {};
 					create("p",false,"Status",filters);
-					let statusLine = create("p","hohSetting",false,filters);
+					let statusLine = create("p","altoolkitSetting",false,filters);
 					Object.keys(statusTypes).sort().forEach(key => {
 						statusFilter[key] = true;
 						let input_status = createCheckbox(statusLine);
@@ -719,8 +719,8 @@ function addMoreStats(){
 
 					let formatFilter = {};
 					create("p",false,"Format",filters);
-					let formatLine_a = create("p","hohSetting",false,filters);
-					let formatLine_m = create("p","hohSetting",false,filters);
+					let formatLine_a = create("p","altoolkitSetting",false,filters);
+					let formatLine_m = create("p","altoolkitSetting",false,filters);
 					Object.keys(distributionFormats).forEach(key => {
 						formatFilter[key] = true;
 						let input_format;
@@ -739,7 +739,7 @@ function addMoreStats(){
 					})
 
 					create("p",false,"Aggregate mean score calculation",filters);
-					let modeSelect = create("select","hohSetting",false,filters);
+					let modeSelect = create("select","altoolkitSetting",false,filters);
 					create("option",false,"Average",modeSelect).value = "average";
 					create("option",false,"Median",modeSelect).value = "median";
 					create("option",false,"Max",modeSelect).value = "max";
@@ -776,7 +776,7 @@ function addMoreStats(){
 
 					create("br",false,false,filters);
 
-					let applyButton = create("button",["hohButton","button"],translate("$button_submit"),filters);
+					let applyButton = create("button",["altoolkitButton","button"],translate("$button_submit"),filters);
 					applyButton.onclick = function(){
 						let base_media = collectedMedia;
 						if(!input_a.checked){
@@ -839,22 +839,22 @@ function addMoreStats(){
 					mixedFormatter,
 					regularGenresTable
 				);
-				hohGenresTrigger.removeEventListener("mouseover",drawer);
+				altoolkitGenresTrigger.removeEventListener("mouseover",drawer);
 			}
-			hohGenresTrigger.addEventListener("mouseover",drawer);
-			if(hohGenresTrigger.classList.contains("hohActive")){
+			altoolkitGenresTrigger.addEventListener("mouseover",drawer);
+			if(altoolkitGenresTrigger.classList.contains("altoolkitActive")){
 				drawer()
 			}
 		};
 //get anime list
 		let personalStatsCallback = async function(data,filterSettings,onlyStats){
 			personalStats.innerText = "";
-			create("hr","hohSeparator",false,personalStats);
+			create("hr","altoolkitSeparator",false,personalStats);
 
 			let regularFilterHeading = create("div",false,false,personalStats,"margin-bottom: 10px;");
 			let filterWrap = create("div",false,false,regularFilterHeading);
 			let filterLabel = create("span",false,translate("$filters"),filterWrap);
-			let tableHider = create("span",["hohMonospace","hohTableHider"],"[+]",filterWrap);
+			let tableHider = create("span",["altoolkitMonospace","altoolkitTableHider"],"[+]",filterWrap);
 			let filters = create("div",false,false,filterWrap,"display: none");
 
 			let listFilterHeading = create("p",false,translate("$filters_lists"),filters);
@@ -862,7 +862,7 @@ function addMoreStats(){
 				lists: {}
 			};
 			data.data.MediaListCollection.lists.forEach(mediaList => {
-				let listSetting = create("p","hohSetting",false,filters);
+				let listSetting = create("p","altoolkitSetting",false,filters);
 				let listSetting_input = createCheckbox(listSetting);
 				if(!hasOwn(filterSettings.lists, mediaList.name) || filterSettings.lists[mediaList.name]){
 					listSetting_input.checked = true;
@@ -874,7 +874,7 @@ function addMoreStats(){
 				create("span",false,mediaList.name,listSetting);
 			});
 
-			let applyButton = create("button",["hohButton","button"],translate("$button_submit"),filters);
+			let applyButton = create("button",["altoolkitButton","button"],translate("$button_submit"),filters);
 			applyButton.onclick = function(){
 				personalStatsCallback(data,filterSettings,true);
 			}
@@ -890,7 +890,7 @@ function addMoreStats(){
 				}
 			}
 
-			create("h1","hohStatHeading",translate("$stats_anime_heading",user),personalStats);
+			create("h1","altoolkitStatHeading",translate("$stats_anime_heading",user),personalStats);
 			let list = returnList({
 				data: {
 					MediaListCollection: {
@@ -902,8 +902,8 @@ function addMoreStats(){
 			});
 			let scoreList = list.filter(element => element.scoreRaw);
 			if(whoAmI && whoAmI !== user){
-				let compatabilityButton = create("button",["button","hohButton"],"Compatibility",personalStats);
-				let compatLocation = create("div","#hohCheckCompat",false,personalStats);
+				let compatabilityButton = create("button",["button","altoolkitButton"],"Compatibility",personalStats);
+				let compatLocation = create("div","#altoolkitCheckCompat",false,personalStats);
 				compatabilityButton.onclick = function(){
 					compatLocation.innerText = translate("$loading");
 					compatLocation.style.marginTop = "5px";
@@ -916,9 +916,9 @@ function addMoreStats(){
 				};
 			}
 			let addStat = function(text,value,comment){//value,value,html
-				let newStat = create("p","hohStat",false,personalStats);
+				let newStat = create("p","altoolkitStat",false,personalStats);
 				create("span",false,text,newStat);
-				create("span","hohStatValue",value,newStat);
+				create("span","altoolkitStatValue",value,newStat);
 				if(comment){
 					create("span",false,false,newStat)
 						.innerText = comment
@@ -1165,10 +1165,10 @@ function addMoreStats(){
 						if(isPrimary){
 							let nameCellCount = create("div","count",(index+1),cel);
 							let nameCellTag = create("a",false,data[index].name,cel,"cursor:pointer;");
-							let nameCellStatus = create("span","hohSummableStatusContainer",false,cel);
+							let nameCellStatus = create("span","altoolkitSummableStatusContainer",false,cel);
 							semmanticStatusOrder.forEach(function(status){
 								if(data[index].status && data[index].status[status]){
-									let statusSumDot = create("div","hohSummableStatus",data[index].status[status],nameCellStatus);
+									let statusSumDot = create("div","altoolkitSummableStatus",data[index].status[status],nameCellStatus);
 									statusSumDot.style.background = distributionColours[status];
 									statusSumDot.title = data[index].status[status] + " " + capitalize(status.toLowerCase());
 									if(data[index].status[status] > 99){
@@ -1192,7 +1192,7 @@ function addMoreStats(){
 							})
 						}
 						else{
-							create("a","hohNameCel",data[index].name,cel)
+							create("a","altoolkitNameCel",data[index].name,cel)
 								.href = "/anime/" + data[index].mediaId + "/" + safeURL(data[index].name)
 						}
 					},
@@ -1201,7 +1201,7 @@ function addMoreStats(){
 							cel.innerText = data[index].list.length
 						}
 						else{
-							let statusDot = create("div","hohStatusDot",false,cel);
+							let statusDot = create("div","altoolkitStatusDot",false,cel);
 							statusDot.style.backgroundColor = distributionColours[data[index].status];
 							statusDot.title = data[index].status.toLowerCase();
 							if(data[index].status === "COMPLETED"){
@@ -1350,12 +1350,12 @@ function addMoreStats(){
 				listOfTags = listOfTags.filter(a => a.list.length >= 3)
 			}
 			semaPhoreAnime = list;
-	if(script_type !== "Boneless"){
+	if(shipFullStatTables){
 			drawTable(listOfTags,animeFormatter,regularAnimeTable,{isTag: true,autoHide: false});
 			nativeTagsReplacer();
 			const staffData = await anilistAPI(queryMediaListStaff, {
 				variables: {name: user,listType: "ANIME"},
-				cacheKey: "hohListCacheAnimeStaff" + user,
+				cacheKey: "altoolkitListCacheAnimeStaff" + user,
 				duration: 15*60*1000
 			})
 			if(staffData.errors){
@@ -1412,7 +1412,7 @@ function addMoreStats(){
 			let drawStaffList = function(){
 				removeChildren(animeStaff)
 				animeStaff.innerText = "";
-				let table        = create("div",["table","hohTable","hohNoPointer"],false,animeStaff);
+				let table        = create("div",["table","altoolkitTable","altoolkitNoPointer"],false,animeStaff);
 				let headerRow    = create("div",["header","row","good"],false,table);
 				let nameHeading  = create("div",false,translate("$stats_name"),headerRow,"cursor:pointer;");
 				let countHeading = create("div",false,translate("$stats_count"),headerRow,"cursor:pointer;");
@@ -1433,8 +1433,8 @@ function addMoreStats(){
 					let timeCel = create("div",false,formatTime(staff.watchedDuration*60),row);
 					timeCel.title = (staff.watchedDuration/60).roundPlaces(1) + " hours";
 				});
-				let csvButton = create("button",["csvExport","button","hohButton"],"CSV data",animeStaff,"margin-top:10px;");
-				let jsonButton = create("button",["jsonExport","button","hohButton"],"JSON data",animeStaff,"margin-top:10px;");
+				let csvButton = create("button",["csvExport","button","altoolkitButton"],"CSV data",animeStaff,"margin-top:10px;");
+				let jsonButton = create("button",["jsonExport","button","altoolkitButton"],"JSON data",animeStaff,"margin-top:10px;");
 				csvButton.onclick = function(){
 					let csvContent = 'Staff,Count,"Mean Score","Time Watched"\n';
 					staffList.forEach(staff => {
@@ -1574,7 +1574,7 @@ function addMoreStats(){
 			let drawStudioList = function(){
 				removeChildren(animeStudios)
 				animeStudios.innerText = "";
-				let table = create("div",["table","hohTable"],false,animeStudios);
+				let table = create("div",["table","altoolkitTable"],false,animeStudios);
 				let headerRow = create("div",["header","row","good"],false,table);
 				let nameHeading = create("div",false,translate("$stats_name"),headerRow,"cursor:pointer;");
 				let countHeading = create("div",false,translate("$stats_count"),headerRow,"cursor:pointer;");
@@ -1591,11 +1591,11 @@ function addMoreStats(){
 					if(!studio.isAnimationStudio){
 						studioLink.style.color = "rgb(var(--color-green))"
 					}
-					let nameCellStatus = create("span","hohSummableStatusContainer",false,nameCel);
+					let nameCellStatus = create("span","altoolkitSummableStatusContainer",false,nameCel);
 					semmanticStatusOrder.forEach(status => {
 						let statCount = studio.media.filter(media => media.status === status).length;
 						if(statCount){
-							let statusSumDot = create("div","hohSummableStatus",statCount,nameCellStatus);
+							let statusSumDot = create("div","altoolkitSummableStatus",statCount,nameCellStatus);
 							statusSumDot.style.background = distributionColours[status];
 							statusSumDot.title = statCount + " " + capitalize(status.toLowerCase());
 							if(statCount > 99){
@@ -1627,12 +1627,12 @@ function addMoreStats(){
 					timeCel.title = (studio.watchedDuration/60).roundPlaces(1) + " hours";
 					let showRow = create("div",false,false,table,"display:none;");
 					studio.media.forEach(top => {
-						let secondRow = create("div",["row","hohSecondaryRow","good"],false,showRow);
+						let secondRow = create("div",["row","altoolkitSecondaryRow","good"],false,showRow);
 						let titleCel = create("div",false,false,secondRow,"margin-left:50px;");
 						let titleLink = create("a","link",top.title,titleCel);
 						titleLink.href = "/anime/" + top.id + "/" + safeURL(top.title);
 						let countCel = create("div",false,false,secondRow);
-						let statusDot = create("div","hohStatusDot",false,countCel);
+						let statusDot = create("div","altoolkitStatusDot",false,countCel);
 						statusDot.style.backgroundColor = distributionColours[top.status];
 						statusDot.title = top.status.toLowerCase();
 						if(top.status === "COMPLETED"){
@@ -1659,8 +1659,8 @@ function addMoreStats(){
 						}
 					}
 				});
-				let csvButton = create("button",["csvExport","button","hohButton"],"CSV data",animeStudios,"margin-top:10px;");
-				let jsonButton = create("button",["jsonExport","button","hohButton"],"JSON data",animeStudios,"margin-top:10px;");
+				let csvButton = create("button",["csvExport","button","altoolkitButton"],"CSV data",animeStudios,"margin-top:10px;");
+				let jsonButton = create("button",["jsonExport","button","altoolkitButton"],"JSON data",animeStudios,"margin-top:10px;");
 				csvButton.onclick = function(){
 					let csvContent = 'Studio,Count,"Mean Score","Time Watched"\n';
 					studioList.forEach(function(studio){
@@ -1764,7 +1764,7 @@ function addMoreStats(){
 					setTimeout(studioWaiter,200)
 				}
 			};studioWaiter();
-	}//end boneless check
+	}//end shipFullStatTables check
 			return
 		};
 		if(user === whoAmI){
@@ -1791,14 +1791,14 @@ function addMoreStats(){
 //manga stats
 		let personalStatsMangaCallback = async function(data){
 			personalStatsManga.innerText = "";
-			create("hr","hohSeparator",false,personalStatsManga);
-			create("h1","hohStatHeading",translate("$stats_manga_heading",user),personalStatsManga);
+			create("hr","altoolkitSeparator",false,personalStatsManga);
+			create("h1","altoolkitStatHeading",translate("$stats_manga_heading",user),personalStatsManga);
 			let list = returnList(data);
 			let scoreList = list.filter(element => element.scoreRaw);
 			let personalStatsMangaContainer = create("div",false,false,personalStatsManga);
 			if(whoAmI && whoAmI !== user){
-				let compatabilityButton = create("button",["button","hohButton"],"Compatibility",personalStatsManga);
-				let compatLocation = create("div","#hohCheckCompatManga",false,personalStatsManga);
+				let compatabilityButton = create("button",["button","altoolkitButton"],"Compatibility",personalStatsManga);
+				let compatLocation = create("div","#altoolkitCheckCompatManga",false,personalStatsManga);
 				compatabilityButton.onclick = function(){
 					compatLocation.innerText = translate("$loading");
 					compatLocation.style.marginTop = "5px";
@@ -1813,9 +1813,9 @@ function addMoreStats(){
 				}
 			}
 			let addStat = function(text,value,comment){//value,value,html
-				let newStat = create("p","hohStat",false,personalStatsManga);
+				let newStat = create("p","altoolkitStat",false,personalStatsManga);
 				create("span",false,text,newStat);
-				create("span","hohStatValue",value,newStat);
+				create("span","altoolkitStatValue",value,newStat);
 				if(comment){
 					let newStatComment = create("span",false,false,newStat);
 					newStatComment.innerText = comment
@@ -2037,10 +2037,10 @@ function addMoreStats(){
 						if(isPrimary){
 							let nameCellCount = create("div","count",(index+1),cel);
 							create("a",false,data[index].name,cel,"cursor:pointer;");
-							let nameCellStatus = create("span","hohSummableStatusContainer",false,cel);
+							let nameCellStatus = create("span","altoolkitSummableStatusContainer",false,cel);
 							semmanticStatusOrder.forEach(function(status){
 								if(data[index].status && data[index].status[status]){
-									let statusSumDot = create("div","hohSummableStatus",data[index].status[status],nameCellStatus);
+									let statusSumDot = create("div","altoolkitSummableStatus",data[index].status[status],nameCellStatus);
 									statusSumDot.style.background = distributionColours[status];
 									statusSumDot.title = data[index].status[status] + " " + capitalize(statusTypes[status]);
 									if(data[index].status[status] > 99){
@@ -2064,7 +2064,7 @@ function addMoreStats(){
 							})
 						}
 						else{
-							create("a","hohNameCel",data[index].name,cel)
+							create("a","altoolkitNameCel",data[index].name,cel)
 								.href = "/manga/" + data[index].mediaId + "/" + safeURL(data[index].name)
 						}
 					},
@@ -2073,7 +2073,7 @@ function addMoreStats(){
 							cel.innerText = data[index].list.length
 						}
 						else{
-							let statusDot = create("div","hohStatusDot",false,cel);
+							let statusDot = create("div","altoolkitStatusDot",false,cel);
 							statusDot.style.backgroundColor = distributionColours[data[index].status];
 							statusDot.title = data[index].status.toLowerCase();
 							if(data[index].status === "COMPLETED"){
@@ -2182,14 +2182,14 @@ function addMoreStats(){
 				listOfTags = listOfTags.filter(a => a.list.length >= 3)
 			}
 			semaPhoreManga = list;
-	if(script_type !== "Boneless"){
+	if(shipFullStatTables){
 			drawTable(listOfTags,mangaFormatter,regularMangaTable,{isTag: true,autoHide: false});
 			nativeTagsReplacer();
 	}
 
 			const staffSimpleData = await anilistAPI(queryMediaListStaff_simple, {
 				variables: {name: user,listType: "MANGA"},
-				cacheKey: "hohListCacheMangaStaff" + user,
+				cacheKey: "altoolkitListCacheMangaStaff" + user,
 				duration: 10*60*1000
 			})
 			if(staffSimpleData.errors){
@@ -2318,7 +2318,7 @@ function addMoreStats(){
 					assistant_filter.oninput = drawStaffList;
 					translator_filter.oninput = drawStaffList;
 				}
-				let table = create("div",["table","hohTable","hohNoPointer"],false,mangaStaff);
+				let table = create("div",["table","altoolkitTable","altoolkitNoPointer"],false,mangaStaff);
 				let headerRow = create("div",["header","row","good"],false,table);
 				let nameHeading = create("div",false,translate("$stats_name"),headerRow,"cursor:pointer;");
 				let countHeading = create("div",false,translate("$stats_count"),headerRow,"cursor:pointer;");
@@ -2365,8 +2365,8 @@ function addMoreStats(){
 						create("div",false,staff.ownVolumesRead,row)
 					}
 				});
-				let csvButton = create("button",["csvExport","button","hohButton"],"CSV data",mangaStaff,"margin-top:10px;");
-				let jsonButton = create("button",["jsonExport","button","hohButton"],"JSON data",mangaStaff,"margin-top:10px;");
+				let csvButton = create("button",["csvExport","button","altoolkitButton"],"CSV data",mangaStaff,"margin-top:10px;");
+				let jsonButton = create("button",["jsonExport","button","altoolkitButton"],"JSON data",mangaStaff,"margin-top:10px;");
 				csvButton.onclick = function(){
 					let csvContent = 'Staff,Count,"Mean Score","Chapters Read","Volumes Read"\n';
 					staffList.forEach(staff => {
@@ -2574,12 +2574,12 @@ function addMoreStats(){
 				Array.from(document.querySelector(".stats-wrap").children).forEach(child => {
 					child.style.display = "initial";
 				});
-				Array.from(document.getElementsByClassName("hohActive")).forEach(child => {
-					child.classList.remove("hohActive");
+				Array.from(document.getElementsByClassName("altoolkitActive")).forEach(child => {
+					child.classList.remove("altoolkitActive");
 				});
-				document.getElementById("hohStats").style.display = "none";
-				document.getElementById("hohGenres").style.display = "none";
-				document.querySelector(".page-content .user").classList.remove("hohSpecialPage")
+				document.getElementById("altoolkitStats").style.display = "none";
+				document.getElementById("altoolkitGenres").style.display = "none";
+				document.querySelector(".page-content .user").classList.remove("altoolkitSpecialPage")
 			}
 		});
 		if(!tabMenu.length){
@@ -2588,25 +2588,25 @@ function addMoreStats(){
 	};tabWaiter();
 	let statsWrap = document.querySelector(".stats-wrap");
 	if(statsWrap){
-		hohStats = create("div","#hohStats",false,statsWrap,"display:none;");
-		hohGenres = create("div","#hohGenres",false,statsWrap,"display:none;");
-		regularFilterHeading = create("div","#regularFilterHeading",false,hohGenres);
-		regularGenresTable = create("div","#regularGenresTable",translate("$loading"),hohGenres);
-		if(script_type !== "Boneless"){
-			regularTagsTable = create("div","#regularTagsTable",translate("$loading"),hohGenres);
+		altoolkitStats = create("div","#altoolkitStats",false,statsWrap,"display:none;");
+		altoolkitGenres = create("div","#altoolkitGenres",false,statsWrap,"display:none;");
+		regularFilterHeading = create("div","#regularFilterHeading",false,altoolkitGenres);
+		regularGenresTable = create("div","#regularGenresTable",translate("$loading"),altoolkitGenres);
+		if(shipFullStatTables){
+			regularTagsTable = create("div","#regularTagsTable",translate("$loading"),altoolkitGenres);
 			regularAnimeTable = create("div","#regularAnimeTable",translate("$loading"),statsWrap);
 			regularMangaTable = create("div","#regularMangaTable",translate("$loading"),statsWrap);
 			animeStaff = create("div","#animeStaff",translate("$loading"),statsWrap);
 			mangaStaff = create("div","#mangaStaff",translate("$loading"),statsWrap);
 			animeStudios = create("div","#animeStudios",translate("$loading"),statsWrap);
 		}
-		hohStats.calculated = false;
+		altoolkitStats.calculated = false;
 		generateStatPage()
 	}
-	hohStatsTrigger.onclick = function(){
-		hohStatsTrigger.classList.add("hohActive");
-		hohGenresTrigger.classList.remove("hohActive");
-		document.querySelector(".page-content .user").classList.add("hohSpecialPage");
+	altoolkitStatsTrigger.onclick = function(){
+		altoolkitStatsTrigger.classList.add("altoolkitActive");
+		altoolkitGenresTrigger.classList.remove("altoolkitActive");
+		document.querySelector(".page-content .user").classList.add("altoolkitSpecialPage");
 		let otherActive = filterGroup.querySelector(".router-link-active");
 		if(otherActive){
 			otherActive.classList.remove("router-link-active");
@@ -2615,13 +2615,13 @@ function addMoreStats(){
 		document.querySelectorAll(".stats-wrap > div").forEach(
 			module => module.style.display = "none"
 		);
-		hohStats.style.display = "initial";
-		hohGenres.style.display = "none"
+		altoolkitStats.style.display = "initial";
+		altoolkitGenres.style.display = "none"
 	};
-	hohGenresTrigger.onclick = function(){
-		hohStatsTrigger.classList.remove("hohActive");
-		hohGenresTrigger.classList.add("hohActive");
-		document.querySelector(".page-content .user").classList.add("hohSpecialPage");
+	altoolkitGenresTrigger.onclick = function(){
+		altoolkitStatsTrigger.classList.remove("altoolkitActive");
+		altoolkitGenresTrigger.classList.add("altoolkitActive");
+		document.querySelector(".page-content .user").classList.add("altoolkitSpecialPage");
 		let otherActive = filterGroup.querySelector(".router-link-active");
 		if(otherActive){
 			otherActive.classList.remove("router-link-active");
@@ -2630,7 +2630,7 @@ function addMoreStats(){
 		document.querySelectorAll(".stats-wrap > div").forEach(
 			module => module.style.display = "none"
 		);
-		hohStats.style.display = "none";
-		hohGenres.style.display = "initial"
+		altoolkitStats.style.display = "none";
+		altoolkitGenres.style.display = "initial"
 	}
 }

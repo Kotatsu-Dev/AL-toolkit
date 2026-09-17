@@ -39,7 +39,7 @@ function translate(key,subs,fallback){
 					return fallback
 				}
 				if(key.substring(0,6) !== "$role_"){
-					console.warn("[" + script_type + " localisation] missing key!",key)
+					console.warn("[" + scriptInfo.name + " localisation] missing key!",key)
 				}
 				immediate = key
 			}
@@ -66,10 +66,10 @@ if(!languageFiles[useScripts.partialLocalisationLanguage]){
 		}
 	})
 	if(candidates.length){
-		alert("No \"" + useScripts.partialLocalisationLanguage +"\" language file for " + script_type + " found. Setting language to \"English\"\nPossible candidates: " + candidates.map(a => "\"" + a + "\"").join(",") +"\nYou can change this in the settings")
+		alert("No \"" + useScripts.partialLocalisationLanguage +"\" language file for " + scriptInfo.name + " found. Setting language to \"English\"\nPossible candidates: " + candidates.map(a => "\"" + a + "\"").join(",") +"\nYou can change this in the settings")
 	}
 	else{
-		alert("No \"" + useScripts.partialLocalisationLanguage +"\" language file for " + script_type + " found. Setting language to \"English\"\nYou can change this in the settings")
+		alert("No \"" + useScripts.partialLocalisationLanguage +"\" language file for " + scriptInfo.name + " found. Setting language to \"English\"\nYou can change this in the settings")
 	}
 	useScripts.partialLocalisationLanguage = "English";
 	useScripts.save()

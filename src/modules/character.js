@@ -3,7 +3,7 @@ exportModule({
 	description: "Add an exact favourite count to character pages",
 	isDefault: true,
 	categories: ["Media"],
-	visible: false,
+	visible: true,
 	urlMatch: function(url){
 		return /^https:\/\/anilist\.co\/character(\/.*)?/.test(url)
 	},
@@ -38,7 +38,7 @@ exportModule({
 		const variables = {id: parseInt(location.pathname.match(/\/character\/(\d+)\/?/)[1])};
 		const {data, errors} = await anilistAPI(query, {
 			variables,
-			cacheKey: "hohCharacterFavs" + variables.id,
+			cacheKey: "altoolkitCharacterFavs" + variables.id,
 			duration: 60*60*1000
 		});
 		if(errors){

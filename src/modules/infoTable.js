@@ -13,7 +13,7 @@ exportModule({
 	padding: 15px;
 }
 .media-page-unscoped .data-set,
-.media-page-unscoped .data-set #hohMALserialization{
+.media-page-unscoped .data-set #altoolkitMALserialization{
 	display: inline-block;
 	width: 100%;
 	padding-bottom: 9px!important;

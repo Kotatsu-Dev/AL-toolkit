@@ -22,24 +22,24 @@ exportModule({
 
 if(useScripts.twoColumnFeed && !useScripts.CSSverticalNav){
 	moreStyle.textContent += `
-.home{
+.home:not(.full-width){
 	margin-left: -15px;
 	margin-right: -15px;
 }
 @media(min-width: 1540px){
-	.home{
+	.home:not(.full-width){
 		margin-left: -95px;
 		margin-right: -95px;
 	}
 }
 @media(min-width:1040px) and (max-width:1540px){
-	.home{
+	.home:not(.full-width){
 		margin-left: -45px;
 		margin-right: -45px;
 	}
 }
 @media(min-width:760px) and (max-width:1040px){
-	.home{
+	.home:not(.full-width){
 		margin-left: -25px;
 		margin-right: -25px;
 	}

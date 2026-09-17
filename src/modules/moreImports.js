@@ -7,8 +7,8 @@ function moreImports(){
 		setTimeout(moreImports,200);
 		return;
 	}
-	create("hr","hohSeparator",false,target,"margin-bottom:40px;");
-	let apAnime = create("div",["section","hohImport"],false,target);
+	create("hr","altoolkitSeparator",false,target,"margin-bottom:40px;");
+	let apAnime = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"Anime-Planet: Import Anime List",apAnime);
 	const mapFormatAnime = new Map([["All", ""], ["TV Show", "TV"], ["Movie", "MOVIE"], ["TV Short", "TV_SHORT"],
 									["Special", "SPECIAL"], ["OVA", "OVA"], ["ONA", "ONA"], ["MUSIC", "MUSIC"]])
@@ -27,7 +27,7 @@ function moreImports(){
 	apAnimeInput.type = "file";
 	apAnimeInput.name = "json";
 	apAnimeInput.accept = "application/json";
-	let apManga = create("div",["section","hohImport"],false,target);
+	let apManga = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"Anime-Planet: Import Manga List",apManga);
 
 	const mapFormatManga = new Map([["All", ""], ["Manga", "MANGA"], ["Light Novel", "NOVEL"], ["One Shot", "ONE_SHOT"]])
@@ -51,7 +51,7 @@ function moreImports(){
 	let resultsWarnings = create("div",false,false,resultsArea,"color:orange;padding:5px;");
 	let resultsStatus = create("div",false,false,resultsArea,"padding:5px;");
 	let missingList = create("div",false,false,resultsArea,"padding:5px;");
-	let exportErrors = create("button",["hohButton","button", "danger"],"Export all errors and unchecked",resultsArea,"display: none; margin: 5px 10px")
+	let exportErrors = create("button",["altoolkitButton","button", "danger"],"Export all errors and unchecked",resultsArea,"display: none; margin: 5px 10px")
 	let uncheckedTitles = [];
 	exportErrors.onclick = function() {
 		var link = create("a")
@@ -63,7 +63,7 @@ function moreImports(){
 		link.download =  "errors_ap_import.txt"
 		link.click()
 	}
-	let pushResults = create("button",["hohButton","button"],"Import all selected",resultsArea,"display: none; margin: 5px 10px")
+	let pushResults = create("button",["altoolkitButton","button"],"Import all selected",resultsArea,"display: none; margin: 5px 10px")
 	let resultsTable = create("div",false,false,resultsArea);
 
 	let selectedValues = {}
@@ -107,15 +107,15 @@ function moreImports(){
 					(b,a) => a.titles[0].levDistance - b.titles[0].levDistance
 				);
 				shows.forEach(show => {
-					let row = create("div","hohImportRow",false,resultsTable);
+					let row = create("div","altoolkitImportRow",false,resultsTable);
 					if(show.isAnthology){
-						create("div","hohImportEntry",show.apData.map(a => a.name).join(", "),row)
+						create("div","altoolkitImportEntry",show.apData.map(a => a.name).join(", "),row)
 					}
 					else{
-						create("div","hohImportEntry",show.apData.name,row)
+						create("div","altoolkitImportEntry",show.apData.name,row)
 					}
-					create("span","hohImportArrow","→",row);
-					let aniEntry = create("div", "hohImportSelect", false, row);
+					create("span","altoolkitImportArrow","→",row);
+					let aniEntry = create("div", "altoolkitImportSelect", false, row);
 
 					let selectEntry = create("select", "#typeSelect", false, aniEntry, "width: 100%; white-space: nowrap; text-overflow: ellipsis")
 
@@ -127,7 +127,7 @@ function moreImports(){
 					})
 
 					selectedValues[show.apData.name] = parseInt(selectEntry.value)
-					let aniLink = create("a", ["hohButton","button","link","newTab"], "View", row, "margin: 0 10px")
+					let aniLink = create("a", ["altoolkitButton","button","link","newTab"], "View", row, "margin: 0 10px")
 					aniLink.href = "/" + type + "/" + parseInt(selectEntry.value)
 
 					const image = create("img", false, false, row, "margin-right: 10px")
@@ -337,7 +337,7 @@ function moreImports(){
 						},
 						function(data){
 							if(data.data.Viewer.name !== whoAmI){
-								alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + script_type + "'s permissions, and sign in with the scirpt again to fix this.");
+								alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + scriptInfo.name + "'s permissions, and sign in with the scirpt again to fix this.");
 								return;
 							}
 							let list = returnList(data,true).map(a => a.mediaId);
@@ -552,17 +552,17 @@ function moreImports(){
 	apMangaInput.onchange = function(){
 		apImport("manga",apMangaInput.files[0])
 	}
-	create("hr","hohSeparator",false,target,"margin-bottom: 40px;");
+	create("hr","altoolkitSeparator",false,target,"margin-bottom: 40px;");
 	let userNameContainer = create("div",false,false,target,"margin-bottom: 20px;");
 	let userNameLabel = create("span",false,"User: ",userNameContainer);
-	let userName = create("input","hohNativeInput",false,userNameContainer);
+	let userName = create("input","altoolkitNativeInput",false,userNameContainer);
 	userName.value = whoAmI;
 	
-	let alAnimeExp = create("div",["section","hohImport"],false,target);
+	let alAnimeExp = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"AniList: Export Anime List",alAnimeExp);
-	let alAnimeButton = create("button",["button","hohButton"],"Export Anime",alAnimeExp);
+	let alAnimeButton = create("button",["button","altoolkitButton"],"Export Anime",alAnimeExp);
 	alAnimeButton.onclick = function(){
-		generalAPIcall(
+		authAPIcall(
 			backupQueryAnime,
 			{name: userName.value},
 			function(data){
@@ -580,9 +580,9 @@ function moreImports(){
 		);
 	}
 	create("h2",false,"AniList: Export Manga List",alAnimeExp,"margin-top:20px;");
-	let alMangaButton = create("button",["button","hohButton"],"Export Manga",alAnimeExp);
+	let alMangaButton = create("button",["button","altoolkitButton"],"Export Manga",alAnimeExp);
 	alMangaButton.onclick = function(){
-		generalAPIcall(
+		authAPIcall(
 			backupQueryManga,
 			{name: userName.value},
 			function(data){
@@ -603,7 +603,7 @@ function moreImports(){
 		let xmlContent = "";
 		saveAs(xmlContent,type.toLowerCase() + "list_0_-_0.xml",true);
 	}
-	let alAnime = create("div",["section","hohImport"],false,target);
+	let alAnime = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"Anilist JSON: Import Anime List",alAnime);
 	let alAnimeCheckboxContainer = create("label","el-checkbox",false,alAnime,"display:none;");
 	let alAnimeOverwrite = createCheckbox(alAnimeCheckboxContainer);
@@ -614,7 +614,7 @@ function moreImports(){
 	alAnimeInput.type = "file";
 	alAnimeInput.name = "json";
 	alAnimeInput.accept = "application/json";
-	let alManga = create("div",["section","hohImport"],false,target);
+	let alManga = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"Anilist JSON: Import Manga List",alManga);
 	let alMangaCheckboxContainer = create("label","el-checkbox",false,alManga,"display:none;");
 	let alMangaOverwrite = createCheckbox(alMangaCheckboxContainer);
@@ -629,7 +629,7 @@ function moreImports(){
 	let resultsErrorsAL = create("div",false,false,resultsAreaAL,"color:red;padding:5px;");
 	let resultsWarningsAL = create("div",false,false,resultsAreaAL,"color:orange;padding:5px;");
 	let resultsStatusAL = create("div",false,false,resultsAreaAL,"padding:5px;");
-	let pushResultsAL = create("button",["hohButton","button"],"Import all",resultsAreaAL,"display:none;");
+	let pushResultsAL = create("button",["altoolkitButton","button"],"Import all",resultsAreaAL,"display:none;");
 	let resultsTableAL = create("div",false,false,resultsAreaAL);
 	let alImport = function(type,file){
 		let reader = new FileReader();
@@ -687,7 +687,7 @@ function moreImports(){
 							return
 						}
 						if(data2.data.Viewer.name !== whoAmI){
-							alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data2.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + script_type + "'s permissions, and sign in with the script again to fix this.");
+							alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data2.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + scriptInfo.name + "'s permissions, and sign in with the script again to fix this.");
 							return
 						}
 						let existing = new Set(data2.data.MediaListCollection.lists.map(list => list.entries).flat().map(entry => entry.mediaId));
@@ -768,8 +768,8 @@ function moreImports(){
 		alImport("manga",alMangaInput.files[0])
 	}
 
-	create("hr","hohSeparator",false,target,"margin-bottom:40px;");
-	let gdpr_import = create("div",["section","hohImport"],false,target);
+	create("hr","altoolkitSeparator",false,target,"margin-bottom:40px;");
+	let gdpr_import = create("div",["section","altoolkitImport"],false,target);
 	create("h2",false,"GDPR data: Import lists",gdpr_import);
 	let gdpr_importCheckboxContainer = create("label","el-checkbox",false,gdpr_import);
 	let gdpr_importOverwrite = createCheckbox(gdpr_importCheckboxContainer);
@@ -785,7 +785,7 @@ function moreImports(){
 	let resultsErrorsGDPR = create("div",false,false,resultsAreaGDPR,"color:red;padding:5px;");
 	let resultsWarningsGDPR = create("div",false,false,resultsAreaGDPR,"color:orange;padding:5px;");
 	let resultsStatusGDPR = create("div",false,false,resultsAreaGDPR,"padding:5px;");
-	let pushResultsGDPR = create("button",["hohButton","button"],"Import all",resultsAreaGDPR,"display:none;");
+	let pushResultsGDPR = create("button",["altoolkitButton","button"],"Import all",resultsAreaGDPR,"display:none;");
 	let resultsTableGDPR = create("div",false,false,resultsAreaGDPR);
 
 	gdpr_importInput.onchange = function(){
@@ -842,7 +842,7 @@ function moreImports(){
 							return;
 						}
 						if(dataAnime.data.Viewer.name !== whoAmI){
-							alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + script_type + "'s permissions, and sign in with the scirpt again to fix this.");
+							alert("Signed in as\"" + whoAmI + "\" to Anilist, but as \"" + data.data.Viewer.name + "\" to the script.\n Go to settings > apps, revoke " + scriptInfo.name + "'s permissions, and sign in with the scirpt again to fix this.");
 							return;
 						}
 						let listAnime = new Set(returnList(dataAnime,true).map(a => a.mediaId));

@@ -1,15 +1,15 @@
-.hohTime{
+.altoolkitTime{
 	position: absolute;
 	right: 12px;
 	top: 6px;
 	font-size: 1.1rem;
 }
-.hohUnread{
+.altoolkitUnread{
 	border-right: 8px;
 	border-color: rgba(var(--color-blue));
 	border-right-style: solid;
 }
-.hohNotification{
+.altoolkitNotification{
 	margin-bottom: 10px;
 	background: rgb(var(--color-foreground));
 	border-radius: 4px;
@@ -18,10 +18,10 @@
 	min-height: 72px;
 	position: relative;
 }
-.hohNotification *{
+.altoolkitNotification *{
 	line-height: 1.15;
 }
-.hohUserImageSmall{
+.altoolkitUserImageSmall{
 	display: inline-block;
 	background-position: 50%;
 	background-repeat: no-repeat;
@@ -29,7 +29,7 @@
 	position: absolute;
 	z-index: 10;
 }
-.hohUserImage{
+.altoolkitUserImage{
 	height: 72px;
 	width: 72px;
 	display: inline-block;
@@ -38,15 +38,15 @@
 	background-size: cover;
 	position: absolute;
 }
-.hohMediaImage{
+.altoolkitMediaImage{
 	height: 70px;
 }
-.hohMessageText{
+.altoolkitMessageText{
 	position: absolute;
 	margin-top: 30px;
 	margin-left: 80px;
 }
-.hohMediaImageContainer{
+.altoolkitMediaImageContainer{
 	vertical-align: bottom;
 	margin-left: 400px;
 	display: inline;
@@ -57,7 +57,7 @@
 	text-align: right;
 	padding-bottom: 1px;
 }
-.hohMediaImageContainer > a{
+.altoolkitMediaImageContainer > a{
 	height: 70px;
 	line-height: 0!important;
 	display: inline-block;
@@ -68,10 +68,10 @@
 	margin-top: 1px;
 	margin-bottom: 1px;
 }
-span.hohMediaImageContainer{
+span.altoolkitMediaImageContainer{
 	line-height: 0!important;
 }
-.hohBackgroundCover{
+.altoolkitBackgroundCover{
 	height: 70px;
 	width: 50px;
 	display: inline-block;
@@ -82,20 +82,20 @@ span.hohMediaImageContainer{
 	background-size: cover;
 	line-height: 0;
 }
-.hohCommentsContainer{
+.altoolkitCommentsContainer{
 	margin-top: 5px;
 }
-.hohCommentsArea{
+.altoolkitCommentsArea{
 	margin: 10px;
 	display: none;
 	padding-bottom: 2px;
 	margin-top: 5px;
 	width: 95%;
 }
-.hohCommentsContainer > a.link{
+.altoolkitCommentsContainer > a.link{
 	font-size: 1.3rem;
 }
-.hohComments{
+.altoolkitComments{
 	float: right;
 	display: none;
 	margin-top: -21px;
@@ -109,45 +109,45 @@ span.hohMediaImageContainer{
 	-ms-user-select: none;
 	user-select: none;
 }
-.hohCombined .hohComments{
+.altoolkitCombined .altoolkitComments{
 	display: none!important;
 }
-.hohQuickCom{
+.altoolkitQuickCom{
 	padding: 5px;
 	background-color: rgb(var(--color-background));
 	margin-bottom: 5px;
 	position: relative;
 }
-.hohQuickComName{
+.altoolkitQuickComName{
 	margin-right: 15px;
 	color: rgb(var(--color-blue));
 }
-.hohThisIsMe{
+.altoolkitThisIsMe{
 	color: rgb(var(--color-green));
 }
-.hohILikeThis{
+.altoolkitILikeThis{
 	color: rgb(var(--color-red));
 }
-.hohQuickComName::after{
+.altoolkitQuickComName::after{
 	content: ":";
 }
-.hohQuickComContent{
+.altoolkitQuickComContent{
 	margin-right: 40px;
 	display: block;
 }
-.hohQuickComContent > p{
+.altoolkitQuickComContent > p{
 	margin: 1px;
 }
-.hohQuickComLikes{
+.altoolkitQuickComLikes{
 	position: absolute;
 	right: 5px;
 	bottom: 5px;
 	display: inline-block;
 }
-.hohQuickComContent img {
+.altoolkitQuickComContent img {
 	max-width: 100%;
 }
-.hohSpoiler::before{
+.altoolkitSpoiler::before{
 	color: rgb(var(--color-blue));
 	cursor: pointer;
 	background: rgb(var(--color-background));
@@ -156,28 +156,28 @@ span.hohMediaImageContainer{
 	font-size: 1.3rem;
 	padding: 0 5px;
 }
-.hohSpoiler.hohClicked::before{
+.altoolkitSpoiler.altoolkitClicked::before{
 	display: none;
 }
-.hohSpoiler > span{
+.altoolkitSpoiler > span{
 	display: none;
 }
-.hohMessageText > span > div.time{
+.altoolkitMessageText > span > div.time{
 	display: none;
 }
-.hohUnhandledSpecial > div{
+.altoolkitUnhandledSpecial > div{
 	margin-top: -15px;
 }
-.hohMessageText a.link,
-.hohNewMedia a{
+.altoolkitMessageText a.link,
+.altoolkitNewMedia a{
 	color: rgb(var(--color-blue));
 }
-.hohNewMedia a[href^="/manga/"]{
+.altoolkitNewMedia a[href^="/manga/"]{
 	color: rgb(var(--color-green));
 }
-.hohDataChange a{
+.altoolkitDataChange a{
 	color: rgb(var(--color-blue));
 }
-.hohDataChange .expand-reason{
+.altoolkitDataChange .expand-reason{
 	display: none;
 }

@@ -16,18 +16,18 @@ function addComparisionPage(){
 			return
 		}
 	}
-	if(document.querySelector(".hohCompare")){
+	if(document.querySelector(".altoolkitCompare")){
 		return
 	}
 	compareLocation.style.display = "none";
-	let compareArea = create("div","hohCompare",false,compareLocation.parentNode);
+	let compareArea = create("div","altoolkitCompare",false,compareLocation.parentNode);
 	if(nativeCompareExists){
 		let isDefaultCompare = false;
-		let switchButton = create("span","hohCompareUIfragment",translate("$compare_default"),compareLocation.parentNode,"position:absolute;top:0px;right:0px;cursor:pointer;z-index:100;");
+		let switchButton = create("span","altoolkitCompareUIfragment",translate("$compare_default"),compareLocation.parentNode,"position:absolute;top:0px;right:0px;cursor:pointer;z-index:100;");
 		switchButton.onclick = function(){
 			isDefaultCompare = !isDefaultCompare;
 			if(isDefaultCompare){
-				switchButton.innerText = translate("$compare_hoh");
+				switchButton.innerText = translate("$compare_script");
 				compareLocation.style.display = "";
 				compareArea.style.display = "none";
 				switchButton.style.top = "-30px"
@@ -57,22 +57,22 @@ function addComparisionPage(){
 		create("p",false,"'#' means number, '$' means global stats",scrollableContent);
 		create("h3",false,"User filters",scrollableContent);
 		create("p",false,"List filters, click to cycle through",scrollableContent);
-		create("span","hohFilterSort","☵",scrollableContent);
+		create("span","altoolkitFilterSort","☵",scrollableContent);
 		create("span",false,"Neutral. This user doesn't affect what media gets displayed.",scrollableContent);
 		create("br",false,false,scrollableContent);
 		create("br",false,false,scrollableContent);
-		create("span","hohFilterSort","✓",scrollableContent,"color:green");
+		create("span","altoolkitFilterSort","✓",scrollableContent,"color:green");
 		create("span",false,"Only display media this person has rated",scrollableContent);
 		create("br",false,false,scrollableContent);
 		create("br",false,false,scrollableContent);
-		create("span","hohFilterSort","✕",scrollableContent,"color:red");
+		create("span","altoolkitFilterSort","✕",scrollableContent,"color:red");
 		create("span",false,"Only display media this person has NOT rated (mark yourself with this to find recommendations)",scrollableContent);
 		create("br",false,false,scrollableContent);
 		create("p",false,"Status filters (tiny dot). Click to cycle through (reading, dropped, not on list, etc.)",scrollableContent);
 	}
 	let formatFilterLabel = create("span",false,"Filter:",compareArea);
 	formatFilterLabel.style.padding = "5px";
-	let formatFilter = create("select","hohNativeInput",false,compareArea);
+	let formatFilter = create("select","altoolkitNativeInput",false,compareArea);
 	let addOption = function(value,text){
 		let newOption = create("option",false,text,formatFilter);
 		newOption.value = value
@@ -96,7 +96,7 @@ function addComparisionPage(){
 	}
 	let ratingFilterLabel = create("span",false,translate("$compare_minRatings"),compareArea);
 	ratingFilterLabel.style.padding = "5px";
-	let ratingFilter = create("input","hohNativeInput",false,compareArea,"width:45px;color:rgb(var(--color-text))");
+	let ratingFilter = create("input","altoolkitNativeInput",false,compareArea,"width:45px;color:rgb(var(--color-text))");
 	ratingFilter.type = "number";
 	ratingFilter.value = 1;
 	ratingFilter.min = 0;
@@ -124,8 +124,8 @@ function addComparisionPage(){
 	let users = [];
 	let listCache = {};//storing raw anime data
 	let ratingMode = "average";let guser = 0;let inverse = false;
-	let csvButton = create("button",["csvExport","button","hohButton","hohCompareUIfragment"],"CSV data",compareLocation.parentNode,"margin-top:10px;");
-	let jsonButton = create("button",["jsonExport","button","hohButton","hohCompareUIfragment"],"JSON data",compareLocation.parentNode,"margin-top:10px;");
+	let csvButton = create("button",["csvExport","button","altoolkitButton","altoolkitCompareUIfragment"],"CSV data",compareLocation.parentNode,"margin-top:10px;");
+	let jsonButton = create("button",["jsonExport","button","altoolkitButton","altoolkitCompareUIfragment"],"JSON data",compareLocation.parentNode,"margin-top:10px;");
 	csvButton.onclick = function(){
 		let csvContent = "Title," + digestSelect.selectedOptions[0].text + "," + users.map(user => user.name).join(",") + "\n";
 		shows.forEach(function(show){
@@ -362,7 +362,7 @@ function addComparisionPage(){
 			if(!display){
 				return
 			}
-			let row = create("tr","hohAnimeTable");
+			let row = create("tr","altoolkitAnimeTable");
 			row.onclick = function(){
 				if(this.style.background === "rgb(var(--color-blue),0.5)"){
 					this.style.background = "unset"
@@ -428,13 +428,13 @@ function addComparisionPage(){
 						showUserScore.style.backgroundImage = "linear-gradient(to right,rgb(0,0,0,0)," + distributionColours[show.status[i]] + ")";
 					}
 					else{
-						let statusDot = create("div","hohStatusDot",false,showUserScore);
+						let statusDot = create("div","altoolkitStatusDot",false,showUserScore);
 						statusDot.style.background = distributionColours[show.status[i]];
 						statusDot.title = show.status[i].toLowerCase();
 					}
 				}
 				if(show.progress[i]){
-					create("span","hohStatusProgress",show.progress[i],showUserScore)
+					create("span","altoolkitStatusProgress",show.progress[i],showUserScore)
 				}
 				if(show.favourite[i]){
 					let favStar = create("span",false,false,showUserScore,"color:gold;font-size:1rem;vertical-align:middle;padding-bottom:2px;");
@@ -489,7 +489,7 @@ function addComparisionPage(){
 		removeChildren(table)
 		let userRow = create("tr");
 		let resetCel = create("td",false,false,userRow);
-		let resetButton = create("button",["hohButton","button"],translate("$button_reset"),resetCel,"margin-top:0px;");
+		let resetButton = create("button",["altoolkitButton","button"],translate("$button_reset"),resetCel,"margin-top:0px;");
 		resetButton.onclick = function(){
 			users = [];
 			shows = [];
@@ -541,14 +541,14 @@ function addComparisionPage(){
 			avatar.src = listCache[user.name].data.MediaListCollection.user.avatar.medium;
 			let name = create("span",false,user.name,userCel);
 			name.style.padding = "8px";
-			let remove = create("span","hohAnimeTableRemove","✕",userCel);
+			let remove = create("span","altoolkitAnimeTableRemove","✕",userCel);
 			remove.onclick = function(){
 				deleteUser(index)
 			}
 		});
 		let addCel = create("td");
-		let addInput = create("input","hohNativeInput",false,addCel);
-		let addButton = create("button",["button","hohButton"],translate("$button_add"),addCel,"margin-top:0px;");
+		let addInput = create("input","altoolkitNativeInput",false,addCel);
+		let addButton = create("button",["button","altoolkitButton"],translate("$button_add"),addCel,"margin-top:0px;");
 		addButton.style.cursor = "pointer";
 		addButton.onclick = function(){
 			if(addInput.value !== ""){
@@ -565,14 +565,14 @@ function addComparisionPage(){
 		userRow.appendChild(addCel);
 		let headerRow = create("tr");
 		let typeCel = create("th",false,false,headerRow);
-		let downArrowa = create("span","hohArrowSort","▼",typeCel);
+		let downArrowa = create("span","altoolkitArrowSort","▼",typeCel);
 		downArrowa.onclick = function(){
 			ratingMode = "title";
 			sortShows();
 			drawTable()
 		};
 		let typeCelLabel = create("span",false,capitalize(type),typeCel);
-		let upArrowa = create("span","hohArrowSort","▲",typeCel);
+		let upArrowa = create("span","altoolkitArrowSort","▲",typeCel);
 		upArrowa.onclick = function(){
 			ratingMode = "titleInverse";
 			sortShows();
@@ -580,14 +580,14 @@ function addComparisionPage(){
 		};
 		let digestSortCel = create("td");
 		digestSortCel.style.textAlign = "center";
-		let downArrow = create("span","hohArrowSort","▼",digestSortCel);
+		let downArrow = create("span","altoolkitArrowSort","▼",digestSortCel);
 		downArrow.onclick = function(){
 			ratingMode = digestSelect.value;
 			inverse = false;
 			sortShows(digestSelect.value);
 			drawTable()
 		};
-		let upArrow = create("span","hohArrowSort","▲",digestSortCel);
+		let upArrow = create("span","altoolkitArrowSort","▲",digestSortCel);
 		upArrow.onclick = function(){
 			ratingMode = digestSelect.value;
 			inverse = true;
@@ -611,7 +611,7 @@ function addComparisionPage(){
 				filter.innerText = "✕";
 				filter.style.color = "red"
 			}
-			filter.classList.add("hohFilterSort");
+			filter.classList.add("altoolkitFilterSort");
 			filter.onclick = function(){
 				if(filter.innerText === "☵"){
 					filter.innerText = "✓";
@@ -631,31 +631,31 @@ function addComparisionPage(){
 				drawTable();
 				changeUserURL()
 			};
-			let downArrow = create("span","hohArrowSort","▼");
+			let downArrow = create("span","altoolkitArrowSort","▼");
 			downArrow.onclick = function(){
 				ratingMode = "user";
-				let active = headerRow.querySelector(".hohArrowSelected");
+				let active = headerRow.querySelector(".altoolkitArrowSelected");
 				if(active){
-					active.classList.remove("hohArrowSelected")
+					active.classList.remove("altoolkitArrowSelected")
 				}
-				downArrow.classList.add("hohArrowSelected")
+				downArrow.classList.add("altoolkitArrowSelected")
 				guser = index;
 				sortShows();
 				drawTable()
 			};
-			let upArrow = create("span","hohArrowSort","▲");
+			let upArrow = create("span","altoolkitArrowSort","▲");
 			upArrow.onclick = function(){
 				ratingMode = "userInverse";
-				let active = headerRow.querySelector(".hohArrowSelected");
+				let active = headerRow.querySelector(".altoolkitArrowSelected");
 				if(active){
-					active.classList.remove("hohArrowSelected")
+					active.classList.remove("altoolkitArrowSelected")
 				}
-				upArrow.classList.add("hohArrowSelected")
+				upArrow.classList.add("altoolkitArrowSelected")
 				guser = index;
 				sortShows();
 				drawTable()
 			};
-			let statusFilterDot = create("div","hohStatusDot");
+			let statusFilterDot = create("div","altoolkitStatusDot");
 			if(user.status === false){
 				statusFilterDot.title = translate("$compare_listStatus")
 			}
@@ -689,8 +689,8 @@ function addComparisionPage(){
 			userCel.appendChild(statusFilterDot);
 			headerRow.appendChild(userCel);
 		});
-		userRow.classList.add("hohUserRow");
-		headerRow.classList.add("hohHeaderRow");
+		userRow.classList.add("altoolkitUserRow");
+		headerRow.classList.add("altoolkitHeaderRow");
 		table.appendChild(userRow);
 		table.appendChild(headerRow)
 	};

@@ -66,7 +66,7 @@ video:hover,
 .favourite.studio::after{
 	background-image: none!important;
 }
-.hohDownload{
+.altoolkitDownload{
 	display: none;
 }
 .history-day.lv-1{
@@ -91,14 +91,14 @@ video:hover,
 .medialist.table .cover .image{
 	opacity: 0;
 }
-.hohCencor .header img.cover,
-.hohCencor .relations .cover,
-.hohCencor .character .cover{
+.altoolkitCencor .header img.cover,
+.altoolkitCencor .relations .cover,
+.altoolkitCencor .character .cover{
 	filter: contrast(0);
 }
-.hohCencor .header img.cover:hover,
-.hohCencor .relations .cover:hover,
-.hohCencor .character .cover:hover{
+.altoolkitCencor .header img.cover:hover,
+.altoolkitCencor .relations .cover:hover,
+.altoolkitCencor .character .cover:hover{
 	filter: contrast(1);
 }
 .categories > span{

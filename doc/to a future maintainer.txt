@@ -4,7 +4,7 @@ videoMimeTypeFixer:
 purify.js:
 	check for new versions of this every six months or so, to keep up with the xss meta
 
-"remind hoh to update the commonUnfinishedManga list"
+"remind AL-toolkit to update the commonUnfinishedManga list"
 	/src/data/commonUnfinishedManga.json contains a mini-database of unfinished manga.
 	edit the timestamp in /src/utilities.js to make it stop nagging
 

@@ -9,12 +9,12 @@ Instead of:
 
 	let element = document.createElement("p");
 	element.innerText = "lorem ipsum";
-	element.classList.add("hohParagraph");
+	element.classList.add("altoolkitParagraph");
 	pageParentElement.append(element);
 
 You would do:
 
-	create("p","hohParagraph","lorem ipsum");
+	create("p","altoolkitParagraph","lorem ipsum");
 
 All arguments except for the HTML tag are optional.
 */
@@ -192,7 +192,7 @@ function formatTime(diff,type){
 
 function nativeTimeElement(timestamp){//time in seconds
 	let dateObj = new Date(timestamp*1000);
-	let elem = create("time","hohTimeGeneric");
+	let elem = create("time","altoolkitTimeGeneric");
 	elem.setAttribute("datetime",dateObj);
 	let locale = languageFiles[useScripts.partialLocalisationLanguage].info.locale || undefined;
 	elem.title = dateObj.toLocaleString(locale);
@@ -358,9 +358,6 @@ setInterval(function(){
 			}
 		}
 	})
-	document.querySelectorAll(".sense-wrap").forEach(link => {
-		link.style.display = "none"
-	})
 },2000);
 
 const svgns = "http://www.w3.org/2000/svg";
@@ -476,14 +473,14 @@ const badTags = ["gore","nudity","ahegao","irrumatio","sex toys","ashikoki","def
 badWords = badWords.concat(badTags);
 
 function createCheckbox(target,id,checked){//target[,id]
-	let hohCheckbox = create("label",["hohCheckbox","el-checkbox__input"],false,target);		
-	let checkbox = create("input",false,false,hohCheckbox);
+	let altoolkitCheckbox = create("label",["altoolkitCheckbox","el-checkbox__input"],false,target);		
+	let checkbox = create("input",false,false,altoolkitCheckbox);
 	if(id){
 		checkbox.id = id
 	}
 	checkbox.type = "checkbox";
 	checkbox.checked = !!checked;
-	create("span","el-checkbox__inner",false,hohCheckbox);
+	create("span","el-checkbox__inner",false,altoolkitCheckbox);
 	return checkbox
 }
 
@@ -590,7 +587,7 @@ const categoryColours = new Map([
 m4_include(utilities/colourPicker.js)
 
 function scoreFormatter(score,format){
-	let scoreElement = create("span","hohScore");
+	let scoreElement = create("span","altoolkitScore");
 	if(format === "POINT_100"){
 		scoreElement.innerText = score + "/100"
 	}
@@ -601,7 +598,7 @@ function scoreFormatter(score,format){
 		scoreElement.innerText = score + "/10"
 	}
 	else if(format === "POINT_3"){
-		scoreElement.classList.add("hohSmiley");
+		scoreElement.classList.add("altoolkitSmiley");
 		if(score === 3){
 			scoreElement.appendChild(svgAssets2.smile.cloneNode(true));
 		}
@@ -857,14 +854,26 @@ function formatCompat(compatData,targetLocation,name){
 	ctx.fill();
 }
 
-function compatCheck(list,name,type,callback){
+function compatCheck(list,name,type,callback,retries){
 	const variables = {
 		name: name,
 		listType: type
 	};
 	generalAPIcall(queryMediaListCompat,variables,function(data){
+		let rawList2 = returnList(data);
+		if(!rawList2){
+			retries = (retries || 0);
+			if(retries < 3){
+				setTimeout(function(){
+					compatCheck(list,name,type,callback,retries + 1)
+				},5000*(retries + 1));
+				return
+			}
+			callback({user: name,failed: true});
+			return
+		}
 		list.sort((a,b) => a.mediaId - b.mediaId);
-		let list2 = returnList(data).filter(element => element.scoreRaw);
+		let list2 = rawList2.filter(element => element.scoreRaw);
 		let list3 = [];
 		let indeks1 = 0;
 		let indeks2 = 0;
@@ -925,8 +934,8 @@ function compatCheck(list,name,type,callback){
 //used by the stats module, and to safeguard the manga chapter guesses
 //publishing manga is a bit tricky, since Anilist doesn't track chapters
 const commonUnfinishedManga = m4_include(data/commonUnfinishedManga.json)
-if(NOW() - new Date(2024,5,22) > 365*24*60*60*1000){
-	console.log("remind hoh to update the commonUnfinishedManga list")
+if(NOW() - new Date(2026,8,17) > 365*24*60*60*1000){
+	console.log("remind AL-toolkit to update the commonUnfinishedManga list")
 }
 
 //idea by GoBusto: https://gitlab.com/gobusto/unicodifier

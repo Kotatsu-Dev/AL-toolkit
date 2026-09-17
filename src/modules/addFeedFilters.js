@@ -2,7 +2,7 @@ function addFeedFilters(){
 	if(!location.pathname.match(/^\/home\/?$/)){
 		return
 	}
-	let filterBox = document.querySelector(".hohFeedFilter");
+	let filterBox = document.querySelector(".altoolkitFeedFilter");
 	if(filterBox){
 		return
 	}
@@ -188,7 +188,7 @@ function addFeedFilters(){
 		Array.from(activityFeed.children).forEach(activity => {
 			try{
 				let timeElement = activity.querySelector(".time time");
-				if(timeElement && !timeElement.classList.contains("hohTimeGeneric")){
+				if(timeElement && !timeElement.classList.contains("altoolkitTimeGeneric")){
 					let seconds = new Date(timeElement.dateTime).valueOf()/1000;
 					let replacement = nativeTimeElement(seconds);
 					timeElement.style.display = "none";
@@ -279,14 +279,14 @@ function addFeedFilters(){
 					}
 				}
 				if(useScripts.partialLocalisationLanguage === "日本語"){
-					statusParent.classList.add("hohReverseTitle")
+					statusParent.classList.add("altoolkitReverseTitle")
 				}
 			}
 		})
 	}
 	if(useScripts.feedCommentFilter){
-		filterBox = create("div","hohFeedFilter",false,activityFeedWrap);
-		create("span","hohDescription","At least ",filterBox);
+		filterBox = create("div","altoolkitFeedFilter",false,activityFeedWrap);
+		create("span","altoolkitDescription","At least ",filterBox);
 		activityFeedWrap.style.position = "relative";
 		activityFeedWrap.children[0].childNodes[0].nodeValue = "";
 		commentFilterBoxInput = create("input",false,false,filterBox);

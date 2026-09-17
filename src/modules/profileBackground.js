@@ -50,5 +50,5 @@ function profileBackground(){
 			console.warn("Invalid profile JSON for " + variables.userName + ". Aborting.");
 			console.log(atob(jsonMatch[1]));
 		}
-	},"hohProfileBackground" + variables.userName,30*1000);
+	},"altoolkitProfileBackground" + variables.userName,30*1000);
 }

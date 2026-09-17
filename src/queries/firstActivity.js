@@ -34,6 +34,6 @@
 					}
 				})
 			}
-		},"hohFirstActivity" + data.data.User.id,60*1000);
-	},"hohIDlookup" + user.toLowerCase());
+		},"altoolkitFirstActivity" + data.data.User.id,60*1000);
+	},"altoolkitIDlookup" + user.toLowerCase());
 }},

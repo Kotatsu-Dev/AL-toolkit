@@ -44,5 +44,5 @@ query($id: Int!, $type: MediaType, $page: Int = 1, $language: StaffLanguage){
 			dubNoticeLocation.insertBefore(dubNotice,dubNoticeLocation.firstChild)
 		}
 	};
-	generalAPIcall(query,variables,dubCallback,"hohDubInfo" + variables.id + variables.language)
+	generalAPIcall(query,variables,dubCallback,"altoolkitDubInfo" + variables.id + variables.language)
 }

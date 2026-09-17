@@ -46,12 +46,12 @@ exportModule({
 					clickSlider(current + delta)
 				}
 			};
-			if(document.querySelector(".hohStepper")){
+			if(document.querySelector(".altoolkitStepper")){
 				return
 			}
 			slider.style.position = "relative";
-			let decButton = create("span",["hohStepper","noselect"],"<",slider,"left:-27px;font-size:200%;top:0px;");
-			let incButton = create("span",["hohStepper","noselect"],">",slider,"right:-27px;font-size:200%;top:0px;");
+			let decButton = create("span",["altoolkitStepper","noselect"],"<",slider,"left:-27px;font-size:200%;top:0px;");
+			let incButton = create("span",["altoolkitStepper","noselect"],">",slider,"right:-27px;font-size:200%;top:0px;");
 			decButton.onclick = function(){
 				adjuster(-1)
 			};
@@ -61,12 +61,12 @@ exportModule({
 		};yearStepper()
 	},
 	css: `
-.hohStepper{
+.altoolkitStepper{
 	cursor: pointer;
 	position: absolute;
 	opacity: 0.5;
 }
-.el-slider:hover .hohStepper{
+.el-slider:hover .altoolkitStepper{
 	opacity: 1;
 }`
 })

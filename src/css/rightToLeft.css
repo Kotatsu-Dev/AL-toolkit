@@ -20,10 +20,10 @@
 .list-preview{
 	direction: rtl;
 }
-#hohListPreview .list-preview{
+#altoolkitListPreview .list-preview{
 	width: 100%;
 }
-.media-preview-card .hohFallback,
+.media-preview-card .altoolkitFallback,
 .media-preview-card .content{
 	direction: ltr;
 }
@@ -37,7 +37,7 @@
 	margin-right: auto;
 	margin-left: inherit!important;
 }
-#hohListPreview .info-left .content {
+#altoolkitListPreview .info-left .content {
     border-radius: 3px 0 0 3px;
     left: auto !important;
     right: 100%;
@@ -61,7 +61,7 @@
 #app > .progress{
 	transform: scale(-1);
 }
-.hohColourPicker{
+.altoolkitColourPicker{
 	margin-right: 20px;
 }
 .home .activity-feed-wrap .section-header{
@@ -75,7 +75,7 @@
 	direction: ltr;
 	margin-left: 20px;
 }
-.hohSubMenuLink{
+.altoolkitSubMenuLink{
 	text-align: right;
 }
 .quick-search .input{

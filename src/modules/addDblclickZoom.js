@@ -24,7 +24,7 @@ exportModule({
 				let target = e.target || e.srcElement;
 				while(target.classList){
 					if(target.classList.contains("activity-entry")){
-						target.classList.toggle("hohZoom");
+						target.classList.toggle("altoolkitZoom");
 						break
 					}
 					target = target.parentNode
@@ -33,14 +33,14 @@ exportModule({
 		}
 	},
 	css: `
-.hohZoom{
+.altoolkitZoom{
 	transform: scale(1.5);
 	transform-origin: 0 0;
 	transition: transform 0.4s;
 	z-index: 200;
 	box-shadow: 5px 5px 5px black;
 }
-.hohZoom .reply-wrap{
+.altoolkitZoom .reply-wrap{
 	background: rgb(var(--color-background));
 }`
 })

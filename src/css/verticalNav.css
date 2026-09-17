@@ -1,7 +1,7 @@
 .media .sidebar .tags .add-icon{
 	opacity: 1;
 }
-#hohListPreview .content{
+#altoolkitListPreview .content{
 	width: 240px;
 }
 .user .overview > .section:first-child{
@@ -35,7 +35,7 @@
 #app .tooltip.animate-position{
 	transition: opacity .26s ease-in-out,transform 0s ease-in-out;
 }
-.studio .hohThemeSwitch{
+.studio .altoolkitThemeSwitch{
 	top: 30px;
 }
 .stats-wrap .stat-cards{
@@ -160,8 +160,8 @@
 	margin-top: 0px !important;
 /*less space wasted over the footer*/
 }
-.hohUserRow td,
-.hohUserRow th{
+.altoolkitUserRow td,
+.altoolkitUserRow th{
 	top: 44px;
 }
 .container{
@@ -209,7 +209,7 @@
 }
 /*--------------VERTICAL-NAV----------------*/
 /*modified code from Kuwabara: https://userstyles.org/styles/161017/my-little-anilist-theme-can-not-be-this-cute*/
-.hohDismiss{
+.altoolkitDismiss{
 	transform: translate(17.5px,-40px);
 	margin-left: 0px!important;
 }
@@ -323,13 +323,13 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 	padding-left: 65px;
 }
 :root {
-	--color-nav-hoh: #2b2d42;
+	--color-nav-altoolkit: #2b2d42;
 }
 .site-theme-dark{
-	--color-nav-hoh: #152232;
+	--color-nav-altoolkit: #152232;
 }
 #nav.transparent{
-	background: var(--color-nav-hoh);
+	background: var(--color-nav-altoolkit);
 }
 .nav .user{
 	position: fixed;
@@ -383,13 +383,13 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 	.footer > .container{
 		position: relative;
 	}
-	.hohColourPicker{
+	.altoolkitColourPicker{
 		top: 0px;
 	}
-	.hohDismiss{
+	.altoolkitDismiss{
 		display: none;
 	}
-	.hohNotificationCake{
+	.altoolkitNotificationCake{
 		margin-left: -9px;
 	}
 }
@@ -607,10 +607,10 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 .home .media-preview-card:nth-child(5n+3) .content .info{
 	right: 12px;
 }
-.link:hover .hohSubMenu{
+.link:hover .altoolkitSubMenu{
 	color: rgb(var(--color-text-bright));
 }
-.hohSubMenu{
+.altoolkitSubMenu{
 	position: absolute;
 	left: 64px;
 	top: 0px;
@@ -620,7 +620,7 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 	border-bottom-right-radius: 3px;
 	padding: 2px 0px;
 }
-.hohSubMenuLink{
+.altoolkitSubMenuLink{
 	display: block;
 	margin-left: 3px;
 	padding: 4px;
@@ -630,7 +630,7 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 	z-index: 1;
 	position: relative;
 }
-.hohSubMenuLink:visited{
+.altoolkitSubMenuLink:visited{
 	color: rgb(160, 177, 197);
 }
 @media(max-width: 1540px){
@@ -668,7 +668,7 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 .markdown .markdown-spoiler.spoiler-visible i.hide-spoiler{
 	right: -10px;
 }
-.hohNoSequelSetting{
+.altoolkitNoSequelSetting{
 	right: 100px;
 	top: 50px;
 }

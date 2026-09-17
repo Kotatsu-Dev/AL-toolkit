@@ -4,67 +4,67 @@
 	--color-red: 232,93,117;
 	--color-foreground: 39,44,56;
 }
-.hohFeed{
+.altoolkitFeed{
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
-.hohFeed video{
+.altoolkitFeed video{
 	max-width: 100%;
 }
-.hohFeed .activity,
-.hohFeed .activity .reply{
+.altoolkitFeed .activity,
+.altoolkitFeed .activity .reply{
 	min-height: 25px;
 	position: relative;
 	border-style: solid;
 	border-width: 1px;
 	border-bottom-width: 0px;
 }
-.hohFeed .activity .replies{
+.altoolkitFeed .activity .replies{
 	margin-left: 60px;
 	margin-top: 5px;
 }
-.hohFeed .activity:last-child{
+.altoolkitFeed .activity:last-child{
 	border-bottom-width: 1px;
 }
-.hohFeed a{
+.altoolkitFeed a{
 	text-decoration: none;
 	color: rgb(var(--color-blue));
 }
-.hohFeed .hohButton{
+.altoolkitFeed .altoolkitButton{
 	font-size: 1rem;
 	color: initial;
 	margin: 5px;
 	filter: drop-shadow(1px 1px 2px black);
 }
-.hohFeed img{
+.altoolkitFeed img{
 	max-width: 500px;
 }
-.hohFeed .markdown_spoiler{
+.altoolkitFeed .markdown_spoiler{
 	background: rgb(31, 35, 45);
 	color: rgb(31, 35, 45);
 }
-.hohFeed .markdown_spoiler:hover{
+.altoolkitFeed .markdown_spoiler:hover{
 	color: rgb(159,173,189);
 }
-.hohFeed .markdown_spoiler img{
+.altoolkitFeed .markdown_spoiler img{
 	filter: blur(10px) hue-rotate(60deg) brightness(0.7);
 }
-.hohFeed .markdown_spoiler:hover img{
+.altoolkitFeed .markdown_spoiler:hover img{
 	filter: none;
 }
-.hohFeed .markdown_spoiler::after{
+.altoolkitFeed .markdown_spoiler::after{
 	content: "Spoiler";
 	color: rgb(159,173,189);
 	margin-left: 2px;
 }
 
-.hohFeed .activity:hover::before{
+.altoolkitFeed .activity:hover::before{
 	content: ">";
 	position: absolute;
 	left: -20px;
 	top: 0px;
 }
-.hohLikeQuickView{
+.altoolkitLikeQuickView{
 	position: absolute;
 	bottom: 0px;
 	left: 45px;
@@ -73,25 +73,25 @@
 	overflow: hidden;
 	max-width: 270px;
 }
-.hohFeed .hohLikes:hover{
+.altoolkitFeed .altoolkitLikes:hover{
 	color: rgb(var(--color-red));
 	filter: saturate(50%);
 }
-.hohFeed .hohLikes:hover .hohLikeQuickView{
+.altoolkitFeed .altoolkitLikes:hover .altoolkitLikeQuickView{
 	filter: saturate(200%);
 }
-.hohFeed .hohLikes:hover .hohLikeQuickView{
+.altoolkitFeed .altoolkitLikes:hover .altoolkitLikeQuickView{
 	color:rgb(159,173,189);
 }
-.hohFeed .activity:hover > .time{
+.altoolkitFeed .activity:hover > .time{
 	color: rgb(var(--color-blue));
 }
-.hohFeed .activity > .time{
+.altoolkitFeed .activity > .time{
 	overflow: hidden;
 	white-space: nowrap;
 }
 
-.hohSearchResult{
+.altoolkitSearchResult{
 	width: 18.5%;
 	display: inline-block;
 	text-align: center;
@@ -106,23 +106,23 @@
 	margin: 1px;
 	position: relative
 }
-.hohSearchResult.anime{
+.altoolkitSearchResult.anime{
 	color: rgb(var(--color-blue));
 }
-.hohSearchResult.manga{
+.altoolkitSearchResult.manga{
 	color: rgb(var(--color-green));
 }
-.hohSearchResult.anime:hover{
+.altoolkitSearchResult.anime:hover{
 	background-color: rgb(var(--color-blue),0.3);
 }
-.hohSearchResult.manga:hover{
+.altoolkitSearchResult.manga:hover{
 	background-color: rgb(var(--color-green),0.3);
 }
-.hohSearchResult.anime.selected{
+.altoolkitSearchResult.anime.selected{
 	background-color: rgb(var(--color-blue),0.3);
 	cursor: initial;
 }
-.hohSearchResult.manga.selected{
+.altoolkitSearchResult.manga.selected{
 	background-color: rgb(var(--color-green),0.3);
 	cursor: initial;
 }

@@ -11,7 +11,7 @@ function cencorMediaPage(id){
 		)){
 			let content = document.querySelector(".page-content");
 			if(content){
-				content.classList.add("hohCencor")
+				content.classList.add("altoolkitCencor")
 			}
 		}
 	}

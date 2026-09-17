@@ -1,32 +1,38 @@
 m4_divert(-1)m4_dnl
 m4_changequote(<m4<,>m4>)
-m4_define(AUTOMAIL_VERSION,10.6.4)
+m4_define(AL_TOOLKIT_VERSION,10.7)
 m4_divert(0)m4_dnl
 // ==UserScript==
-// @name         Automail
-// @namespace    http://tampermonkey.net/
-// @version      AUTOMAIL_VERSION
+// @name         AL-toolkit
+// @namespace    https://kotatsu.spb.ru
+// @version      AL_TOOLKIT_VERSION
 // @description  Extra parts for Anilist.co
 // @description:nn-NO Ekstradelar for Anilist.co
-// @author       hoh
+// @author       NikitaTH
 // @match        https://anilist.co/*
 // @grant        GM_xmlhttpRequest
 // @license      GPL-3.0-or-later
+// @downloadURL  https://github.com/Kotatsu-Dev/AL-toolkit/releases/latest/download/al-toolkit.user.js
+// @updateURL    https://github.com/Kotatsu-Dev/AL-toolkit/releases/latest/download/al-toolkit.user.js
 // ==/UserScript==
 // SPDX-FileCopyrightText: 2019-2023 hoh and the Automail contributors
+// SPDX-FileCopyrightText: 2026 NikitaTH
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
+//
+// AL-toolkit is a modified version of Automail (https://github.com/hohMiyazawa/Automail),
+// changed by NikitaTH. See the repository history for the list of changes.
 (function(){
 "use strict";
 const scriptInfo = {
-	"version" : "AUTOMAIL_VERSION",
-	"name" : "Automail",
-	"link" : "https://greasyfork.org/en/scripts/370473-automail",
-	"repo" : "https://github.com/hohMiyazawa/Automail",
-	"firefox" : "https://github.com/hohMiyazawa/Automail/releases",
+	"version" : "AL_TOOLKIT_VERSION",
+	"name" : "AL-toolkit",
+	"link" : "https://github.com/Kotatsu-Dev/AL-toolkit",
+	"repo" : "https://github.com/Kotatsu-Dev/AL-toolkit",
+	"firefox" : "https://github.com/Kotatsu-Dev/AL-toolkit/releases",
 	"chrome" : "NO KNOWN BUILDS",
-	"author" : "hoh",
-	"authorLink" : "https://anilist.co/user/hoh/",
+	"author" : "NikitaTH",
+	"authorLink" : "https://github.com/Kotatsu-Dev",
 	"license" : "GPL-3.0-or-later"
 };
 /*
@@ -47,14 +53,12 @@ const scriptInfo = {
 */
 /*
 "useScripts" contains the defaults for many modules. This is stored in the user's localStorage.
-(development debugging tip: if you enable "Enable an API for other scripts to control this script" in the settings, the settings object will be exposed in the DOM as document.automailAPI.document.automailAPI.settings)
+(development debugging tip: if you enable "Enable an API for other scripts to control this script" in the settings, the settings object will be exposed in the DOM as document.alToolkitAPI.settings)
 Many of the modules are closely tied to the Anilist API
 Other than that, some data loaded from MyAnimelist is the only external resource (opt-in)
 
 Optionally, a user may give the script higher privileges (e.g, editing list data) through the Anilist grant system, enabling some additional modules
 */
-const script_type = "Automail"
-
 /* GENERAL STRUCTURE:
  1. Settings
  2. CSS
@@ -66,9 +70,9 @@ const script_type = "Automail"
 */
 m4_include(settings.js)
 m4_include(alias.js)
-//a shared style node for all the modules. Most custom classes are prefixed by "hoh" to avoid collisions with native Anilist classes
+//a shared style node for all the modules. Most custom classes are prefixed by "altoolkit" to avoid collisions with native Anilist classes
 let style = document.createElement("style");
-style.id = "automail-styles";
+style.id = "al-toolkit-styles";
 style.type = "text/css";
 
 //The default colour is rgb(var(--color-blue)) provided by Anilist, but rgb(var(--color-green)) is preferred for things related to manga
@@ -93,4 +97,4 @@ m4_include(controller.js)
 m4_include(build/userModules.js)
 m4_include(HOWTO.js)
 })()
-//wanna translate Automail? https://github.com/hohMiyazawa/Automail/issues/69
+//wanna translate AL-toolkit? https://github.com/hohMiyazawa/Automail/issues/69

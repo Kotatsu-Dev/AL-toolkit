@@ -20,7 +20,7 @@ exportModule({
 			function(data){
 				userID = data.data.User.id
 			},
-			"hohIDlookup" + user.toLowerCase()
+			"altoolkitIDlookup" + user.toLowerCase()
 		);
 		
 		let adder = function(){
@@ -33,7 +33,7 @@ exportModule({
 				setTimeout(adder,500);
 				return
 			}
-			let hohDisplay = create("div",["hohSocialContent","user-follow"],false,target.parentNode.parentNode);
+			let altoolkitDisplay = create("div",["altoolkitSocialContent","user-follow"],false,target.parentNode.parentNode);
 			Array.from(target.children).forEach(child => {
 				child.onclick = function(){
 					let possibleActive = target.querySelector(".active");
@@ -46,19 +46,19 @@ exportModule({
 					}
 					child.classList.add("active");
 					target.parentNode.parentNode.children[1].style.display = "block";
-					hohDisplay.style.display = "none";
+					altoolkitDisplay.style.display = "none";
 				}
 			})
 			let followingOnly = create("span",false,translate("$relations_following_only"),target);
-			let followingOnly_count = create("span","hohCount",false,followingOnly);
+			let followingOnly_count = create("span","altoolkitCount",false,followingOnly);
 			let followersOnly = create("span",false,translate("$relations_followers_only"),target);
-			let followersOnly_count = create("span","hohCount",false,followersOnly);
+			let followersOnly_count = create("span","altoolkitCount",false,followersOnly);
 			let mutuals = create("span",false,translate("$relations_mutuals"),target);
-			let mutuals_count = create("span","hohCount",false,mutuals);
+			let mutuals_count = create("span","altoolkitCount",false,mutuals);
 			let sharedFollowing = create("span",false,translate("$relations_shared_following"),target);
-			let sharedFollowing_count = create("span","hohCount",false,sharedFollowing);
+			let sharedFollowing_count = create("span","altoolkitCount",false,sharedFollowing);
 			let sharedFollowers = create("span",false,translate("$relations_shared_followers"),target);
-			let sharedFollowers_count = create("span","hohCount",false,sharedFollowers);
+			let sharedFollowers_count = create("span","altoolkitCount",false,sharedFollowers);
 			if(user === whoAmI){
 				sharedFollowing.style.display = "none";
 				sharedFollowers.style.display = "none";
@@ -73,19 +73,19 @@ exportModule({
 					possibleActive.classList.remove("active");
 				}
 				target.parentNode.parentNode.children[1].style.display = "none";
-				hohDisplay.style.display = ""
+				altoolkitDisplay.style.display = ""
 			}
 
 			let activeModule = "";
 
 			let followingOnlyDisplay = function(){
-				hohDisplay.innerText = "";
+				altoolkitDisplay.innerText = "";
 				let count = 0;
 				their_following.forEach((user,key) => {
 					if(!their_followers.has(key)){
 						count++;
 						if(activeModule === "followingOnly"){
-							let card = create("div","follow-card",false,hohDisplay);
+							let card = create("div","follow-card",false,altoolkitDisplay);
 							let avatar = create("div","avatar",false,card);
 							avatar.style.backgroundImage = 'url("' + user.avatar.large + '")';
 							let name = create("a","name",user.name,avatar);
@@ -97,13 +97,13 @@ exportModule({
 			}
 
 			let followersOnlyDisplay = function(){
-				hohDisplay.innerText = "";
+				altoolkitDisplay.innerText = "";
 				let count = 0;
 				their_followers.forEach((user,key) => {
 					if(!their_following.has(key)){
 						count++;
 						if(activeModule === "followersOnly"){
-							let card = create("div","follow-card",false,hohDisplay);
+							let card = create("div","follow-card",false,altoolkitDisplay);
 							let avatar = create("div","avatar",false,card);
 							avatar.style.backgroundImage = 'url("' + user.avatar.large + '")';
 							let name = create("a","name",user.name,avatar);
@@ -115,13 +115,13 @@ exportModule({
 			}
 
 			let mutualDisplay = function(){
-				hohDisplay.innerText = "";
+				altoolkitDisplay.innerText = "";
 				let count = 0;
 				their_followers.forEach((user,key) => {
 					if(their_following.has(key)){
 						count++;
 						if(activeModule === "mutuals"){
-							let card = create("div","follow-card",false,hohDisplay);
+							let card = create("div","follow-card",false,altoolkitDisplay);
 							let avatar = create("div","avatar",false,card);
 							avatar.style.backgroundImage = 'url("' + user.avatar.large + '")';
 							let name = create("a","name",user.name,avatar);
@@ -133,13 +133,13 @@ exportModule({
 			}
 
 			let sharedFollowingDisplay = function(){
-				hohDisplay.innerText = "";
+				altoolkitDisplay.innerText = "";
 				let count = 0;
 				their_following.forEach((user,key) => {
 					if(my_following.has(key)){
 						count++;
 						if(activeModule === "sharedFollowing"){
-							let card = create("div","follow-card",false,hohDisplay);
+							let card = create("div","follow-card",false,altoolkitDisplay);
 							let avatar = create("div","avatar",false,card);
 							avatar.style.backgroundImage = 'url("' + user.avatar.large + '")';
 							let name = create("a","name",user.name,avatar);
@@ -151,13 +151,13 @@ exportModule({
 			}
 
 			let sharedFollowersDisplay = function(){
-				hohDisplay.innerText = "";
+				altoolkitDisplay.innerText = "";
 				let count = 0;
 				their_followers.forEach((user,key) => {
 					if(my_followers.has(key)){
 						count++;
 						if(activeModule === "sharedFollowers"){
-							let card = create("div","follow-card",false,hohDisplay);
+							let card = create("div","follow-card",false,altoolkitDisplay);
 							let avatar = create("div","avatar",false,card);
 							avatar.style.backgroundImage = 'url("' + user.avatar.large + '")';
 							let name = create("a","name",user.name,avatar);
@@ -413,11 +413,11 @@ exportModule({
 	color: rgb(var(--color-text));
 	font-weight: 500;
 }
-.hohSocialContent .follow-card{
+.altoolkitSocialContent .follow-card{
 	width: 80px;
 	position: relative;
 }
-.hohSocialContent .avatar{
+.altoolkitSocialContent .avatar{
 	width: 80px;
 	height: 80px;
 	background-size: cover;
@@ -426,7 +426,7 @@ exportModule({
 	overflow: hidden;
 	border-radius: 4px;
 }
-.hohSocialContent .avatar .name{
+.altoolkitSocialContent .avatar .name{
 	font-family: Overpass,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
 	align-items: flex-end;
 	background: rgba(var(--color-shadow),.6);
@@ -443,11 +443,11 @@ exportModule({
 	width: 100%;
 	word-break: break-all;
 }
-.hohSocialContent .avatar .name:hover{
+.altoolkitSocialContent .avatar .name:hover{
 	opacity: 1;
 	color: rgb(var(--color-white));
 }
-.hohSocialContent{
+.altoolkitSocialContent{
 	display: grid;
 	grid-gap: 20px;
 	grid-template-columns: repeat(auto-fill,80px);

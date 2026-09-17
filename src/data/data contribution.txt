@@ -25,7 +25,7 @@ If you submit a new domain, your pull request must mention in plaintext the doma
 
 --- inlineSVG.json
 
-Use this if your module needs a new icon, as Automail must be delivered in a single file
+Use this if your module needs a new icon, as AL-toolkit must be delivered in a single file
 
 
 --- studios.json

@@ -9,8 +9,8 @@ function embedHentai(){
 	let mediaEmbeds = document.querySelectorAll(".media-embed");
 	let bigQuery = [];//collects all on a page first so we only have to send 1 API query.
 	mediaEmbeds.forEach(function(embed){
-		if(embed.children.length === 0 && !embed.classList.contains("hohMediaEmbed")){//if( "not-rendered-natively" && "not-rendered-by-this sript" )
-			embed.classList.add("hohMediaEmbed");
+		if(embed.children.length === 0 && !embed.classList.contains("altoolkitMediaEmbed")){//if( "not-rendered-natively" && "not-rendered-by-this sript" )
+			embed.classList.add("altoolkitMediaEmbed");
 			let createEmbed = function(data){
 				if(!data){
 					return
@@ -63,7 +63,7 @@ function embedHentai(){
 					type: embed.dataset.mediaType.toUpperCase()
 				},
 				callback: createEmbed,
-				cacheKey: "hohMedia" + embed.dataset.mediaId
+				cacheKey: "altoolkitMedia" + embed.dataset.mediaId
 			})
 		}
 	});

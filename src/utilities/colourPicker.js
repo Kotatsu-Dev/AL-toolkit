@@ -8,7 +8,7 @@ if(useScripts.colourPicker && (!useScripts.mobileFriendly)){
 	margin-left: calc(0px + 1%);
 	transform: translate(0px,10px);
 }
-.hohColourPicker .hohCheckbox{
+.altoolkitColourPicker .altoolkitCheckbox{
 	margin-left: 10px;
 }
 `;
@@ -75,7 +75,7 @@ if(useScripts.colourPicker && (!useScripts.mobileFriendly)){
 				"--color-yellow",
 				"--color-green"
 			];
-			let cpContainer = create("div","hohColourPicker",false,colourPickerLocation);
+			let cpContainer = create("div","altoolkitColourPicker",false,colourPickerLocation);
 			let cpTitle = create("h2",false,translate("$adjustColours_title"),cpContainer);
 			let cpInput = create("input",false,false,cpContainer);
 			cpInput.type = "color";

@@ -124,6 +124,9 @@ if(useScripts.betterListPreview && !(window.screen.availWidth && window.screen.a
 .home:not(.full-width){
 	grid-template-columns: auto 545px!important;
 }
+.home.full-width .list-preview{
+	justify-content: space-between;
+}
 @media(min-width: 1040px) and (max-width: 1540px){
 	.page-content > .container{
 		max-width: 1300px;
@@ -131,14 +134,14 @@ if(useScripts.betterListPreview && !(window.screen.availWidth && window.screen.a
 	.list-preview{
 		gap: 15px!important;
 	}
-	.home{
+	.home:not(.full-width){
 		grid-template-columns: auto 525px!important;
 	}
 }
-#hohListPreview + .list-previews .list-preview-wrap{
+#altoolkitListPreview + .list-previews .list-preview-wrap{
 	display: none;
 }
-#hohListPreview + .list-previews .list-preview-wrap:last-child{
+#altoolkitListPreview + .list-previews .list-preview-wrap:last-child{
 	display: block;
 }
 	`
@@ -186,15 +189,24 @@ m4_include(css/verticalNav.css)
 .subMenuContainer > .link{
 	margin-left: 86px;
 }
-.hohSubMenu{
+.altoolkitSubMenu{
 	left: 0px;
-	width: 86px;
+	margin-left: 86px;
+	transform: translateX(-100%);
+	width: max-content;
+	min-width: 86px;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
 }
-.hohColourPicker{
+.altoolkitSubMenu .altoolkitSubMenuLink{
+	white-space: nowrap;
+	text-align: right;
+	margin-left: 0px;
+	margin-right: 3px;
+}
+.altoolkitColourPicker{
 	right: 70px;
 }
 #app .nav .user-wrap .dropdown{
@@ -326,15 +338,26 @@ m4_include(css/SFWmode.css)
 }`
 	}
 }
+if(useScripts.socialTab){
+	moreStyle.textContent += `
+.following .hover-icon{
+	width: 14px;
+	margin-left: 0px;
+}`
+}
 if(useScripts.cleanSocial){
 	moreStyle.textContent += `
 .social .activity-feed + div{
 	display: flex;
 	flex-direction: column;
 }
-.social .activity-feed + div > div:first-child{
+.social .activity-feed + div > div{
 	order: 2;
 	margin-top: 25px;
+}
+.social .activity-feed + div > div:has(.following){
+	order: 1;
+	margin-top: 0px;
 }`
 }
 if(useScripts.statusBorder){
@@ -356,7 +379,7 @@ if(useScripts.titlecaseRomaji){
 }
 	`
 }
-if(script_type !== "Boneless"){
+if(shipFullStatTables){
 	moreStyle.textContent += `
 .user[type="anime"][page="tags"] .increase-stats::after,
 .user[type="manga"][page="tags"] .increase-stats::after,
@@ -365,17 +388,11 @@ if(script_type !== "Boneless"){
 .user[type="manga"][page="staff"] .increase-stats::after{
 	content: "Or view the full list below:";
 	display: block;
-}
-.rules-notice{
-	display: none;
-}
-.sense-wrap{
-	display: none;
 }`
 }
 moreStyle.textContent += `
 .settings .nav a[href="/settings/apps"]::after{
-	content: " & ${script_type}";
+	content: " & ${scriptInfo.name}";
 }
 `
 if(useScripts.partialLocalisationLanguage === "Português" || useScripts.partialLocalisationLanguage === "Español"){
@@ -387,11 +404,6 @@ if(useScripts.partialLocalisationLanguage === "Português" || useScripts.partial
 }initCSS();
 
 documentHead.appendChild(moreStyle);
-let customStyle = create("style");
-let currentUserCSS = "";
-customStyle.id = "customCSS-" + script_type.toLowerCase() + "-styles";
-customStyle.type = "text/css";
-documentHead.appendChild(customStyle);
 
 
 let aliases = new Map();
@@ -415,6 +427,6 @@ if(useScripts.mediaTranslation && (languageFiles[useScripts.partialLocalisationL
 	})
 }
 if("ontouchstart" in document.documentElement){
-	document.documentElement.className += "hoh-touch-device";
+	document.documentElement.className += "altoolkit-touch-device";
 }
 //end "conditionalStyles.js"

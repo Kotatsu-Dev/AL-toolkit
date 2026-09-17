@@ -28,15 +28,12 @@ exportModule({
 						offset++;
 						target = target.nextSibling
 					}
-					let presentDayPresentTime = (new Date()).valueOf();
-					presentDayPresentTime = new Date(presentDayPresentTime.valueOf() - offset * 24*60*60*1000);
-					let year = presentDayPresentTime.getUTCFullYear();
-					let month = presentDayPresentTime.getUTCMonth() + 1;
-					let day = presentDayPresentTime.getUTCDate();
-					let hour = presentDayPresentTime.getUTCHours();
-					if(hour + 9 > 23){
-						day++
-					}
+					let squareDate = new Date();
+					squareDate.setHours(0,0,0,0);
+					squareDate.setDate(squareDate.getDate() - (offset - 1));
+					let year = squareDate.getFullYear();
+					let month = squareDate.getMonth() + 1;
+					let day = squareDate.getDate();
 					window.location.href = "https://anilist.co/terms?user=" + encodeURIComponent(document.querySelector("h1.name").innerText) + "&date=" + year + "-" + month + "-" + day
 				}
 			}

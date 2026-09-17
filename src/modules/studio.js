@@ -1,3 +1,11 @@
+exportModule({
+	id: "studioFavouriteCount",
+	description: "Add an exact favourite count to studio pages",
+	isDefault: true,
+	categories: ["Media"],
+	visible: true
+})
+
 function enhanceStudio(){//adds a favourite count to every studio page
 	if(!location.pathname.match(/^\/studio(\/.*)?/)){
 		return
@@ -40,6 +48,6 @@ query($id: Int!){
 		favourites
 	}
 }`,
-		variables,favCallback,"hohStudioFavs" + variables.id,60*60*1000
+		variables,favCallback,"altoolkitStudioFavs" + variables.id,60*60*1000
 	);
 }

@@ -23,9 +23,8 @@
 },{"id": "draw3x3",
 	"description": "$draw3x3_description",
 	"categories": ["Lists"]
-},{"id": "automailAPI",
-	"boneless_disable": true,
-	"description": "$automailAPI_description",
+},{"id": "alToolkitAPI",
+	"description": "$al-toolkitAPI_description",
 	"categories": ["Script","Login"]
 },{"id": "MALscore",
 	"description": "$setting_MALscore",
@@ -77,11 +76,9 @@
 	"description": "$mangaGuess_description",
 	"categories": ["Media"]
 },{"id": "replaceNativeTags",
-	"boneless_disable": true,
 	"description": "$replaceNativeTags_description",
 	"categories": ["Stats"]
 },{"id": "allStudios",
-	"boneless_disable": true,
 	"description": "$allStudios_description",
 	"categories": ["Stats"]
 },{"id": "noRewatches",
@@ -164,7 +161,6 @@
 	"description": "$CSScompactBrowse_description",
 	"categories": ["Browse"]
 },{"id": "customCSS",
-	"boneless_disable": true,
 	"description": "$customCSS_description",
 	"categories": ["Profiles","Login"]
 },{"id": "CSSgreenManga",

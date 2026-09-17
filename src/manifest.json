@@ -1,13 +1,13 @@
 {
 	"manifest_version": 2,
-	"name": "Automail",
-	"version": "10.4.6",
+	"name": "AL-toolkit",
+	"version": "10.7",
 
 	"description": "Extra parts for Anilist.co",
 
-	"author": "hoh",
+	"author": "NikitaTH",
 
-	"homepage_url": "https://github.com/hohMiyazawa/Automail",
+	"homepage_url": "https://github.com/Kotatsu-Dev/AL-toolkit",
 
 	"icons": {
 		"2": "icons/automail-2.png",
@@ -23,7 +23,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://anilist.co/*"],
-			"js": ["automail.js"]
+			"js": ["al-toolkit.js"]
 		}
 	],
 	"permissions": [
