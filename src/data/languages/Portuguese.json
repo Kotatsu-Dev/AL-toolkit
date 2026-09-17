@@ -472,7 +472,6 @@
 "$replaceNativeTags_description": "Listas completas para tags, pessoal e estúdios em Estat.",
 "$hideGlobalFeed_description": "Ocultar feed global",
 "$CSScompactBrowse_description": "Deixar seção Explorar mais compacta",
-"$cleanSocial_description": "Pôr 'Following' antes de 'Forum Threads' na aba Social da obra",
 "$CSSverticalNav_description": "Modo alternativo de navegação [com barra vertical por Kuwabara]",
 "$nonJumpScroll_description": "Evitar conteúdo da atividade de pular ao usar elevadores [por Reina]",
 "$blockWord_description": "Ocultar estados contendo esta palavra:",

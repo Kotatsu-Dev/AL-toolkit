@@ -619,6 +619,7 @@ div#nav.nav .link.router-link-exact-active.router-link-active,
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 	padding: 2px 0px;
+	min-width: 90px;
 }
 .altoolkitSubMenuLink{
 	display: block;

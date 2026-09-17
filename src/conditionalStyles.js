@@ -194,7 +194,7 @@ m4_include(css/verticalNav.css)
 	margin-left: 86px;
 	transform: translateX(-100%);
 	width: max-content;
-	min-width: 86px;
+	min-width: 90px;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
 	border-top-right-radius: 0px;
@@ -343,21 +343,6 @@ if(useScripts.socialTab){
 .following .hover-icon{
 	width: 14px;
 	margin-left: 0px;
-}`
-}
-if(useScripts.cleanSocial){
-	moreStyle.textContent += `
-.social .activity-feed + div{
-	display: flex;
-	flex-direction: column;
-}
-.social .activity-feed + div > div{
-	order: 2;
-	margin-top: 25px;
-}
-.social .activity-feed + div > div:has(.following){
-	order: 1;
-	margin-top: 0px;
 }`
 }
 if(useScripts.statusBorder){

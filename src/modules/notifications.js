@@ -105,11 +105,12 @@ function enhanceNotifications(forceFlag){
 				}
 			}
 			if(useScripts.settingsTip){
-				create("p",false,
+				let notice = create("a",false,
 `You can turn parts of the script on and off:
 settings > apps.
 
-You can also turn off this notice there.`,setting)
+You can also turn off this notice there.`,setting,"border-width:1px;border-style:dashed;padding:5px;border-color:rgb(var(--color-blue));display:block");
+				notice.href = "https://anilist.co/settings/apps"
 			}
 			regularNotifications.onclick = function(){
 				if(displayMode === "altoolkit"){

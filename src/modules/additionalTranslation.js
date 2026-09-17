@@ -1,7 +1,7 @@
 exportModule({
 	id: "additionalTranslation",
 	description: "$additionalTranslation_description",
-	extendedDescription: `Use "AL-toolkit language" to translate some native parts of the site too`,
+	extendedDescription: `Use "AL-toolkit language" to translate some native parts of the site too.\nThat is, the official parts too, not just the ones AL-toolkit inserts.`,
 	isDefault: true,//logic: if translation is turned on, it should be comprehensive. Turning *off* parts of it should be the active opt
 	importance: 0,
 	categories: ["Script","Newly Added"],

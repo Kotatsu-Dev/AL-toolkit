@@ -566,7 +566,6 @@
 "$replaceNativeTags_description": "Liste complete per tag, staff e studio nelle statistiche",
 "$hideGlobalFeed_description": "Nascondi il feed globale",
 "$CSScompactBrowse_description": "Rendi la sezione Sfoglia più compatta",
-"$cleanSocial_description": "Mostra \"Seguiti\" prima di \"Discussioni forum\" nelle schede social dei media",
 "$CSSverticalNav_description": "Modalità di navigazione alternativa [con barra di navigazione verticale da Kuwabara]",
 "$CSSverticalNav_extendedDescription": "Layout di navigazione alternativo",
 "$CSSprofileClutter_description": "Rimuovi cose inutili dai profili (pietre miliari, grafico cronologico, generi)",

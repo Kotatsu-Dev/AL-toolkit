@@ -5,7 +5,8 @@
 },{"id": "settingsTip",
 	"description": "$settingsTip_description",
 	"extendedDescription": "$settingsTip_extendedDescription",
-	"categories": ["Notifications"]
+	"categories": ["Notifications"],
+	"importance": 1
 },{"id": "dismissDot",
 	"description": "$dismissDot_description",
 	"categories": ["Notifications","Login"]
@@ -166,9 +167,6 @@
 },{"id": "CSSgreenManga",
 	"description": "$setting_CSSgreenManga",
 	"categories": ["Media","Feeds"]
-},{"id": "cleanSocial",
-	"description": "$cleanSocial_description",
-	"categories": ["Media","Forum"]
 },{"id": "limitProgress10",
 	"description": "$limitProgress10_description",
 	"categories": ["Feeds"]

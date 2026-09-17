@@ -58,7 +58,7 @@ exportModule({
 					let id = link.match(/(anime|manga)\/(\d+)\//);
 					if(id && id[2]){
 						id = parseInt(id[2]);
-						if((sequelList.has(id) || sequelList_manga.has(id) || link.match(/2nd|3rd|season-2|season-3/i)) && input.checked){
+						if((sequelList.has(id) || sequelList_manga.has(id) || link.match(/2nd|3rd|season-2|season-3|season-4|part-2|part-3|part-4/i) || link.match(/-2\/$/i)) && input.checked){
 							hit.classList.add("altoolkitHiddenSequel")
 						}
 						else{

@@ -108,7 +108,7 @@ function addComparisionPage(){
 	normalFilter.checked = false;
 	let colourLabel = create("span",false,translate("$compare_colourCell"),compareArea,"padding:5px;");
 	let colourFilter = createCheckbox(compareArea);
-	colourFilter.checked = useScripts.comparisionColourFilter;	
+	colourFilter.checked = useScripts.comparisionColourFilter;
 	let sequelLabel = create("span",false,translate("$hideSequels"),compareArea,"padding:5px;");
 	let sequelFilter = createCheckbox(compareArea);
 	sequelFilter.checked = false;

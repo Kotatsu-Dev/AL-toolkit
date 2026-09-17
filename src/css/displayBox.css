@@ -33,6 +33,8 @@
 	border-color: rgb(var(--color-text));
 	filter: drop-shadow(0 0 0.2rem crimson);
 	z-index: 20;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 .altoolkitDisplayBoxClose:hover{
 	filter: drop-shadow(0 0 0.75rem crimson);

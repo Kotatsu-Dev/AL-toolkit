@@ -473,7 +473,6 @@
 "$replaceNativeTags_description": "Full lists for tags, staff and studios in stats",
 "$hideGlobalFeed_description": "Küresel feed'i gizle",
 "$CSScompactBrowse_description": "Göz atma bölümünü daha kompakt yap",
-"$cleanSocial_description": "Place 'following' before 'forum threads' on media social tabs",
 "$CSSverticalNav_description": "Alternatif göz atma modu [yatay gezinti çubuğuyla, Kuwabara'dan]",
 "$nonJumpScroll_description": "Kaydırma çubuklarını kullanırken aktivite içeriğinin oradan oraya zıplamasını durdur [Reina'dan]",
 "$blockWord_description": "Şu kelime(leri) içeren durum gönderilerini gizle:",

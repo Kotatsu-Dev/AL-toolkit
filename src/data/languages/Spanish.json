@@ -462,7 +462,6 @@
 "$replaceNativeTags_description": "Listas completas para etiquetas, staff y estudios en las estadísticas",
 "$hideGlobalFeed_description": "Ocultar el feed global",
 "$CSScompactBrowse_description": "Hacer la sección de exploración más compacta",
-"$cleanSocial_description": "Colocar \"Seguidores\" antes de \"Hilos del foro\" en las ficha social de anime/manga",
 "$CSSverticalNav_description": "Modo de navegación alternativo [con barra de navegación vertical cortesía de Kuwabara]",
 "$nonJumpScroll_description": "Evitar que el contenido de la actividad salte al utilizar las barras de desplazamiento [cortesía de Reina]",
 "$blockWord_description": "Ocultar publicaciones de estado que contengan esta palabra:",
