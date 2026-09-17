@@ -1,6 +1,6 @@
 m4_divert(-1)m4_dnl
 m4_changequote(<m4<,>m4>)
-m4_define(AL_TOOLKIT_VERSION,10.7)
+m4_define(AL_TOOLKIT_VERSION,10.7.1)
 m4_divert(0)m4_dnl
 // ==UserScript==
 // @name         AL-toolkit

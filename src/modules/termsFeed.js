@@ -27,6 +27,11 @@ if(searchParams.get("page")){
 	page = parseInt(searchParams.get("page"))
 }
 let date = searchParams.get("date");
+let dateStart = 0;
+if(date){
+	let dateParts = date.split("-").map(part => parseInt(part));
+	dateStart = (new Date(dateParts[0],dateParts[1] - 1,dateParts[2])).valueOf()/1000
+}
 let pageLocation = document.querySelector(".container");
 pageLocation.parentNode.style.background = "rgb(39,44,56)";
 pageLocation.parentNode.style.color = "rgb(159,173,189)";
@@ -1563,7 +1568,7 @@ Viewer{unreadNotificationCount}
 			`
 query($page: Int,$types: [ActivityType]){
 Page(page: $page){
-	activities(${(onlyUser.checked || onlyGlobal.checked ? "" : "isFollowing: true,")}sort: ID_DESC,type_not_in: $types${(onlyReplies.checked ? ",hasReplies: true" : "")}${(onlyUser.checked ? ",userId: " + userID : "")}${(onlyGlobal.checked ? ",hasRepliesOrTypeText: true" : "")}${onlyMedia.checked && onlyMediaResult.id ? ",mediaId: " + onlyMediaResult.id : ""}${date ? ",createdAt_greater: " + ((new Date(date)).valueOf()/1000) + ",createdAt_lesser: " + ((new Date(date)).valueOf()/1000 + 24*60*60) : ""}){
+	activities(${(onlyUser.checked || onlyGlobal.checked ? "" : "isFollowing: true,")}sort: ID_DESC,type_not_in: $types${(onlyReplies.checked ? ",hasReplies: true" : "")}${(onlyUser.checked ? ",userId: " + userID : "")}${(onlyGlobal.checked ? ",hasRepliesOrTypeText: true" : "")}${onlyMedia.checked && onlyMediaResult.id ? ",mediaId: " + onlyMediaResult.id : ""}${date ? ",createdAt_greater: " + dateStart + ",createdAt_lesser: " + (dateStart + 24*60*60) : ""}){
 		... on MessageActivity{
 			id
 			type
