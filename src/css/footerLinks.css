@@ -32,6 +32,10 @@
 	position: absolute;
 	left: -10px;
 }
+
+body.site-theme-dark .footer [href*="github.com/AniList"]::before{
+	filter: invert(1);
+}
 .footer [href="/sitemap/index.xml"]::after{
 	content: ".xml";
 }
