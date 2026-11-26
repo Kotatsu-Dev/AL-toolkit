@@ -29,6 +29,7 @@ let ListTable = (function(){
 		totalChapters: {label: "Total Chapters", short: "Total\nChapters", types: "M"},
 		totalVolumes:  {label: "Total Volumes", short: "Total\nVolumes", types: "M"},
 		repeat:        {label: "Rewatches", labelManga: "Rereads", types: "AM"},
+		priority:      {label: "Priority", types: "AM", hint: "0 is unset"},
 		releaseStatus: {label: "Release Status", short: "Release\nStatus", types: "AM"},
 		year:          {label: "Year", types: "AM"},
 		season:        {label: "Season", types: "A", api: true},
@@ -45,7 +46,7 @@ let ListTable = (function(){
 	};
 	//columns that can show "+" and "-" buttons while hovering a row
 	//by default every column has both buttons, score only when the "plussMinus" script setting is on
-	let STEP_COLUMNS = ["score","progress","chapters","volumes"];
+	let STEP_COLUMNS = ["score","progress","chapters","volumes","priority"];
 	let defaultSteps = function(id){
 		if(id === "score"){
 			let on = typeof useScripts === "undefined" || useScripts.plussMinus !== false;
@@ -424,6 +425,7 @@ let ListTable = (function(){
 			cell.appendChild(value)
 		}
 	}
+	let PRIORITY_MAX = 5;
 	let SCORE_MAX = {POINT_100: 100,POINT_10_DECIMAL: 10,POINT_10: 10,POINT_5: 5,POINT_3: 3};
 	//fill a cell, return false if the column is unknown
 	let RENDER = {
@@ -523,6 +525,11 @@ let ListTable = (function(){
 		totalChapters: (cell,ctx) => cell.textContent = textCell(ctx.media.chapters),
 		totalVolumes: (cell,ctx) => cell.textContent = textCell(ctx.media.volumes),
 		repeat: (cell,ctx) => cell.textContent = ctx.entry.repeat ? ctx.entry.repeat : "",
+		priority: function(cell,ctx){
+			let priority = ctx.entry.priority || 0;//AniList stores 0 when there is none
+			cell.textContent = priority ? priority : "";
+			stepButtons(cell,ctx,"priority","priority",priority,PRIORITY_MAX)
+		},
 		releaseStatus: (cell,ctx) => cell.textContent = textCell(enumName(ctx.media.status)),
 		year: (cell,ctx) => cell.textContent = textCell(ctx.media.startDate && ctx.media.startDate.year),
 		season: (cell,ctx) => cell.textContent = (ctx.extra && ctx.extra.season) ? enumName(ctx.extra.season) + (ctx.extra.seasonYear ? " " + ctx.extra.seasonYear : "") : "",
@@ -673,7 +680,7 @@ let ListTable = (function(){
 		if(!e){
 			return "missing"
 		}
-		return [e.updatedAt,e.progress,e.progressVolumes,e.score,e.status,e.repeat,e.notes].join("|")
+		return [e.updatedAt,e.progress,e.progressVolumes,e.score,e.status,e.repeat,e.priority,e.notes].join("|")
 	}
 
 	//state
@@ -1859,6 +1866,9 @@ exportModule({
 }
 .listTable-column{
 	flex-wrap: wrap;
+}
+.listTable-column:not(.listTable-on) .listTable-step-options{
+	display: none;/*the buttons only matter while the column is shown*/
 }
 .listTable-step-options{
 	flex-basis: 100%;
