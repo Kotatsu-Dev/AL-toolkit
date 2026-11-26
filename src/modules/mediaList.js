@@ -457,7 +457,7 @@ exportModule({
 				let scoreChanger = function(){
 					observer.disconnect();
 					lists.querySelectorAll(".list-entries .row .score").forEach(function(entry){
-						if(!entry.childElementCount){
+						if(!entry.childElementCount && !entry.closest(".listTable-section")){//the list table has its own buttons
 							let updateScore = function(isUp){
 								let score = parseFloat(entry.attributes.score.value);
 								if(isUp){

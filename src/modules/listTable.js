@@ -43,6 +43,16 @@ let ListTable = (function(){
 		ANIME: ["score","progress","status","format"],
 		MANGA: ["score","chapters","volumes","status","format"]
 	};
+	//columns that can show "+" and "-" buttons while hovering a row
+	//by default every column has both buttons, score only when the "plussMinus" script setting is on
+	let STEP_COLUMNS = ["score","progress","chapters","volumes"];
+	let defaultSteps = function(id){
+		if(id === "score"){
+			let on = typeof useScripts === "undefined" || useScripts.plussMinus !== false;
+			return {plus: on,minus: on}
+		}
+		return {plus: true,minus: true}
+	};
 	let typeKey = type => type === "MANGA" ? "manga" : "anime";
 	let columnsFor = type => Object.keys(COLUMNS).filter(id => COLUMNS[id].types.includes(type === "MANGA" ? "M" : "A"));
 
@@ -50,7 +60,9 @@ let ListTable = (function(){
 	function defaultTypeConfig(type){
 		let enabled = {};
 		columnsFor(type).forEach(id => enabled[id] = DEFAULT_ON[type].includes(id));
-		return {on: true,order: columnsFor(type), enabled: enabled}//on: false shows AniList's own table for this list type
+		let steps = {};
+		columnsFor(type).filter(id => STEP_COLUMNS.includes(id)).forEach(id => steps[id] = defaultSteps(id));
+		return {on: true,order: columnsFor(type), enabled: enabled, steps: steps}//on: false shows AniList's own table for this list type
 	}
 	function defaultConfig(){
 		return {
@@ -59,6 +71,7 @@ let ListTable = (function(){
 			dateFormat: "YYYY-MM-DD",
 			dateSeparator: "-",
 			headerLineBreaks: true,
+			scoreStep: 1,//how much the score "+" and "-" change a score on the 10 point decimal format, other formats always use 1
 			fillBlanks: false,
 			style: defaultStyle()
 		}
@@ -75,6 +88,7 @@ let ListTable = (function(){
 	function normaliseConfig(raw){
 		let config = Object.assign(defaultConfig(), raw || {});
 		config.fillBlanks = config.fillBlanks === true;
+		config.scoreStep = [1,0.5,0.1].includes(+config.scoreStep) ? +config.scoreStep : 1;
 		let style = Object.assign(defaultStyle(), (raw && raw.style) || {});
 		config.style = {
 			lines: ["none","horizontal","vertical","both"].includes(style.lines) ? style.lines : "none",
@@ -98,7 +112,11 @@ let ListTable = (function(){
 			valid.forEach(id => {
 				enabled[id] = hasOwn(stored.enabled || {}, id) ? !!stored.enabled[id] : defaults.enabled[id]
 			});
-			config[key] = {on: stored.on !== false,order: order, enabled: enabled}
+			let steps = {};
+			valid.filter(id => STEP_COLUMNS.includes(id)).forEach(id => {
+				steps[id] = hasOwn(stored.steps || {}, id) ? {plus: !!stored.steps[id].plus,minus: !!stored.steps[id].minus} : defaults.steps[id]
+			});
+			config[key] = {on: stored.on !== false,order: order, enabled: enabled, steps: steps}
 		});
 		return config
 	}
@@ -364,27 +382,57 @@ let ListTable = (function(){
 	function progressText(value,max,isMax){
 		return (!isMax && max) ? value + "/" + max : String(value === null || value === undefined ? 0 : value)
 	}
-	function plusButton(ctx,field){
-		let plus = create("span","plus-progress","+");
-		plus.addEventListener("click",function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			if(plus.dataset.busy){
-				return
+	//"+" and "-" buttons for a column, shown while hovering the row. max: null for no upper limit
+	function stepButtons(cell,ctx,column,field,value,max,step){
+		step = step || 1;
+		if(!state.vue || !state.vue.isAuthUsersList){//only your own list can be edited
+			return
+		}
+		let steps = (config[typeKey(ctx.type)].steps || {})[column] || defaultSteps(column);
+		if(!steps.plus && !steps.minus){
+			return
+		}
+		let box = create("span","listTable-steps");
+		let add = function(text,change,title,side){
+			let button = create("span",["plus-progress","listTable-step","listTable-step-" + side],text,box);
+			button.title = title;
+			button.addEventListener("click",function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				if(button.dataset.busy){
+					return
+				}
+				button.dataset.busy = "1";
+				let payload = {mediaId: ctx.media.id};
+				payload[field] = Math.round((value + change * step) * 10) / 10;
+				Promise.resolve(store().dispatch("medialistEditor/save",payload)).catch(err => console.error(err)).finally(() => delete button.dataset.busy)
+			})
+		};
+		if(steps.minus && value > 0){//a decimal score can be 0.5 or less, "-" then goes to 0
+			add("\u2212",-1,"Decrease by " + step,"minus")
+		}
+		if(steps.plus && (max === null || value < max)){
+			add("+",1,"Increase by " + step,"plus")
+		}
+		if(box.firstChild){
+			//the value goes in a box of its own, so "-" can sit against its left side and "+" against its right
+			let value = create("span","listTable-value");
+			while(cell.firstChild){
+				value.appendChild(cell.firstChild)
 			}
-			plus.dataset.busy = "1";
-			let payload = {mediaId: ctx.media.id};
-			payload[field] = (ctx.entry[field] || 0) + 1;
-			Promise.resolve(store().dispatch("medialistEditor/save",payload)).catch(err => console.error(err)).finally(() => delete plus.dataset.busy)
-		});
-		return plus
+			value.appendChild(box);
+			cell.appendChild(value)
+		}
 	}
+	let SCORE_MAX = {POINT_100: 100,POINT_10_DECIMAL: 10,POINT_10: 10,POINT_5: 5,POINT_3: 3};
 	//fill a cell, return false if the column is unknown
 	let RENDER = {
 		score: function(cell,ctx){
 			let score = ctx.entry.score;
 			cell.setAttribute("score",score || 0);
+			let buttons = () => stepButtons(cell,ctx,"score","score",score || 0,SCORE_MAX[ctx.scoreFormat] || 100,ctx.scoreFormat === "POINT_10_DECIMAL" ? config.scoreStep : 1);
 			if(!score){
+				buttons();//still there to give an empty score a first value
 				return
 			}
 			if(ctx.scoreFormat === "POINT_3"){
@@ -400,22 +448,20 @@ let ListTable = (function(){
 			else{
 				cell.textContent = score
 			}
+			buttons()
 		},
 		progress: function(cell,ctx){
 			let max = ctx.media.episodes || ctx.media.chapters;
 			let isMax = ctx.media.episodes ? ctx.entry.progress >= ctx.media.episodes : (!!ctx.media.chapters && ctx.entry.progress >= ctx.media.chapters);
-			cell.appendChild(document.createTextNode(progressText(ctx.entry.progress,max,isMax) + " "));
-			if(!isMax){//like AniList, no "+" once it's finished
-				cell.appendChild(plusButton(ctx,"progress"))
-			}
+			cell.appendChild(document.createTextNode(progressText(ctx.entry.progress,max,isMax)));
+			//like AniList, no "+" once it's finished
+			stepButtons(cell,ctx,ctx.type === "MANGA" ? "chapters" : "progress","progress",ctx.entry.progress || 0,isMax ? (ctx.entry.progress || 0) : null)
 		},
 		volumes: function(cell,ctx){
 			let max = ctx.media.volumes;
 			let isMax = !!max && ctx.entry.progressVolumes >= max;
-			cell.appendChild(document.createTextNode(progressText(ctx.entry.progressVolumes,max,isMax) + " "));
-			if(!isMax){
-				cell.appendChild(plusButton(ctx,"progressVolumes"))
-			}
+			cell.appendChild(document.createTextNode(progressText(ctx.entry.progressVolumes,max,isMax)));
+			stepButtons(cell,ctx,"volumes","progressVolumes",ctx.entry.progressVolumes || 0,isMax ? (ctx.entry.progressVolumes || 0) : null)
 		},
 		status: (cell,ctx) => cell.textContent = STATUS_NAMES[ctx.entry.status] || textCell(enumName(ctx.entry.status)),
 		format: (cell,ctx) => cell.textContent = FORMAT_NAMES[ctx.media.format] || textCell(enumName(ctx.media.format)),
@@ -606,8 +652,15 @@ let ListTable = (function(){
 					cell.classList.toggle("listTable-expanded")
 				})
 			}
-			if(config.fillBlanks && !cell.firstChild){
-				cell.textContent = "-"
+			if(config.fillBlanks){
+				//the "+" and "-" buttons don't count as content
+				let value = cell.querySelector(".listTable-value");
+				if(value && value.childNodes.length === 1){
+					value.insertBefore(document.createTextNode("-"),value.firstChild)
+				}
+				else if(!value && !cell.firstChild){
+					cell.textContent = "-"
+				}
 			}
 		});
 		create("span",["release-status",media.status || "UNKNOWN"],false,row);
@@ -1130,13 +1183,14 @@ let ListTable = (function(){
 			enableBox.checked = config[typeKey(type)].on;
 			enableBox.addEventListener("change",function(){
 				config[typeKey(type)].on = enableBox.checked;
+				root.classList.toggle("listTable-off",!enableBox.checked);
 				saveConfig(undefined,root)
 			});
 			create("span",false," Use the customisable table for the " + typeName + " list",enableRow);
 			create("p","listTable-settings-help","When off, AniList's own table is shown for the " + typeName + " list. Your settings are kept.",root);
 			create("p","listTable-settings-help","Drag to reorder. Changes apply immediately.",root);
-		let list = create("ul","listTable-column-list",false,root);
-		list.classList.toggle("listTable-off",!config[typeKey(type)].on);
+			root.classList.toggle("listTable-off",!config[typeKey(type)].on);//dims everything below the checkbox
+			let list = create("ul","listTable-column-list",false,root);
 			let typeConfig = config[typeKey(type)];
 			let applyOrder = function(){
 				let order = Array.from(list.children).map(li => li.dataset.column);
@@ -1225,6 +1279,21 @@ let ListTable = (function(){
 					saveConfig(undefined,root)
 				});
 				create("span",false,(id === "repeat" && type === "MANGA") ? col.labelManga : col.label,label);
+				if(typeConfig.steps && typeConfig.steps[id]){
+					//"+" and "-" buttons, shown while hovering a row
+					let stepRow = create("div","listTable-step-options",false,item);
+					[["plus","+ button"],["minus","\u2212 button"]].forEach(option => {
+						let stepLabel = create("label",false,false,stepRow);
+						let stepBox = create("input",false,false,stepLabel);
+						stepBox.type = "checkbox";
+						stepBox.checked = !!typeConfig.steps[id][option[0]];
+						stepBox.addEventListener("change",function(){
+							typeConfig.steps[id][option[0]] = stepBox.checked;
+							saveConfig(undefined,root)
+						});
+						create("span",false,option[1],stepLabel)
+					})
+				}
 				let hints = [];
 				if(col.hint){
 					hints.push(col.hint)
@@ -1342,6 +1411,18 @@ let ListTable = (function(){
 				config.dateSeparator = sepSelect.value;
 				saveConfig(undefined,root)
 			});
+			let stepRow = create("p",false,false,other);
+			create("span",false,"Score + and - change it by ",stepRow);
+			let stepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,stepRow);
+			[[1,"1"],[0.5,"0.5"],[0.1,"0.1"]].forEach(option => {
+				create("option",false,option[1],stepSelect).value = option[0]
+			});
+			stepSelect.value = config.scoreStep;
+			stepSelect.addEventListener("change",function(){
+				config.scoreStep = +stepSelect.value;
+				saveConfig(undefined,root)
+			});
+			create("span","listTable-hint"," only for the 10 point decimal score format",stepRow);
 			let breakRow = create("p",false,false,other);
 			let breakLabel = create("label",false,false,breakRow);
 			let breakBox = create("input",false,false,breakLabel);
@@ -1730,7 +1811,9 @@ exportModule({
 	margin-bottom: 12px;
 }
 /*still editable while the table is off*/
-.listTable-column-list.listTable-off{
+.listTable-off .listTable-column-list,
+.listTable-off .listTable-settings-style,
+.listTable-off .listTable-settings-other{
 	opacity: 0.5;
 }
 .listTable-settings-top{
@@ -1773,6 +1856,20 @@ exportModule({
 	background: rgb(var(--color-background));
 	margin-bottom: 4px;
 	user-select: none;
+}
+.listTable-column{
+	flex-wrap: wrap;
+}
+.listTable-step-options{
+	flex-basis: 100%;
+	display: flex;
+	gap: 14px;
+	padding-left: 34px;
+	font-size: 1.2rem;
+}
+.listTable-column .listTable-step-options label{
+	flex: none;
+	gap: 4px;
 }
 .listTable-column:not(.listTable-on) label{
 	color: rgb(var(--color-text-lighter));
@@ -1839,15 +1936,49 @@ exportModule({
 .medialist .listTable-section .entry > .progress{
 	white-space: nowrap;
 }
-/*the hover "+" must not take room, or it wraps*/
-.medialist .listTable-section .entry .plus-progress{
+/*the global css turns off clicks on empty scores, the buttons are what you click there*/
+.medialist .listTable-section .entry .score[score="0"]{
+	pointer-events: auto;
+}
+/*the hover "+" and "-" must not take room, or the cell wraps*/
+.medialist .listTable-section .entry .listTable-value{
+	position: relative;
+	display: inline-block;
+	min-width: 1em;/*an empty value still has room for its buttons*/
+	text-align: center;
+	white-space: nowrap;
+}
+.medialist .listTable-section .entry .listTable-value::before{
+	content: "\\200b";/*keeps the line height of an empty value*/
+}
+.medialist .listTable-section .entry .listTable-steps .plus-progress{
 	position: absolute;
-	left: auto;
+	top: 0;
 	bottom: auto;
+	display: none;
 	width: auto;
-	padding: 0 0 0 3px;
 	background: none;
 	white-space: nowrap;
+	cursor: pointer;
+	font-size: inherit;/*AniList's own is smaller, which sits the button lower than the number*/
+	line-height: inherit;
+	opacity: 1;
+	pointer-events: auto;
+	z-index: 3;
+}
+.medialist .listTable-section .entry .listTable-steps .listTable-step-plus{
+	left: 100%;
+	right: auto;
+	padding: 0 0 0 3px;
+	margin-top: -0.02em;/*the "+" glyph sits lower than the "-" in AniList's font*/
+}
+.medialist .listTable-section .entry .listTable-steps .listTable-step-minus{
+	right: 100%;
+	left: auto;
+	padding: 0 3px 0 0;
+}
+.medialist .listTable-section .entry:hover .listTable-steps .plus-progress{
+	display: inline;
 }
 .listTable-slider-reset{
 	flex: none;
