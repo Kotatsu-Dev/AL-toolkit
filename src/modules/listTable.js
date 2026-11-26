@@ -251,30 +251,6 @@ let ListTable = (function(){
 		}
 		return oneDecimal(minutes/1440) + "d"
 	}
-	let SVG = {
-		ellipsis: {viewBox: "0 0 512 512", cls: "fa-ellipsis-h fa-w-16 fa-lg", d: "M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"},
-		comment: {viewBox: "0 0 512 512", cls: "fa-comment fa-w-16", d: "M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"},
-		redo: {viewBox: "0 0 512 512", cls: "fa-redo-alt fa-w-16", d: "M256.455 8c66.269.119 126.437 26.233 170.859 68.685l35.715-35.715C478.149 25.851 504 36.559 504 57.941V192c0 13.255-10.745 24-24 24H345.941c-21.382 0-32.09-25.851-16.971-40.971l41.75-41.75c-30.864-28.899-70.801-44.907-113.23-45.273-92.398-.798-170.283 73.977-169.484 169.442C88.764 348.009 162.184 424 256 424c41.127 0 79.997-14.678 110.629-41.556 4.743-4.161 11.906-3.908 16.368.553l39.662 39.662c4.872 4.872 4.631 12.815-.482 17.433C378.202 479.813 319.926 504 256 504 119.034 504 8.001 392.967 8 256.002 7.999 119.193 119.646 7.755 256.455 8z"},
-		columns: {viewBox: "0 0 512 512", cls: "fa-columns fa-w-16", d: "M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM224 416H64V160h160v256zm224 0H288V160h160v256z"},
-		smile: {viewBox: "0 0 496 512", cls: "fa-smile fa-w-16 fa-lg", d: "M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"},
-		meh: {viewBox: "0 0 496 512", cls: "fa-meh fa-w-16 fa-lg", d: "M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"},
-		frown: {viewBox: "0 0 496 512", cls: "fa-frown fa-w-16 fa-lg", d: "M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"},
-		star: {viewBox: "0 0 576 512", cls: "fa-star fa-w-18", d: "M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"}
-	};
-	function icon(name){
-		let def = SVG[name];
-		let svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
-		svg.setAttribute("aria-hidden","true");
-		svg.setAttribute("focusable","false");
-		svg.setAttribute("role","img");
-		svg.setAttribute("viewBox",def.viewBox);
-		svg.setAttribute("class","svg-inline--fa " + def.cls);
-		let path = document.createElementNS("http://www.w3.org/2000/svg","path");
-		path.setAttribute("fill","currentColor");
-		path.setAttribute("d",def.d);
-		svg.appendChild(path);
-		return svg
-	}
 
 	//aniList internals
 	let appVue = () => {
@@ -414,12 +390,12 @@ let ListTable = (function(){
 			if(ctx.scoreFormat === "POINT_3"){
 				let face = {3: "smile", 2: "meh", 1: "frown"}[score];
 				if(face){
-					cell.appendChild(icon(face))
+					cell.appendChild(svgAssets2[face].cloneNode(true))
 				}
 			}
 			else if(ctx.scoreFormat === "POINT_5"){
 				cell.appendChild(document.createTextNode(score + " "));
-				cell.appendChild(icon("star"))
+				cell.appendChild(svgAssets2.star.cloneNode(true))
 			}
 			else{
 				cell.textContent = score
@@ -576,7 +552,7 @@ let ListTable = (function(){
 		//cover + edit button
 		let cover = create("div","cover",false,row);
 		let edit = create("div","edit",false,cover);
-		edit.appendChild(icon("ellipsis"));
+		edit.appendChild(svgAssets2.ellipsisH.cloneNode(true));
 		edit.addEventListener("click",function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -602,13 +578,13 @@ let ListTable = (function(){
 		if(entry.repeat){
 			let repeatIcon = create("span",["hover-icon","listTable-hover-icon"],false,title);
 			let target = create("span","hover-icon-target",false,repeatIcon);
-			target.appendChild(icon("redo"));
+			target.appendChild(svgAssets2.repeat.cloneNode(true));
 			addTooltip(target,() => entry.repeat)//AniList shows just the count
 		}
 		if(entry.notes){
 			let notesIcon = create("span",["hover-icon","clickable","listTable-hover-icon"],false,title);
 			let target = create("span","hover-icon-target",false,notesIcon);
-			target.appendChild(icon("comment"));
+			target.appendChild(svgAssets2.notes.cloneNode(true));
 			addTooltip(target,() => entry.notes);
 			notesIcon.addEventListener("click",function(e){
 				e.preventDefault();
@@ -664,6 +640,7 @@ let ListTable = (function(){
 		extraKey: null,
 		extraLoading: false,
 		button: null,
+		buttonObserver: null,//waits for AniList's layout buttons, see watchButton
 		panel: null,
 		widthContainer: null//the page container whose max-width we changed
 	};
@@ -1067,25 +1044,39 @@ let ListTable = (function(){
 
 	//columns button + panel on the list page
 	function ensureButton(){
-		if(!state.lists){
-			return
+		let actions = document.querySelector(".medialist > .lists > .actions");
+		if(!actions || !actions.querySelector(".layout-switch")){
+			return false
 		}
-		let layoutSwitch = state.lists.querySelector(":scope > .actions .layout-switch");
-		if(!layoutSwitch){
-			return
+		if(state.button && state.button.parentNode === actions){
+			return true
 		}
-		if(state.button && state.button.parentNode === layoutSwitch){
-			return
-		}
-		state.button = create("span","listTable-columns-button",false,layoutSwitch);
-		state.button.appendChild(icon("columns"));
+		state.button = create("span","listTable-columns-button",false,actions);
+		state.button.appendChild(svgAssets2.ellipsisV.cloneNode(true));
 		state.button.title = "Customise list columns";
 		state.button.addEventListener("click",function(e){
 			e.stopPropagation();
 			togglePanel()
-		})
+		});
+		return true
+	}
+	//AniList draws the layout buttons late, so add ours in the same frame instead of waiting for the next tick
+	function watchButton(){
+		if(state.buttonObserver || (state.button && state.button.isConnected)){
+			return
+		}
+		state.buttonObserver = new MutationObserver(function(){
+			if(!isListPage() || !useScripts.listTable || ensureButton()){
+				state.buttonObserver.disconnect();
+				state.buttonObserver = null
+			}
+		});
+		state.buttonObserver.observe(document.body,{childList: true,subtree: true})
 	}
 	function closePanel(){
+		if(state.button){
+			state.button.classList.remove("active")
+		}
 		if(state.panel){
 			state.panel.remove();
 			state.panel = null;
@@ -1102,9 +1093,11 @@ let ListTable = (function(){
 			closePanel();
 			return
 		}
+		let medialist = document.querySelector(".medialist");
+		state.button.classList.add("active");
 		state.panel = create("div",["listTable-panel"],false,document.body);
-		buildSettings(state.panel,{type: state.type,compact: true});
-		let rect = state.button.getBoundingClientRect();
+		buildSettings(state.panel,{type: state.type || (medialist && medialist.__vue__ && medialist.__vue__.type),compact: true});
+		let rect = state.button.parentNode.getBoundingClientRect();//lines up with the layout buttons
 		state.panel.style.top = (rect.bottom + window.scrollY + 8) + "px";
 		state.panel.style.left = Math.max(8,rect.right + window.scrollX - state.panel.offsetWidth) + "px";
 		document.addEventListener("mousedown",outsideClick,true)
@@ -1417,6 +1410,10 @@ let ListTable = (function(){
 			state.listsObserver.disconnect();
 			state.listsObserver = null
 		}
+		if(state.buttonObserver){
+			state.buttonObserver.disconnect();
+			state.buttonObserver = null
+		}
 		if(state.button){
 			state.button.remove();
 			state.button = null
@@ -1483,7 +1480,9 @@ let ListTable = (function(){
 		if(state.widthContainer !== el.parentElement){
 			applyWidth()
 		}
-		ensureButton();
+		if(!ensureButton()){
+			watchButton()
+		}
 		loadExtra();
 		syncSections()
 	}
@@ -1492,6 +1491,7 @@ let ListTable = (function(){
 		if(!state.timer){
 			state.timer = setInterval(tick,300)
 		}
+		watchButton();
 		tick()
 	}
 
@@ -1690,7 +1690,20 @@ exportModule({
 	height: 1px;
 }
 .listTable-columns-button{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: calc(100% + 8px);/*beside the layout buttons, so those stay where AniList puts them*/
+	display: flex;
+	align-items: center;
+	padding: 0 13px;
+	border-radius: 4px;
+	background: rgb(var(--color-foreground));
 	cursor: pointer;
+}
+.listTable-columns-button:hover,
+.listTable-columns-button.active{
+	color: rgb(var(--color-blue));
 }
 .listTable-panel{
 	position: absolute;
