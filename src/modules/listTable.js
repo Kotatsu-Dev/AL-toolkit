@@ -29,6 +29,9 @@ let ListTable = (function(){
 		episodes:      {label: "Episodes", types: "A"},
 		duration:      {label: "Duration", types: "A", api: true},
 		totalTime:     {label: "Time Watched", short: "Time\nWatched", types: "A", api: true, hint: "incl. rewatches"},
+		timeLeft:      {label: "Time Left", short: "Time\nLeft", types: "A", api: true, hint: "episodes left x duration"},
+		nextEpisodeIn: {label: "Time Until Next Episode", short: "Time Until\nNext Episode", types: "A", api: true, hint: "airing shows only"},
+		nextEpisodeDate: {label: "Next Episode Airing Date", short: "Next Episode\nAiring Date", types: "A", api: true, hint: "airing shows only"},
 		totalChapters: {label: "Total Chapters", short: "Total\nChapters", types: "M"},
 		totalVolumes:  {label: "Total Volumes", short: "Total\nVolumes", types: "M"},
 		repeat:        {label: "Rewatches", labelManga: "Rereads", types: "AM"},
@@ -571,6 +574,37 @@ let ListTable = (function(){
 			if(watched){
 				cell.textContent = formatDuration(watched*duration);
 				cell.title = watched + " episodes x " + duration + " min" + ((repeat || entry.status === "REPEATING") ? " (incl. rewatches)" : "")
+			}
+		},
+		timeLeft: function(cell,ctx){
+			let duration = ctx.extra && ctx.extra.duration;
+			let episodes = ctx.media.episodes;
+			if(!duration || !episodes){
+				return
+			}
+			let left = episodes - (ctx.entry.progress || 0);
+			if(left > 0){
+				cell.textContent = formatDuration(left*duration);
+				cell.title = left + " episodes x " + duration + " min"
+			}
+		},
+		nextEpisodeIn: function(cell,ctx){
+			let next = ctx.extra && ctx.extra.nextAiringEpisode;
+			if(next){
+				//counted from the air time and not the cached countdown, so it stays right while the page is open
+				let minutes = (next.airingAt*1000 - Date.now())/60000;
+				if(minutes > 0){
+					cell.textContent = formatDuration(minutes);
+					cell.title = "Episode " + next.episode
+				}
+			}
+		},
+		nextEpisodeDate: function(cell,ctx){
+			let next = ctx.extra && ctx.extra.nextAiringEpisode;
+			if(next){
+				let d = new Date(next.airingAt*1000);
+				cell.textContent = formatDate(d.getFullYear(),d.getMonth() + 1,d.getDate());
+				cell.title = "Episode " + next.episode + ", " + d.toLocaleString()
 			}
 		},
 		chapters: null,//set below, same as progress
@@ -1135,6 +1169,7 @@ let ListTable = (function(){
 					endDate{year month day}
 					synonyms
 					duration
+					nextAiringEpisode{airingAt episode}
 					source
 					season
 					seasonYear
@@ -1147,7 +1182,7 @@ let ListTable = (function(){
 }`;
 		anilistAPI(query,{
 			variables: {userName: state.user, type: state.type},
-			cacheKey: "listTableExtra" + key,
+			cacheKey: "listTableExtra" + key + ":" + query.length,//the length changes with the requested fields, so an older cached answer is not reused
 			duration: 30*60*1000,
 			auth: !!useScripts.accessToken
 		}).then(function(res){
