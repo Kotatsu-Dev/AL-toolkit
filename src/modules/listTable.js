@@ -1213,7 +1213,7 @@ let ListTable = (function(){
 		}
 		state.button = create("span","listTable-columns-button",false,actions);
 		state.button.appendChild(svgAssets2.ellipsisV.cloneNode(true));
-		state.button.title = "Customise list columns";
+		state.button.title = "Customize list columns";
 		state.button.addEventListener("click",function(e){
 			e.stopPropagation();
 			togglePanel()

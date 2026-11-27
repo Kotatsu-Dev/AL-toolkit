@@ -648,7 +648,7 @@
 "$noSequel_description": "Add a 'hide sequels' filter option on the browse page",
 "$reviewConfidence_description": "Add confidence scores to reviews",
 "$addMediaReviewConfidence_description": "Add confidence scores to reviews on media pages",
-"$listTable_description": "Replace the anime and manga list tables with a customisable one: show extra columns and reorder them",
+"$listTable_description": "Replace the anime and manga list tables with a customizable one: show extra columns and reorder them",
 "$listTable_extendedDescription": "Turn it on for anime lists, manga lists or both. The rebuilt table looks like AniList's own and follows its filters, search and sorting. Columns can be changed with the columns button above the list (next to the layout buttons) or with the settings below this one. Changes apply immediately, no reload needed.\n\nOnly the list and compact layouts are rebuilt, the cards layout is left as it is.",
 "$listTable_settingsHelp": "Columns for the rebuilt list table (also available from the columns button on your list pages):",
 "$extraDefaultSorts_description": "Make all list sort options available as options for the default setting",
