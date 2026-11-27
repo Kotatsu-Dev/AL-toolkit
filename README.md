@@ -1,13 +1,15 @@
 # AL-toolkit
+
 Extra parts for anilist.co
 
 When installed, a list of options in https://anilist.co/settings/apps can be used to configure the behaviour of the website
 
 AL-toolkit primarily deals with:
-- Notifications
-- Styling
-- Navigation
-- UI translation (Japanese, Spanish, Portuguese, German, Turkish, Norwegian, Southern Sami, Italian, French)
+
+* Notifications
+* Styling
+* Navigation
+* UI translation (Japanese, Spanish, Portuguese, German, Turkish, Norwegian, Southern Sami, Italian, French)
 
 ## Install
 
@@ -15,6 +17,9 @@ As a userscript: https://github.com/Kotatsu-Dev/AL-toolkit/releases/latest/downl
 
 ## Build from source
 
+Easy build with Python: run `py build.py`
+
+Manual build:
 "src/" contains a makefile, run "make" there.
 Requires make, m4 and basic shell utilities
 
@@ -35,4 +40,5 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
+along with this program. If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
+
