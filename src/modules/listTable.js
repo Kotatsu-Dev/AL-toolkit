@@ -17,10 +17,13 @@ let ListTable = (function(){
 		volumes:       {label: "Volumes", types: "M", native: "progress progress-volumes", headClass: "progress"},
 		status:        {label: "Status", types: "AM", native: "status", hint: "custom lists only"},
 		format:        {label: "Type", types: "AM", native: "format"},
-		alScore:       {label: "AniList Score", short: "AniList\nScore", types: "AM", api: true},
+		alScore:       {label: "AniList Score", short: "AniList\nScore", types: "AM"},
+		meanScore:     {label: "AniList Mean Score", short: "AniList\nMean Score", types: "AM", api: true},
 		popularity:    {label: "Popularity", types: "AM"},
 		startDate:     {label: "Start Date", short: "Start\nDate", types: "AM"},
 		finishDate:    {label: "Finish Date", short: "Finish\nDate", types: "AM"},
+		airStart:      {label: "Air Start Date", short: "Air Start\nDate", labelManga: "Publish Start Date", shortManga: "Publish Start\nDate", types: "AM"},
+		airEnd:        {label: "Air End Date", short: "Air End\nDate", labelManga: "Publish End Date", shortManga: "Publish End\nDate", types: "AM", api: true},
 		daysTaken:     {label: "Days Taken", short: "Days\nTaken", types: "AM"},
 		lastUpdated:   {label: "Last Updated", short: "Last\nUpdated", types: "AM"},
 		episodes:      {label: "Episodes", types: "A"},
@@ -36,7 +39,15 @@ let ListTable = (function(){
 		source:        {label: "Source", types: "AM", api: true},
 		country:       {label: "Country", types: "AM"},
 		studio:        {label: "Studio", types: "A", api: true, wide: true},
+		producers:     {label: "Producers", types: "A", api: true, wide: true},
+		creator:       {label: "Creator", types: "AM", api: true, wide: true, hint: "original creator or story"},
+		director:      {label: "Director", types: "A", api: true, wide: true, hint: "or chief director"},
+		author:        {label: "Author", types: "M", api: true, wide: true, hint: "story & art, story or art"},
 		notes:         {label: "Notes", types: "AM", wide: true},
+		titleEnglish:  {label: "English Title", short: "English\nTitle", types: "AM", wide: true},
+		titleRomaji:   {label: "Romaji Title", short: "Romaji\nTitle", types: "AM", wide: true},
+		titleNative:   {label: "Native Title", short: "Native\nTitle", types: "AM", wide: true},
+		synonyms:      {label: "Synonyms", types: "AM", api: true, wide: true},
 		genres:        {label: "Genres", types: "AM", wide: true},
 		tags:          {label: "Tags", types: "AM", wide: true}
 	};
@@ -450,6 +461,21 @@ let ListTable = (function(){
 	}
 	let PRIORITY_MAX = 3;//0 is unset
 	let SCORE_MAX = {POINT_100: 100,POINT_10_DECIMAL: 10,POINT_10: 10,POINT_5: 5,POINT_3: 3};
+	//names of the staff with the first of these roles that anyone has, so the later roles are fallbacks
+	//the role has to match exactly (not "Director of Photography" or a single episode), the first 10 staff by relevance are loaded
+	function staffWithRole(ctx,roles){
+		let staff = ctx.extra && ctx.extra.staff;
+		if(!staff){
+			return ""
+		}
+		for(let role of roles){
+			let names = staff.edges.filter(edge => edge.role && edge.role.trim() === role).map(edge => edge.node.name.full);
+			if(names.length){
+				return names.join(", ")
+			}
+		}
+		return ""
+	}
 	//fill a cell, return false if the column is unknown
 	let RENDER = {
 		score: function(cell,ctx){
@@ -490,10 +516,13 @@ let ListTable = (function(){
 		},
 		status: (cell,ctx) => cell.textContent = STATUS_NAMES[ctx.entry.status] || textCell(enumName(ctx.entry.status)),
 		format: (cell,ctx) => cell.textContent = FORMAT_NAMES[ctx.media.format] || textCell(enumName(ctx.media.format)),
-		alScore: (cell,ctx) => cell.textContent = ctx.extra ? textCell(ctx.extra.averageScore) : "",
+		alScore: (cell,ctx) => cell.textContent = textCell(ctx.media.weightedScore),//AniList's own score, the same number as the API's averageScore
+		meanScore: (cell,ctx) => cell.textContent = ctx.extra ? textCell(ctx.extra.meanScore) : "",
 		popularity: (cell,ctx) => cell.textContent = ctx.media.popularity ? ctx.media.popularity.toLocaleString() : "",
 		startDate: (cell,ctx) => cell.textContent = textCell(fuzzyDate(ctx.entry.startedAt)),
 		finishDate: (cell,ctx) => cell.textContent = textCell(fuzzyDate(ctx.entry.completedAt)),
+		airStart: (cell,ctx) => cell.textContent = textCell(fuzzyDate(ctx.media.startDate)),
+		airEnd: (cell,ctx) => cell.textContent = ctx.extra ? textCell(fuzzyDate(ctx.extra.endDate)) : "",
 		daysTaken: function(cell,ctx){
 			let start = ctx.entry.startedAt;
 			let end = ctx.entry.completedAt;
@@ -558,10 +587,18 @@ let ListTable = (function(){
 		season: (cell,ctx) => cell.textContent = (ctx.extra && ctx.extra.season) ? enumName(ctx.extra.season) + (ctx.extra.seasonYear ? " " + ctx.extra.seasonYear : "") : "",
 		source: (cell,ctx) => cell.textContent = ctx.extra ? textCell(enumName(ctx.extra.source)) : "",
 		country: (cell,ctx) => cell.textContent = textCell(ctx.media.countryOfOrigin),
+		producers: (cell,ctx) => cell.textContent = (ctx.extra && ctx.extra.allStudios) ? ctx.extra.allStudios.nodes.filter(s => !s.isAnimationStudio).map(s => s.name).join(", ") : "",
+		creator: (cell,ctx) => cell.textContent = staffWithRole(ctx,["Original Creator","Original Story"]),
+		director: (cell,ctx) => cell.textContent = staffWithRole(ctx,["Director","Chief Director"]),
+		author: (cell,ctx) => cell.textContent = staffWithRole(ctx,["Story & Art","Story","Art"]),
 		studio: (cell,ctx) => cell.textContent = (ctx.extra && ctx.extra.studios) ? ctx.extra.studios.nodes.map(s => s.name).join(", ") : "",
 		notes: (cell,ctx) => cell.textContent = textCell(ctx.entry.notes),
 		genres: (cell,ctx) => cell.textContent = (ctx.media.genres || []).join(", "),
-		tags: (cell,ctx) => cell.textContent = (ctx.media.tags || []).map(t => t.name).join(", ")
+		tags: (cell,ctx) => cell.textContent = (ctx.media.tags || []).map(t => t.name).join(", "),
+		titleEnglish: (cell,ctx) => cell.textContent = textCell(ctx.media.title && ctx.media.title.english),
+		titleRomaji: (cell,ctx) => cell.textContent = textCell(ctx.media.title && ctx.media.title.romaji),
+		titleNative: (cell,ctx) => cell.textContent = textCell(ctx.media.title && ctx.media.title.native),
+		synonyms: (cell,ctx) => cell.textContent = (ctx.extra && ctx.extra.synonyms) ? ctx.extra.synonyms.join(", ") : ""
 	};
 	RENDER.chapters = RENDER.progress;
 
@@ -569,8 +606,8 @@ let ListTable = (function(){
 	let NATIVE_LABELS = {score: "Score", progress: "Progress", chapters: "Progress", volumes: "Volumes", status: "Status", format: "Format"};
 	function headerLabel(id,type){
 		let col = COLUMNS[id];
-		if(id === "repeat" && type === "MANGA"){
-			return "Rereads"
+		if(type === "MANGA" && col.labelManga){
+			return (config.headerLineBreaks && col.shortManga) ? col.shortManga : col.labelManga
 		}
 		if(id === "progress" || id === "chapters" || id === "volumes" || id === "score" || id === "format" || id === "status"){
 			return col.label
@@ -1072,6 +1109,7 @@ let ListTable = (function(){
 	}
 
 	//extra data from the API
+	let STAFF_COLUMNS = ["creator","director","author"];//these need the staff of every show, which makes the request slower, so it is only asked for when one of them is shown
 	function neededApiData(){
 		return activeColumns(state.type).some(id => COLUMNS[id].api)
 	}
@@ -1079,7 +1117,8 @@ let ListTable = (function(){
 		if(!state.user || !typeOn(state.type) || !neededApiData()){
 			return
 		}
-		let key = state.user + ":" + state.type;
+		let staffNeeded = activeColumns(state.type).some(id => STAFF_COLUMNS.includes(id));
+		let key = state.user + ":" + state.type + (staffNeeded ? ":staff" : "");
 		if(state.extraKey === key && (state.extraLoading || state.extra.size)){
 			return
 		}
@@ -1092,12 +1131,15 @@ let ListTable = (function(){
 			entries{
 				media{
 					id
-					averageScore
+					meanScore
+					endDate{year month day}
+					synonyms
 					duration
 					source
 					season
 					seasonYear
 					studios(isMain: true){nodes{name}}
+					allStudios: studios{nodes{name isAnimationStudio}}${staffNeeded ? "\n\t\t\t\t\tstaff(perPage: 10, sort: RELEVANCE){edges{role node{name{full}}}}" : ""}
 				}
 			}
 		}
@@ -1194,8 +1236,7 @@ let ListTable = (function(){
 		let render = function(){
 			removeChildren(root);
 			let typeConfig = config[typeKey(type)];
-			let scoreStepRow = null;//only shown while the score column is
-			let scoreOn = () => options.shared === "only" ? (config.anime.enabled.score || config.manga.enabled.score) : typeConfig.enabled.score;
+
 			if(options.shared !== "only"){
 				let top = create("div","listTable-settings-top",false,root);
 				create("span","listTable-settings-title",options.fixedType ? (type === "MANGA" ? "Manga lists" : "Anime lists") : "List columns",top);
@@ -1311,15 +1352,14 @@ let ListTable = (function(){
 					checkbox.addEventListener("change",function(){
 						typeConfig.enabled[id] = checkbox.checked;
 						item.classList.toggle("listTable-on",checkbox.checked);
-						if(id === "score" && scoreStepRow){
-							scoreStepRow.style.display = checkbox.checked ? "" : "none"
-						}
+
 						saveConfig(undefined,root)
 					});
-					create("span",false,(id === "repeat" && type === "MANGA") ? col.labelManga : col.label,label);
+					create("span",false,(type === "MANGA" && col.labelManga) ? col.labelManga : col.label,label);
 					if(typeConfig.steps && typeConfig.steps[id]){
 						//"+" and "-" buttons, shown while hovering a row
 						let stepRow = create("div","listTable-step-options",false,item);
+						let scoreStepRow = null;//how far "+" and "-" move a score, only shown while one of them is on
 						[["plus","+ button"],["minus","\u2212 button"]].forEach(option => {
 							let stepLabel = create("label",false,false,stepRow);
 							let stepBox = create("input",false,false,stepLabel);
@@ -1327,10 +1367,30 @@ let ListTable = (function(){
 							stepBox.checked = !!typeConfig.steps[id][option[0]];
 							stepBox.addEventListener("change",function(){
 								typeConfig.steps[id][option[0]] = stepBox.checked;
+								if(scoreStepRow){
+									scoreStepRow.style.display = (typeConfig.steps.score.plus || typeConfig.steps.score.minus) ? "" : "none"
+								}
 								saveConfig(undefined,root)
 							});
 							create("span",false,option[1],stepLabel)
 						});
+						if(id === "score"){
+							scoreStepRow = create("div","listTable-step-options",false,item);
+							create("span",false,"Change score by",scoreStepRow);
+							let stepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,scoreStepRow);
+							[[1,"1"],[0.5,"0.5"],[0.1,"0.1"]].forEach(option => {
+								create("option",false,option[1],stepSelect).value = option[0]
+							});
+							stepSelect.value = config.scoreStep;
+							stepSelect.addEventListener("change",function(){
+								config.scoreStep = +stepSelect.value;
+								saveConfig(undefined,root)
+							});
+							create("span","listTable-hint","only for the 10 point decimal score format",scoreStepRow);
+							if(!typeConfig.steps.score.plus && !typeConfig.steps.score.minus){
+								scoreStepRow.style.display = "none"
+							}
+						}
 						if(id === "priority"){
 							create("span","listTable-hint","needs the script's list editing permission",stepRow);
 							let zeroRow = create("div","listTable-step-options",false,item);//hidden with the rest while the column is off
@@ -1467,22 +1527,6 @@ let ListTable = (function(){
 					config.dateSeparator = sepSelect.value;
 					saveConfig(undefined,root)
 				});
-				let stepRow = create("p",false,false,other);
-				create("span",false,"Score + and - change it by ",stepRow);
-				let stepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,stepRow);
-				[[1,"1"],[0.5,"0.5"],[0.1,"0.1"]].forEach(option => {
-					create("option",false,option[1],stepSelect).value = option[0]
-				});
-				stepSelect.value = config.scoreStep;
-				stepSelect.addEventListener("change",function(){
-					config.scoreStep = +stepSelect.value;
-					saveConfig(undefined,root)
-				});
-				create("span","listTable-hint"," only for the 10 point decimal score format",stepRow);
-				scoreStepRow = stepRow;
-				if(!scoreOn()){
-					stepRow.style.display = "none"
-				}
 				let breakRow = create("p",false,false,other);
 				let breakLabel = create("label",false,false,breakRow);
 				let breakBox = create("input",false,false,breakLabel);
