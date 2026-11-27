@@ -171,9 +171,12 @@ exportModule({
 					if(!this.checked && def.destructor){
 						def.destructor()
 					}
-					if(this.checked && def.css){
-						moreStyle.textContent += def.css
-					}
+					//initCSS wipes every module's css, so add back the css of all enabled modules
+					useScriptsDefinitions.forEach(definition => {
+						if(definition.css && useScripts[definition.id]){
+							moreStyle.textContent += definition.css
+						}
+					});
 				}
 			}
 			if(def.categories){
