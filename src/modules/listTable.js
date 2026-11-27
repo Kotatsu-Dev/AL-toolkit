@@ -63,7 +63,7 @@ let ListTable = (function(){
 		columnsFor(type).forEach(id => enabled[id] = DEFAULT_ON[type].includes(id));
 		let steps = {};
 		columnsFor(type).filter(id => STEP_COLUMNS.includes(id)).forEach(id => steps[id] = defaultSteps(id));
-		return {on: true,order: columnsFor(type), enabled: enabled, steps: steps}//on: false shows AniList's own table for this list type
+		return {on: false,order: columnsFor(type), enabled: enabled, steps: steps}//on: false shows AniList's own table for this list type
 	}
 	function defaultConfig(){
 		return {
@@ -74,6 +74,7 @@ let ListTable = (function(){
 			headerLineBreaks: true,
 			scoreStep: 1,//how much the score "+" and "-" change a score on the 10 point decimal format, other formats always use 1
 			fillBlanks: false,
+			showZeroPriority: false,//an unset priority (0) is left empty, or shown as 0
 			style: defaultStyle()
 		}
 	}
@@ -89,6 +90,7 @@ let ListTable = (function(){
 	function normaliseConfig(raw){
 		let config = Object.assign(defaultConfig(), raw || {});
 		config.fillBlanks = config.fillBlanks === true;
+		config.showZeroPriority = config.showZeroPriority === true;
 		config.scoreStep = [1,0.5,0.1].includes(+config.scoreStep) ? +config.scoreStep : 1;
 		let style = Object.assign(defaultStyle(), (raw && raw.style) || {});
 		config.style = {
@@ -117,7 +119,7 @@ let ListTable = (function(){
 			valid.filter(id => STEP_COLUMNS.includes(id)).forEach(id => {
 				steps[id] = hasOwn(stored.steps || {}, id) ? {plus: !!stored.steps[id].plus,minus: !!stored.steps[id].minus} : defaults.steps[id]
 			});
-			config[key] = {on: stored.on !== false,order: order, enabled: enabled, steps: steps}
+			config[key] = {on: stored.on === true,order: order, enabled: enabled, steps: steps}
 		});
 		return config
 	}
@@ -383,10 +385,29 @@ let ListTable = (function(){
 	function progressText(value,max,isMax){
 		return (!isMax && max) ? value + "/" + max : String(value === null || value === undefined ? 0 : value)
 	}
+	//AniList's own save doesn't take a priority, so it is saved with the access token
+	function savePriority(mediaId,value){
+		return new Promise(function(resolve){
+			authAPIcall(
+				`mutation($mediaId:Int,$priority:Int){
+					SaveMediaListEntry(mediaId:$mediaId,priority:$priority){
+						id
+					}
+				}`,
+				{mediaId: mediaId,priority: value},
+				function(data){
+					resolve(data ? store().dispatch("medialistEditor/fetch",mediaId) : undefined)//fetching refreshes the entry, so the row updates
+				}
+			)
+		})
+	}
 	//"+" and "-" buttons for a column, shown while hovering the row. max: null for no upper limit
 	function stepButtons(cell,ctx,column,field,value,max,step){
 		step = step || 1;
 		if(!state.vue || !state.vue.isAuthUsersList){//only your own list can be edited
+			return
+		}
+		if(field === "priority" && !useScripts.accessToken){
 			return
 		}
 		let steps = (config[typeKey(ctx.type)].steps || {})[column] || defaultSteps(column);
@@ -404,9 +425,11 @@ let ListTable = (function(){
 					return
 				}
 				button.dataset.busy = "1";
+				let newValue = Math.round((value + change * step) * 10) / 10;
 				let payload = {mediaId: ctx.media.id};
-				payload[field] = Math.round((value + change * step) * 10) / 10;
-				Promise.resolve(store().dispatch("medialistEditor/save",payload)).catch(err => console.error(err)).finally(() => delete button.dataset.busy)
+				payload[field] = newValue;
+				let saved = field === "priority" ? savePriority(ctx.media.id,newValue) : Promise.resolve(store().dispatch("medialistEditor/save",payload));
+				saved.catch(err => console.error(err)).finally(() => delete button.dataset.busy)
 			})
 		};
 		if(steps.minus && value > 0){//a decimal score can be 0.5 or less, "-" then goes to 0
@@ -425,7 +448,7 @@ let ListTable = (function(){
 			cell.appendChild(value)
 		}
 	}
-	let PRIORITY_MAX = 5;
+	let PRIORITY_MAX = 3;//0 is unset
 	let SCORE_MAX = {POINT_100: 100,POINT_10_DECIMAL: 10,POINT_10: 10,POINT_5: 5,POINT_3: 3};
 	//fill a cell, return false if the column is unknown
 	let RENDER = {
@@ -527,7 +550,7 @@ let ListTable = (function(){
 		repeat: (cell,ctx) => cell.textContent = ctx.entry.repeat ? ctx.entry.repeat : "",
 		priority: function(cell,ctx){
 			let priority = ctx.entry.priority || 0;//AniList stores 0 when there is none
-			cell.textContent = priority ? priority : "";
+			cell.textContent = (priority || config.showZeroPriority) ? priority : "";
 			stepButtons(cell,ctx,"priority","priority",priority,PRIORITY_MAX)
 		},
 		releaseStatus: (cell,ctx) => cell.textContent = textCell(enumName(ctx.media.status)),
@@ -1170,304 +1193,335 @@ let ListTable = (function(){
 		let root = create("div","listTable-settings",false,container);
 		let render = function(){
 			removeChildren(root);
-			let top = create("div","listTable-settings-top",false,root);
-			create("span","listTable-settings-title","List columns",top);
-			let tabs = create("div","listTable-tabs",false,top);
-			["ANIME","MANGA"].forEach(t => {
-				let tab = create("span",["listTable-tab"],t === "ANIME" ? "Anime" : "Manga",tabs);
-				if(t === type){
-					tab.classList.add("active")
-				}
-				tab.addEventListener("click",function(){
-					type = t;
-					render()
-				})
-			});
-			let typeName = type === "MANGA" ? "manga" : "anime";
-			let enableRow = create("label","listTable-enable",false,root);
-			let enableBox = create("input",false,false,enableRow);
-			enableBox.type = "checkbox";
-			enableBox.checked = config[typeKey(type)].on;
-			enableBox.addEventListener("change",function(){
-				config[typeKey(type)].on = enableBox.checked;
-				root.classList.toggle("listTable-off",!enableBox.checked);
-				saveConfig(undefined,root)
-			});
-			create("span",false," Use the customisable table for the " + typeName + " list",enableRow);
-			create("p","listTable-settings-help","When off, AniList's own table is shown for the " + typeName + " list. Your settings are kept.",root);
-			create("p","listTable-settings-help","Drag to reorder. Changes apply immediately.",root);
-			root.classList.toggle("listTable-off",!config[typeKey(type)].on);//dims everything below the checkbox
-			let list = create("ul","listTable-column-list",false,root);
 			let typeConfig = config[typeKey(type)];
-			let applyOrder = function(){
-				let order = Array.from(list.children).map(li => li.dataset.column);
-				if(order.join() !== typeConfig.order.join()){
-					typeConfig.order = order;
-					saveConfig("order",root)
+			let scoreStepRow = null;//only shown while the score column is
+			let scoreOn = () => options.shared === "only" ? (config.anime.enabled.score || config.manga.enabled.score) : typeConfig.enabled.score;
+			if(options.shared !== "only"){
+				let top = create("div","listTable-settings-top",false,root);
+				create("span","listTable-settings-title",options.fixedType ? (type === "MANGA" ? "Manga lists" : "Anime lists") : "List columns",top);
+				if(!options.fixedType){//the list pages switch between anime and manga with tabs, the settings page shows both
+					let tabs = create("div","listTable-tabs",false,top);
+					["ANIME","MANGA"].forEach(t => {
+						let tab = create("span",["listTable-tab"],t === "ANIME" ? "Anime" : "Manga",tabs);
+						if(t === type){
+							tab.classList.add("active")
+						}
+						tab.addEventListener("click",function(){
+							type = t;
+							render()
+						})
+					})
 				}
-			};
-			typeConfig.order.forEach(id => {
-				let col = COLUMNS[id];
-				let item = create("li","listTable-column",false,list);
-				item.dataset.column = id;
-				if(typeConfig.enabled[id]){
-					item.classList.add("listTable-on")
-				}
-				let handle = create("span","listTable-handle","⠿",item);
-				handle.title = "Drag to reorder";
-				//pointer based dragging: works the same in every browser, and the table follows along live
-				handle.addEventListener("pointerdown",function(e){
-					if(e.button !== 0){
-						return
-					}
-					e.preventDefault();
-					handle.setPointerCapture(e.pointerId);
-					item.classList.add("listTable-dragging");
-					let scroller = container.scrollHeight > container.clientHeight ? container : null;
-					let move = function(ev){
-						let before = null;
-						for(let li of list.children){
-							if(li === item){
-								continue
-							}
-							let rect = li.getBoundingClientRect();
-							if(ev.clientY < rect.top + rect.height/2){
-								before = li;
-								break
-							}
-						}
-						if(item.nextElementSibling !== before){
-							//the neighbours are moved, moving the dragged item would make the browser drop the pointer capture
-							let down = before === null || (item.compareDocumentPosition(before) & Node.DOCUMENT_POSITION_FOLLOWING);
-							while(item.nextElementSibling !== before){
-								if(down){
-									list.insertBefore(item.nextElementSibling,item)
-								}
-								else{
-									let previous = item.previousElementSibling;
-									if(!previous){
-										break
-									}
-									list.insertBefore(previous,item.nextElementSibling)
-								}
-							}
-							applyOrder()
-						}
-						if(scroller){
-							let box = scroller.getBoundingClientRect();
-							if(ev.clientY < box.top + 30){
-								scroller.scrollTop -= 10
-							}
-							else if(ev.clientY > box.bottom - 30){
-								scroller.scrollTop += 10
-							}
-						}
-					};
-					let stop = function(){
-						item.classList.remove("listTable-dragging");
-						handle.removeEventListener("pointermove",move);
-						handle.removeEventListener("pointerup",stop);
-						handle.removeEventListener("pointercancel",stop);
-						handle.removeEventListener("lostpointercapture",stop);
-						applyOrder()
-					};
-					handle.addEventListener("pointermove",move);
-					handle.addEventListener("pointerup",stop);
-					handle.addEventListener("pointercancel",stop);
-					handle.addEventListener("lostpointercapture",stop)
-				});
-				let label = create("label",false,false,item);
-				let checkbox = create("input",false,false,label);
-				checkbox.type = "checkbox";
-				checkbox.checked = !!typeConfig.enabled[id];
-				checkbox.addEventListener("change",function(){
-					typeConfig.enabled[id] = checkbox.checked;
-					item.classList.toggle("listTable-on",checkbox.checked);
+				let typeName = type === "MANGA" ? "manga" : "anime";
+				let enableRow = create("label","listTable-enable",false,root);
+				let enableBox = create("input",false,false,enableRow);
+				enableBox.type = "checkbox";
+				enableBox.checked = config[typeKey(type)].on;
+				enableBox.addEventListener("change",function(){
+					config[typeKey(type)].on = enableBox.checked;
+					root.classList.toggle("listTable-off",!enableBox.checked);
 					saveConfig(undefined,root)
 				});
-				create("span",false,(id === "repeat" && type === "MANGA") ? col.labelManga : col.label,label);
-				if(typeConfig.steps && typeConfig.steps[id]){
-					//"+" and "-" buttons, shown while hovering a row
-					let stepRow = create("div","listTable-step-options",false,item);
-					[["plus","+ button"],["minus","\u2212 button"]].forEach(option => {
-						let stepLabel = create("label",false,false,stepRow);
-						let stepBox = create("input",false,false,stepLabel);
-						stepBox.type = "checkbox";
-						stepBox.checked = !!typeConfig.steps[id][option[0]];
-						stepBox.addEventListener("change",function(){
-							typeConfig.steps[id][option[0]] = stepBox.checked;
-							saveConfig(undefined,root)
-						});
-						create("span",false,option[1],stepLabel)
-					})
-				}
-				let hints = [];
-				if(col.hint){
-					hints.push(col.hint)
-				}
-				if(col.api){
-					hints.push("loads extra data")
-				}
-				if(hints.length){
-					create("span","listTable-hint",hints.join(", "),label)
-				}
-			});
-			//table style, shared by anime and manga lists
-			let styleBox = create("div","listTable-settings-style",false,root);
-			create("p","listTable-settings-subtitle","Table style",styleBox);
-			let linesRow = create("p",false,false,styleBox);
-			create("span",false,"Grid lines ",linesRow);
-			let linesSelect = create("select",["altoolkitNativeInput","listTable-select"],false,linesRow);
-			[["none","None"],["horizontal","Horizontal"],["vertical","Vertical"],["both","Both"]].forEach(option => {
-				create("option",false,option[1],linesSelect).value = option[0]
-			});
-			linesSelect.value = config.style.lines;
-			linesSelect.addEventListener("change",function(){
-				config.style.lines = linesSelect.value;
-				saveConfig("style",root)
-			});
-			let widthsRow = create("p",false,false,styleBox);
-			create("span",false,"Column widths ",widthsRow);
-			let widthsSelect = create("select",["altoolkitNativeInput","listTable-select"],false,widthsRow);
-			[["even","Even (like AniList)"],["fit","Fit content"]].forEach(option => {
-				create("option",false,option[1],widthsSelect).value = option[0]
-			});
-			widthsSelect.value = config.style.columnWidths;
-			widthsSelect.addEventListener("change",function(){
-				config.style.columnWidths = widthsSelect.value;
-				saveConfig("style",root)
-			});
-			//sliders fire a lot of events, so only the css is updated while dragging, the rest waits until it stops
-			let previewQueued = false;
-			let commitTimer = null;
-			let preview = function(){
-				if(!previewQueued){
-					previewQueued = true;
-					requestAnimationFrame(function(){
-						previewQueued = false;
-						updateLayoutStyle();
-						applyPaddingToWidths();
-						applyWidth()
-					})
-				}
-			};
-			//defaultValue: where the slider rests while the setting is null, canReset: show a button to set it back to null
-			let slider = function(text,key,min,max,step,format,defaultValue,canReset){
-				let row = create("p","listTable-slider-row",false,styleBox);
-				create("span","listTable-slider-label",text,row);
-				let input = create("input","listTable-slider",false,row);
-				input.type = "range";
-				input.min = min;
-				input.max = max;
-				input.step = step;
-				input.value = config.style[key] === null ? defaultValue : config.style[key];
-				let value = create("span","listTable-slider-value",format(config.style[key]),row);
-				let reset = null;
-				let showReset = () => {
-					if(reset){
-						reset.style.visibility = config.style[key] === null ? "hidden" : "visible"
+				create("span",false," Enable list customization for " + typeName + " lists",enableRow);
+				create("p","listTable-settings-help","When off, AniList's own table is shown for " + typeName + " lists.",root);
+				create("p",["listTable-settings-help","listTable-reorder-help"],"Drag to reorder. Changes apply immediately.",root);
+				root.classList.toggle("listTable-off",!config[typeKey(type)].on);//dims everything below the checkbox
+				let list = create("ul","listTable-column-list",false,root);
+				let applyOrder = function(){
+					let order = Array.from(list.children).map(li => li.dataset.column);
+					if(order.join() !== typeConfig.order.join()){
+						typeConfig.order = order;
+						saveConfig("order",root)
 					}
 				};
-				if(canReset){
-					reset = create("button",["altoolkitButton","button","listTable-slider-reset"],"Reset",row);
-					reset.type = "button";
-					reset.title = "Back to AniList's own spacing";
-					reset.addEventListener("click",function(){
-						clearTimeout(commitTimer);
-						config.style[key] = null;
-						input.value = defaultValue;
-						value.textContent = format(null);
-						showReset();
-						saveConfig("style",root)
+				typeConfig.order.forEach(id => {
+					let col = COLUMNS[id];
+					let item = create("li","listTable-column",false,list);
+					item.dataset.column = id;
+					if(typeConfig.enabled[id]){
+						item.classList.add("listTable-on")
+					}
+					let handle = create("span","listTable-handle","⠿",item);
+					handle.title = "Drag to reorder";
+					//pointer based dragging: works the same in every browser, and the table follows along live
+					handle.addEventListener("pointerdown",function(e){
+						if(e.button !== 0){
+							return
+						}
+						e.preventDefault();
+						handle.setPointerCapture(e.pointerId);
+						item.classList.add("listTable-dragging");
+						let scroller = container.scrollHeight > container.clientHeight ? container : null;
+						let move = function(ev){
+							let before = null;
+							for(let li of list.children){
+								if(li === item){
+									continue
+								}
+								let rect = li.getBoundingClientRect();
+								if(ev.clientY < rect.top + rect.height/2){
+									before = li;
+									break
+								}
+							}
+							if(item.nextElementSibling !== before){
+								//the neighbours are moved, moving the dragged item would make the browser drop the pointer capture
+								let down = before === null || (item.compareDocumentPosition(before) & Node.DOCUMENT_POSITION_FOLLOWING);
+								while(item.nextElementSibling !== before){
+									if(down){
+										list.insertBefore(item.nextElementSibling,item)
+									}
+									else{
+										let previous = item.previousElementSibling;
+										if(!previous){
+											break
+										}
+										list.insertBefore(previous,item.nextElementSibling)
+									}
+								}
+								applyOrder()
+							}
+							if(scroller){
+								let box = scroller.getBoundingClientRect();
+								if(ev.clientY < box.top + 30){
+									scroller.scrollTop -= 10
+								}
+								else if(ev.clientY > box.bottom - 30){
+									scroller.scrollTop += 10
+								}
+							}
+						};
+						let stop = function(){
+							item.classList.remove("listTable-dragging");
+							handle.removeEventListener("pointermove",move);
+							handle.removeEventListener("pointerup",stop);
+							handle.removeEventListener("pointercancel",stop);
+							handle.removeEventListener("lostpointercapture",stop);
+							applyOrder()
+						};
+						handle.addEventListener("pointermove",move);
+						handle.addEventListener("pointerup",stop);
+						handle.addEventListener("pointercancel",stop);
+						handle.addEventListener("lostpointercapture",stop)
 					});
-					showReset()
+					let label = create("label",false,false,item);
+					let checkbox = create("input",false,false,label);
+					checkbox.type = "checkbox";
+					checkbox.checked = !!typeConfig.enabled[id];
+					checkbox.addEventListener("change",function(){
+						typeConfig.enabled[id] = checkbox.checked;
+						item.classList.toggle("listTable-on",checkbox.checked);
+						if(id === "score" && scoreStepRow){
+							scoreStepRow.style.display = checkbox.checked ? "" : "none"
+						}
+						saveConfig(undefined,root)
+					});
+					create("span",false,(id === "repeat" && type === "MANGA") ? col.labelManga : col.label,label);
+					if(typeConfig.steps && typeConfig.steps[id]){
+						//"+" and "-" buttons, shown while hovering a row
+						let stepRow = create("div","listTable-step-options",false,item);
+						[["plus","+ button"],["minus","\u2212 button"]].forEach(option => {
+							let stepLabel = create("label",false,false,stepRow);
+							let stepBox = create("input",false,false,stepLabel);
+							stepBox.type = "checkbox";
+							stepBox.checked = !!typeConfig.steps[id][option[0]];
+							stepBox.addEventListener("change",function(){
+								typeConfig.steps[id][option[0]] = stepBox.checked;
+								saveConfig(undefined,root)
+							});
+							create("span",false,option[1],stepLabel)
+						});
+						if(id === "priority"){
+							create("span","listTable-hint","needs the script's list editing permission",stepRow);
+							let zeroRow = create("div","listTable-step-options",false,item);//hidden with the rest while the column is off
+							let zeroLabel = create("label",false,false,zeroRow);
+							let zeroBox = create("input",false,false,zeroLabel);
+							zeroBox.type = "checkbox";
+							zeroBox.checked = config.showZeroPriority;
+							zeroBox.addEventListener("change",function(){
+								config.showZeroPriority = zeroBox.checked;
+								saveConfig(undefined,root)
+							});
+							create("span",false,"show 0 when there is no priority",zeroLabel)
+						}
+					}
+					let hints = [];
+					if(col.hint){
+						hints.push(col.hint)
+					}
+					if(col.api){
+						hints.push("loads extra data")
+					}
+					if(hints.length){
+						create("span","listTable-hint",hints.join(", "),label)
+					}
+				});
+			}
+			if(options.shared !== "none"){
+				if(options.shared === "only"){//the settings page shows these once, below both lists
+					root.classList.toggle("listTable-off",!config.anime.on && !config.manga.on)
 				}
-				input.addEventListener("input",function(){
-					config.style[key] = +input.value;
-					value.textContent = format(+input.value);
-					showReset();
-					preview();
-					clearTimeout(commitTimer);
-					commitTimer = setTimeout(function(){
-						saveConfig("style",root)
-					},250)
+				//table style, shared by anime and manga lists
+				let styleBox = create("div","listTable-settings-style",false,root);
+				create("p","listTable-settings-subtitle","Table style",styleBox);
+				let linesRow = create("p",false,false,styleBox);
+				create("span",false,"Grid lines ",linesRow);
+				let linesSelect = create("select",["altoolkitNativeInput","listTable-select"],false,linesRow);
+				[["none","None"],["horizontal","Horizontal"],["vertical","Vertical"],["both","Both"]].forEach(option => {
+					create("option",false,option[1],linesSelect).value = option[0]
+				});
+				linesSelect.value = config.style.lines;
+				linesSelect.addEventListener("change",function(){
+					config.style.lines = linesSelect.value;
+					saveConfig("style",root)
+				});
+				let widthsRow = create("p",false,false,styleBox);
+				create("span",false,"Column widths ",widthsRow);
+				let widthsSelect = create("select",["altoolkitNativeInput","listTable-select"],false,widthsRow);
+				[["even","Even (like AniList)"],["fit","Fit content"]].forEach(option => {
+					create("option",false,option[1],widthsSelect).value = option[0]
+				});
+				widthsSelect.value = config.style.columnWidths;
+				widthsSelect.addEventListener("change",function(){
+					config.style.columnWidths = widthsSelect.value;
+					saveConfig("style",root)
+				});
+				//sliders fire a lot of events, so only the css is updated while dragging, the rest waits until it stops
+				let previewQueued = false;
+				let commitTimer = null;
+				let preview = function(){
+					if(!previewQueued){
+						previewQueued = true;
+						requestAnimationFrame(function(){
+							previewQueued = false;
+							updateLayoutStyle();
+							applyPaddingToWidths();
+							applyWidth()
+						})
+					}
+				};
+				//defaultValue: where the slider rests while the setting is null, canReset: show a button to set it back to null
+				let slider = function(text,key,min,max,step,format,defaultValue,canReset){
+					let row = create("p","listTable-slider-row",false,styleBox);
+					create("span","listTable-slider-label",text,row);
+					let input = create("input","listTable-slider",false,row);
+					input.type = "range";
+					input.min = min;
+					input.max = max;
+					input.step = step;
+					input.value = config.style[key] === null ? defaultValue : config.style[key];
+					let value = create("span","listTable-slider-value",format(config.style[key]),row);
+					let reset = null;
+					let showReset = () => {
+						if(reset){
+							reset.style.visibility = config.style[key] === null ? "hidden" : "visible"
+						}
+					};
+					if(canReset){
+						reset = create("button",["altoolkitButton","button","listTable-slider-reset"],"Reset",row);
+						reset.type = "button";
+						reset.title = "Back to AniList's own spacing";
+						reset.addEventListener("click",function(){
+							clearTimeout(commitTimer);
+							config.style[key] = null;
+							input.value = defaultValue;
+							value.textContent = format(null);
+							showReset();
+							saveConfig("style",root)
+						});
+						showReset()
+					}
+					input.addEventListener("input",function(){
+						config.style[key] = +input.value;
+						value.textContent = format(+input.value);
+						showReset();
+						preview();
+						clearTimeout(commitTimer);
+						commitTimer = setTimeout(function(){
+							saveConfig("style",root)
+						},250)
+					})
+				};
+				slider("Column spacing","cellPadding",0,30,1,v => v === null ? "AniList" : v + "px",20,true);
+				slider("Extra table width","extraWidth",0,1200,50,v => v ? "+" + v + "px" : "off",0);
+				create("p","listTable-settings-help","With even widths, spacing mostly shows once columns get tight. Extra width only shows when your window is wider than the list.",styleBox);
+				//other options
+				let other = create("div","listTable-settings-other",false,root);
+				let dateRow = create("p",false,false,other);
+				create("span",false,"Date format ",dateRow);
+				let dateSelect = create("select",["altoolkitNativeInput","listTable-select"],false,dateRow);
+				["YYYY-MM-DD","YY-MM-DD","MM-DD-YYYY","MM-DD-YY","M-D-YYYY","M-D-YY","DD-MM-YYYY","DD-MM-YY","D-M-YYYY","D-M-YY"].forEach(format => {
+					create("option",false,format,dateSelect).value = format
+				});
+				dateSelect.value = config.dateFormat;
+				dateSelect.addEventListener("change",function(){
+					config.dateFormat = dateSelect.value;
+					saveConfig(undefined,root)
+				});
+				let sepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,dateRow);
+				[["-","dash -"],["/","slash /"],[".","dot ."],[" ","space"]].forEach(sep => {
+					create("option",false,sep[1],sepSelect).value = sep[0]
+				});
+				sepSelect.value = config.dateSeparator;
+				sepSelect.addEventListener("change",function(){
+					config.dateSeparator = sepSelect.value;
+					saveConfig(undefined,root)
+				});
+				let stepRow = create("p",false,false,other);
+				create("span",false,"Score + and - change it by ",stepRow);
+				let stepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,stepRow);
+				[[1,"1"],[0.5,"0.5"],[0.1,"0.1"]].forEach(option => {
+					create("option",false,option[1],stepSelect).value = option[0]
+				});
+				stepSelect.value = config.scoreStep;
+				stepSelect.addEventListener("change",function(){
+					config.scoreStep = +stepSelect.value;
+					saveConfig(undefined,root)
+				});
+				create("span","listTable-hint"," only for the 10 point decimal score format",stepRow);
+				scoreStepRow = stepRow;
+				if(!scoreOn()){
+					stepRow.style.display = "none"
+				}
+				let breakRow = create("p",false,false,other);
+				let breakLabel = create("label",false,false,breakRow);
+				let breakBox = create("input",false,false,breakLabel);
+				breakBox.type = "checkbox";
+				breakBox.checked = config.headerLineBreaks;
+				breakBox.addEventListener("change",function(){
+					config.headerLineBreaks = breakBox.checked;
+					saveConfig(undefined,root)
+				});
+				create("span",false," Split long column headers over two lines",breakLabel);
+				let fillRow = create("p",false,false,other);
+				let fillLabel = create("label",false,false,fillRow);
+				let fillBox = create("input",false,false,fillLabel);
+				fillBox.type = "checkbox";
+				fillBox.checked = config.fillBlanks;
+				fillBox.addEventListener("change",function(){
+					config.fillBlanks = fillBox.checked;
+					saveConfig(undefined,root)
+				});
+				create("span",false," Show a hyphen (-) in empty cells",fillLabel);
+				//resets all settings, needs a second click to confirm
+				let resetLabel = "Reset all list table settings";
+				let reset = create("button",["altoolkitButton","button","listTable-reset"],resetLabel,other);
+				let resetTimer = null;
+				reset.addEventListener("click",function(){
+					if(!reset.classList.contains("listTable-confirm")){
+						reset.classList.add("listTable-confirm");
+						reset.textContent = "Click again to reset everything";
+						resetTimer = setTimeout(function(){
+							reset.classList.remove("listTable-confirm");
+							reset.textContent = resetLabel
+						},4000);
+						return
+					}
+					clearTimeout(resetTimer);
+					config = defaultConfig();
+					saveConfig()//redraws every open settings panel, including this one
 				})
-			};
-			slider("Column spacing","cellPadding",0,30,1,v => v === null ? "AniList" : v + "px",20,true);
-			slider("Extra table width","extraWidth",0,1200,50,v => v ? "+" + v + "px" : "off",0);
-			create("p","listTable-settings-help","With even widths, spacing mostly shows once columns get tight. Extra width only shows when your window is wider than the list.",styleBox);
-			//other options
-			let other = create("div","listTable-settings-other",false,root);
-			let dateRow = create("p",false,false,other);
-			create("span",false,"Date format ",dateRow);
-			let dateSelect = create("select",["altoolkitNativeInput","listTable-select"],false,dateRow);
-			["YYYY-MM-DD","YY-MM-DD","MM-DD-YYYY","MM-DD-YY","M-D-YYYY","M-D-YY","DD-MM-YYYY","DD-MM-YY","D-M-YYYY","D-M-YY"].forEach(format => {
-				create("option",false,format,dateSelect).value = format
-			});
-			dateSelect.value = config.dateFormat;
-			dateSelect.addEventListener("change",function(){
-				config.dateFormat = dateSelect.value;
-				saveConfig(undefined,root)
-			});
-			let sepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,dateRow);
-			[["-","dash -"],["/","slash /"],[".","dot ."],[" ","space"]].forEach(sep => {
-				create("option",false,sep[1],sepSelect).value = sep[0]
-			});
-			sepSelect.value = config.dateSeparator;
-			sepSelect.addEventListener("change",function(){
-				config.dateSeparator = sepSelect.value;
-				saveConfig(undefined,root)
-			});
-			let stepRow = create("p",false,false,other);
-			create("span",false,"Score + and - change it by ",stepRow);
-			let stepSelect = create("select",["altoolkitNativeInput","listTable-select"],false,stepRow);
-			[[1,"1"],[0.5,"0.5"],[0.1,"0.1"]].forEach(option => {
-				create("option",false,option[1],stepSelect).value = option[0]
-			});
-			stepSelect.value = config.scoreStep;
-			stepSelect.addEventListener("change",function(){
-				config.scoreStep = +stepSelect.value;
-				saveConfig(undefined,root)
-			});
-			create("span","listTable-hint"," only for the 10 point decimal score format",stepRow);
-			let breakRow = create("p",false,false,other);
-			let breakLabel = create("label",false,false,breakRow);
-			let breakBox = create("input",false,false,breakLabel);
-			breakBox.type = "checkbox";
-			breakBox.checked = config.headerLineBreaks;
-			breakBox.addEventListener("change",function(){
-				config.headerLineBreaks = breakBox.checked;
-				saveConfig(undefined,root)
-			});
-			create("span",false," Split long column headers over two lines",breakLabel);
-			let fillRow = create("p",false,false,other);
-			let fillLabel = create("label",false,false,fillRow);
-			let fillBox = create("input",false,false,fillLabel);
-			fillBox.type = "checkbox";
-			fillBox.checked = config.fillBlanks;
-			fillBox.addEventListener("change",function(){
-				config.fillBlanks = fillBox.checked;
-				saveConfig(undefined,root)
-			});
-			create("span",false," Show a hyphen (-) in empty cells",fillLabel);
-			//resets all settings, needs a second click to confirm
-			let resetLabel = "Reset all list table settings";
-			let reset = create("button",["altoolkitButton","button","listTable-reset"],resetLabel,other);
-			let resetTimer = null;
-			reset.addEventListener("click",function(){
-				if(!reset.classList.contains("listTable-confirm")){
-					reset.classList.add("listTable-confirm");
-					reset.textContent = "Click again to reset everything";
-					resetTimer = setTimeout(function(){
-						reset.classList.remove("listTable-confirm");
-						reset.textContent = resetLabel
-					},4000);
-					return
-				}
-				clearTimeout(resetTimer);
-				config = defaultConfig();
-				saveConfig()//redraws every open settings panel, including this one
-			})
+			}
 		};
 		render();
 		//keep this panel in sync if settings change somewhere else
@@ -1487,6 +1541,14 @@ let ListTable = (function(){
 		};
 		settingsListeners.add(listener);
 		return root
+	}
+
+	//the settings page: anime and manga side by side, the table style and other options once below them
+	function buildBothSettings(container){
+		let both = create("div","listTable-both",false,container);
+		buildSettings(both,{type: "ANIME",fixedType: true,shared: "none"});
+		buildSettings(both,{type: "MANGA",fixedType: true,shared: "none"});
+		buildSettings(container,{shared: "only"})
 	}
 
 	//lifecycle
@@ -1612,6 +1674,7 @@ let ListTable = (function(){
 		start: start,
 		refresh: refresh,
 		buildSettings: buildSettings,
+		buildBothSettings: buildBothSettings,
 		COLUMNS: COLUMNS
 	}
 })();
@@ -1818,10 +1881,11 @@ exportModule({
 	margin-bottom: 12px;
 }
 /*still editable while the table is off*/
+.listTable-off .listTable-reorder-help,
 .listTable-off .listTable-column-list,
 .listTable-off .listTable-settings-style,
 .listTable-off .listTable-settings-other{
-	opacity: 0.5;
+	display: none;/*nothing to set while the table is off*/
 }
 .listTable-settings-top{
 	display: flex;
@@ -2023,6 +2087,19 @@ exportModule({
 }
 #altoolkitSettings .listTable-settings{
 	max-width: 420px;
+}
+#altoolkitSettings .listTable-both{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+#altoolkitSettings .listTable-both > .listTable-settings{
+	flex: 1 1 320px;
+	max-width: none;
+	padding: 14px 16px;
+	border-radius: 4px;
+	background: rgb(var(--color-foreground));
 }
 `
 });

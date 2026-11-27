@@ -189,6 +189,21 @@ exportModule({
 				)
 			}
 			create("span",false,translate(def.description),setting);
+			if(def.id === "listTable" && typeof ListTable !== "undefined"){
+				//the column settings, the same panel as on the list pages, right below the switch and only while it is on
+				let listTableSettings = create("div","altoolkitSetting");
+				listTableSettings.id = "listTableSettings";
+				(def.categories || []).forEach(category => listTableSettings.classList.add(category.replace(/\s/g,"")));
+				create("p",false,translate("$listTable_settingsHelp"),listTableSettings);
+				ListTable.buildBothSettings(listTableSettings);
+				setting.after(listTableSettings);
+				let showColumns = () => listTableSettings.style.display = useScripts.listTable ? "" : "none";
+				showColumns();
+				let moduleSwitch = setting.querySelector("input[type=checkbox]");
+				if(moduleSwitch){
+					moduleSwitch.addEventListener("change",showColumns)
+				}
+			}
 			if(def.extendedDescription){
 				let infoButton = create("span","altoolkitInfoButton",null,setting);
 				infoButton.title = translate("$settings_moreInfo_tooltip");
@@ -198,13 +213,6 @@ exportModule({
 				}
 			}
 		});
-		//list table columns, the same panel as on the list pages
-		if(typeof ListTable !== "undefined"){
-			altoolkitSettings.appendChild(create("hr"));
-			let listTableSettings = create("div","#listTableSettings",false,altoolkitSettings);
-			create("p",false,translate("$listTable_settingsHelp"),listTableSettings);
-			ListTable.buildSettings(listTableSettings)
-		}
 		let titleAliasSettings = create("div");
 		let titleAliasInstructions = create("p");
 		titleAliasInstructions.innerText = translate("$settings_aliasHelp");
