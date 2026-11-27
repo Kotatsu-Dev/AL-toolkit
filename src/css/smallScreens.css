@@ -7,11 +7,6 @@
 	}
 }
 @media(max-width: 1040px){
-	.input-wrap.manga input[placeholder="Status"],
-	.input-wrap.anime input[placeholder="Status"],
-	.input-wrap.anime .form.score input{
-		width: 100%;
-	}
 	.substitution .grid-wrap{
 		grid-template-columns: 1fr;
 	}

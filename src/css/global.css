@@ -854,11 +854,6 @@ meter::-webkit-meter-optimum-value{
 meter::-moz-meter-bar{
 	background: rgb(var(--color-blue));
 }
-.input-wrap.manga input[placeholder="Status"],
-.input-wrap.anime input[placeholder="Status"],
-.input-wrap.anime .form.score input{
-	width: 220px;
-}
 .substitution .role-card{
 	background: rgb(var(--color-foreground));
 	border-radius: 3px;
