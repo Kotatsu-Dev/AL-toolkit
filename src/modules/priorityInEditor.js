@@ -124,6 +124,11 @@ if(useScripts.priorityInEditor && useScripts.accessToken){//saving needs the acc
 		},true)
 	};
 	let tick = function(){
+		if(!useScripts.priorityInEditor){//switched off in the settings without reloading: take the field away again
+			Array.from(document.querySelectorAll(".altoolkitPriority")).forEach(form => form.remove());
+			Array.from(document.querySelectorAll(".altoolkitHasPriority")).forEach(inputWrap => inputWrap.classList.remove("altoolkitHasPriority"));
+			return
+		}
 		let wrap = document.querySelector(".list-editor-wrap");
 		let inputWrap = wrap && wrap.querySelector(".input-wrap");
 		let notes = inputWrap && inputWrap.querySelector(".form.notes");
